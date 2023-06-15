@@ -1,16 +1,24 @@
-import time
+# @author  : Zhu ZhenDong
+# @time    : 2023-06-15 01-39-27
+# @function: State machine of the game
+# @version : 0.1.0
+from __future__ import annotations
 from typing import *
-from abc import ABCMeta, abstractmethod
 
+if TYPE_CHECKING:
+    from layouts.app_page import AppSharedMem, Communicator
+
+import time
+from abc import abstractmethod
 import cv2
 
-from Board import Board
-import Detection
-from ArmCamera import ArmCamera
-from ArmInterface import ArmInterface
-from config import *
-from Detection import ChessBoardDetector
-from Agent import Agent
+from core.Board import Board
+from core.ArmCamera import DummyCamera
+from core.ArmInterface import ArmInterface
+from configs.config import *
+from core.Detection import ChessBoardDetector
+from core.Agent import Agent
+
 
 DK_MOVING_CHESS_POS = "moving-chess-pos"
 DK_BOARD = "chess-grid"
@@ -21,9 +29,11 @@ class StateMachine:
     def __init__(
         self,
         arm: ArmInterface,
-        camera: ArmCamera,
         detector: ChessBoardDetector,
+        camera: DummyCamera,
         agent: Agent,
+        context: AppSharedMem,
+        communicator: Communicator,
     ):
         self.current_state: Union[State, None] = None
         self.data = {

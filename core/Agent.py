@@ -1,9 +1,15 @@
+# @author  : Zhu ZhenDong
+# @time    : 2023-06-15 02-05-59
+# @function:
+# @version :
+
+
 import onnxruntime as ort
-from config import AGENT_PATH
+from configs.config import AGENT_PATH
 import random
 import math
 import numpy as np
-from Board import Board
+from core.Board import Board
 
 EPS_START = 0.9
 EPS_END = 0.05
@@ -12,10 +18,7 @@ EPS_DECAY = 2000
 
 class Agent:
     def __init__(self, player_side):
-        # self.device = torch.device("cpu")
-        # self.policy_net = torch.jit.load(AGENT_PATH, map_location=self.device)
         self.policy_net = ort.InferenceSession(AGENT_PATH)
-        # self.policy_net.eval()
         self.player_side = player_side
         self.training = False
 

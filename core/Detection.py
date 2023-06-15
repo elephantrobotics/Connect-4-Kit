@@ -1,9 +1,15 @@
+# @author  : Zhu ZhenDong
+# @time    : 2023-06-15 02-03-11
+# @function:
+# @version :
+
+
 import time
 
 import cv2
 import numpy as np
-from Board import Board
-from config import *
+from core.Board import Board
+from configs.config import *
 
 
 class ChessBoardDetector:
@@ -23,7 +29,7 @@ class ChessBoardDetector:
         "minDist": 20,
         "param2": 0.6,
         "minRadius": 15,
-        "maxRadius": 40
+        "maxRadius": 40,
     }
 
     def __init__(self, mtx, dist):
@@ -76,7 +82,9 @@ class ChessBoardDetector:
         detector = cv2.aruco.ArucoDetector(dictionary, parameters)
 
         corners, ids, rejectedCandidates = detector.detectMarkers(bgr_data)
-        rvec, tvec, _ = cv2.aruco.estimatePoseSingleMarkers(corners, 0.05, self.mtx, self.dist)
+        rvec, tvec, _ = cv2.aruco.estimatePoseSingleMarkers(
+            corners, 0.05, self.mtx, self.dist
+        )
 
         if rvec is None or len(corners) != 4:
             return None
@@ -86,8 +94,22 @@ class ChessBoardDetector:
             debug_img = bgr_data.copy()
             for i in range(rvec.shape[0]):
                 # 绘制轴
-                cv2.drawFrameAxes(debug_img, self.mtx, self.dist, rvec[i, :, :, ], tvec[i, :, :, ],
-                                  0.03)
+                cv2.drawFrameAxes(
+                    debug_img,
+                    self.mtx,
+                    self.dist,
+                    rvec[
+                        i,
+                        :,
+                        :,
+                    ],
+                    tvec[
+                        i,
+                        :,
+                        :,
+                    ],
+                    0.03,
+                )
                 # 在标记周围画一个正方形
                 cv2.aruco.drawDetectedMarkers(debug_img, corners)
             cv2.imshow("debug1", debug_img)
@@ -166,14 +188,17 @@ class ChessBoardDetector:
         red_match = cv2.bitwise_or(redA_match, redB_match)
 
         # 计算红色匹配面积占总面积的比值
-        red_factor = np.count_nonzero(red_match) / (red_match.shape[0] * red_match.shape[1])
+        red_factor = np.count_nonzero(red_match) / (
+            red_match.shape[0] * red_match.shape[1]
+        )
         if red_factor > factor_thresh:
             return Board.P_RED
 
         # 同红色
         yellow_match = cv2.inRange(hsv_data, *self.HSV_DIST["yellow"])
         yellow_match = np.count_nonzero(yellow_match) / (
-                yellow_match.shape[0] * yellow_match.shape[1])
+            yellow_match.shape[0] * yellow_match.shape[1]
+        )
         if yellow_match > factor_thresh:
             return Board.P_YELLOW
 
@@ -274,20 +299,38 @@ class ChessBoardDetector:
             for x in range(7):
                 cell = self.watch_grid[x][y]
                 if cell == Board.P_RED:
-                    cv2.putText(debug_img, Board.DISPLAY_R,
-                                (x * width_interval + offset, (y + 1) * height_interval),
-                                font,
-                                font_size, BGR_GREEN, 1, cv2.LINE_AA)
+                    cv2.putText(
+                        debug_img,
+                        Board.DISPLAY_R,
+                        (x * width_interval + offset, (y + 1) * height_interval),
+                        font,
+                        font_size,
+                        BGR_GREEN,
+                        1,
+                        cv2.LINE_AA,
+                    )
                 elif cell == Board.P_YELLOW:
-                    cv2.putText(debug_img, Board.DISPLAY_Y,
-                                (x * width_interval + offset, (y + 1) * height_interval),
-                                font,
-                                font_size, BGR_GREEN, 1, cv2.LINE_AA)
+                    cv2.putText(
+                        debug_img,
+                        Board.DISPLAY_Y,
+                        (x * width_interval + offset, (y + 1) * height_interval),
+                        font,
+                        font_size,
+                        BGR_GREEN,
+                        1,
+                        cv2.LINE_AA,
+                    )
                 else:
-                    cv2.putText(debug_img, Board.DISPLAY_EMPTY,
-                                (x * width_interval + offset, (y + 1) * height_interval),
-                                font,
-                                font_size, BGR_GREEN, 1, cv2.LINE_AA)
+                    cv2.putText(
+                        debug_img,
+                        Board.DISPLAY_EMPTY,
+                        (x * width_interval + offset, (y + 1) * height_interval),
+                        font,
+                        font_size,
+                        BGR_GREEN,
+                        1,
+                        cv2.LINE_AA,
+                    )
         cv2.imshow("Debug detect", debug_img)
 
     def get_grid_status(self):

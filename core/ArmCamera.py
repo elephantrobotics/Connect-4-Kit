@@ -1,7 +1,30 @@
-import time
+# @author  : Zhu ZhenDong
+# @time    : 2023-06-15 01-47-29
+# @function:
+# @version :
 
-from config import *
-from mouse_callbacks import *
+from __future__ import annotations
+from typing import *
+
+if TYPE_CHECKING:
+    from layouts.app_page import AppSharedMem
+
+from configs.config import *
+from core.mouse_callbacks import *
+
+
+class DummyCamera:
+    def __init__(self, context: AppSharedMem) -> None:
+        self.context = context
+
+    def update(self):
+        pass
+
+    def get_frame(self):
+        if self.context.curr_frame is not None:
+            return self.context.curr_frame.copy()
+        else:
+            return None
 
 
 class ArmCamera:

@@ -3,25 +3,30 @@
 # @function:
 # @version :
 
-
 import logging
 import time
-
 import cv2
 import numpy as np
+import threading
+from typing import *
+
 from PySide6 import QtCore
 from PySide6.QtCore import Signal, QObject, Slot, Qt
-
 from PySide6.QtGui import QPixmap, QImage
 from PySide6.QtWidgets import QWidget, QLabel
 from layouts.app_page_ui import Ui_AppPage
+
 from libs.NormalCamera import NormalCamera
 from libs.ArucoDetector import ArucoDetector
 from libs.Utils import numpy_to_pixmap
-import threading
-from typing import *
-import enum
-import sys
+
+from core.ArmInterface import ArmInterface
+from core.Detection import ChessBoardDetector
+from core.Agent import Agent
+from core.StateMachine import StateMachine
+from core.ArmCamera import DummyCamera
+from core.StateMachine import *
+
 
 logger = logging.getLogger(__name__)
 
@@ -36,7 +41,7 @@ class Communicator(QObject):
         super().__init__(parent)
 
 
-class SharedMemory:
+class AppSharedMem:
     def __init__(self):
         # camera section
         self.camera_on_flag: bool = False
@@ -49,18 +54,22 @@ class SharedMemory:
         self.video_feed2_on = False
         self.video_feed3_on = False
 
+        # game fsm configs
+
 
 class CameraThread(threading.Thread):
-    def __init__(self, cam_index: int, shared_memory: SharedMemory, cam_signal: Signal):
+    def __init__(self, cam_index: int, shared_memory: AppSharedMem, cam_signal: Signal):
         super().__init__()
-        self.running_flag = True
-        self.cam = NormalCamera(cam_index=cam_index)
-        self.cam_signal = cam_signal
-        self.mem: SharedMemory = shared_memory
-        self.fps = 5
+        self.running_flag: bool = True
+        self.cam_index: int = cam_index
+        self.cam: NormalCamera | None = None
+        self.cam_signal: Signal = cam_signal
+        self.mem: AppSharedMem = shared_memory
+        self.fps = 21
         self.tick = 1 / self.fps
 
     def run(self):
+        self.cam = NormalCamera(cam_index=self.cam_index)
         try:
             while self.running_flag:
                 frame = self.cam.raw_color_frame()
@@ -75,11 +84,51 @@ class AppPage:
     def __init__(self):
         self._widget = QWidget()
         self.signals = Communicator(self._widget)
-        self.shared_memory = SharedMemory()
+        self.shared_memory = AppSharedMem()
         self.cam_thread: Union[CameraThread, None] = None
         self.aruco_detector: Union[ArucoDetector, None] = None
         self.init_aruco_detector()
-        self.game_core = None
+        self.game_fsm = self.build_fsm()
+
+    def build_fsm(self):
+        # 设置先手状态
+        ROBOT_PLAY_FIRST = False
+        if ROBOT_PLAY_FIRST:
+            ROBOT_SIDE = Board.P_RED
+        else:
+            ROBOT_SIDE = Board.P_YELLOW
+
+        ROBOT_PLAY_FIRST = 1
+        arm = ArmInterface("COM5", 115200)
+        camera = DummyCamera(1)
+        camera_params = np.load("configs/normal_cam_params.npz")
+        mtx, dist = camera_params["mtx"], camera_params["dist"]
+        detector = ChessBoardDetector(mtx, dist)
+        agent = Agent(ROBOT_SIDE)
+        fsm = StateMachine(
+            arm, camera, detector, agent, self.shared_memory, self.signals
+        )
+
+        # init states
+        start_state = StartingState(fsm, starting=ROBOT_PLAY_FIRST)
+        observe_state = ObserveState(fsm)
+        moving_state = MovingChessPieceState(fsm)
+        waiting_state = WaitingPlayerState(fsm)
+        over_state = OverState(fsm)
+
+        start_state.add_next_state(WaitingPlayerState.DEFAULT_CMD, waiting_state)
+        start_state.add_next_state(ObserveState.DEFAULT_CMD, observe_state)
+
+        waiting_state.add_next_state(MovingChessPieceState.DEFAULT_CMD, moving_state)
+        waiting_state.add_next_state(OverState.DEFAULT_CMD, over_state)
+
+        observe_state.add_next_state(MovingChessPieceState.DEFAULT_CMD, moving_state)
+        observe_state.add_next_state(OverState.DEFAULT_CMD, over_state)
+
+        moving_state.add_next_state(WaitingPlayerState.DEFAULT_CMD, waiting_state)
+        moving_state.add_next_state(OverState.DEFAULT_CMD, over_state)
+
+        return fsm
 
     def init_aruco_detector(self):
         camera_params = np.load("libs/normal_cam_params.npz")
@@ -151,12 +200,26 @@ class AppPage:
 
         self.ui.combo_algs.currentIndexChanged.connect(change_alg_mode)
 
+        # start play
+        self.ui.btn_start_game.clicked.connect(self.start_game)
+
+        # stop play
+        self.ui.btn_stop_game.clicked.connect(self.stop_game)
+
     # 1.
     def setup_ui(self) -> QWidget:
         self.ui = Ui_AppPage()
         self.ui.setupUi(self._widget)
         self.setup_ui_dynamics()
         return self._widget
+
+    @Slot()
+    def start_game():
+        pass
+
+    @Slot()
+    def stop_game():
+        pass
 
     @Slot()
     def open_camera(self):
