@@ -3,8 +3,11 @@
 # @function:
 # @version :
 
+from collections.abc import Callable, Iterable, Mapping
 import logging
 import time
+import sys
+from typing import Any
 import cv2
 import numpy as np
 import threading
@@ -26,9 +29,9 @@ from core.Agent import Agent
 from core.StateMachine import StateMachine
 from core.ArmCamera import DummyCamera
 from core.StateMachine import *
+from core.logger import get_logger
 
-
-logger = logging.getLogger(__name__)
+logger = get_logger(__name__, logging.DEBUG)
 
 
 class Communicator(QObject):
@@ -47,6 +50,7 @@ class AppSharedMem:
         self.camera_on_flag: bool = False
         self.curr_cam_index: Union[None, int] = None
         self.curr_frame: Union[None, np.ndarray] = None
+        self.camera_params = np.load("configs/normal_cam_params.npz").values()
 
         # video feed section
         self.video_feed0_on = False
@@ -55,6 +59,13 @@ class AppSharedMem:
         self.video_feed3_on = False
 
         # game fsm configs
+        self.game_running = False
+        self.robot_first = False
+        self.aruco_detect_frame: np.ndarray | None = None
+        self.color_detect_frame: np.ndarray | None = None
+
+        # arm
+        self.arm: ArmInterface | None = None
 
 
 class CameraThread(threading.Thread):
@@ -73,6 +84,8 @@ class CameraThread(threading.Thread):
         try:
             while self.running_flag:
                 frame = self.cam.raw_color_frame()
+                if frame is None:
+                    self.mem.curr_frame = None
                 self.mem.curr_frame = frame
                 self.cam_signal.emit()
                 time.sleep(self.tick)
@@ -80,34 +93,26 @@ class CameraThread(threading.Thread):
             print(e)
 
 
-class AppPage:
-    def __init__(self):
-        self._widget = QWidget()
-        self.signals = Communicator(self._widget)
-        self.shared_memory = AppSharedMem()
-        self.cam_thread: Union[CameraThread, None] = None
-        self.aruco_detector: Union[ArucoDetector, None] = None
-        self.init_aruco_detector()
-        self.game_fsm = self.build_fsm()
+class GameThread(threading.Thread):
+    def __init__(self, context: AppSharedMem, communicator: Communicator) -> None:
+        super().__init__()
+        self.context: AppSharedMem = context
+        self.commu: Communicator = communicator
 
-    def build_fsm(self):
         # 设置先手状态
-        ROBOT_PLAY_FIRST = False
+        ROBOT_PLAY_FIRST = context.robot_first
         if ROBOT_PLAY_FIRST:
             ROBOT_SIDE = Board.P_RED
         else:
             ROBOT_SIDE = Board.P_YELLOW
 
-        ROBOT_PLAY_FIRST = 1
-        arm = ArmInterface("COM5", 115200)
-        camera = DummyCamera(1)
-        camera_params = np.load("configs/normal_cam_params.npz")
-        mtx, dist = camera_params["mtx"], camera_params["dist"]
+        arm = self.context.arm
+        camera = DummyCamera(self.context)
+
+        mtx, dist = self.context.camera_params
         detector = ChessBoardDetector(mtx, dist)
         agent = Agent(ROBOT_SIDE)
-        fsm = StateMachine(
-            arm, camera, detector, agent, self.shared_memory, self.signals
-        )
+        fsm = StateMachine(arm, detector, camera, agent, self.context, self.commu)
 
         # init states
         start_state = StartingState(fsm, starting=ROBOT_PLAY_FIRST)
@@ -128,7 +133,38 @@ class AppPage:
         moving_state.add_next_state(WaitingPlayerState.DEFAULT_CMD, waiting_state)
         moving_state.add_next_state(OverState.DEFAULT_CMD, over_state)
 
-        return fsm
+        fsm.current_state = start_state
+
+        self.fsm = fsm
+
+    def run(self):
+        if self.fsm.current_state is None:
+            raise Exception("fsm must have a starting state.")
+
+        try:
+            while self.fsm.current_state is not None and self.context.game_running:
+                self.fsm.current_state.operation()
+                self.fsm.detector.debug_display_chess_console()
+                self.fsm.next_state()
+        except Exception as e:
+            print(sys.exc_info())
+
+
+class AppPage:
+    def __init__(self):
+        self._widget = QWidget()
+        self.signals = Communicator(self._widget)
+        self.shared_memory = AppSharedMem()
+        self.aruco_detector: Union[ArucoDetector, None] = None
+        self.init_aruco_detector()
+
+        self.cam_thread: Union[CameraThread, None] = None
+        self.game_thread: Union[GameThread, None] = None
+
+        self.init_shared_mem()
+
+    def init_shared_mem(self):
+        self.shared_memory.arm = ArmInterface("COM5", 115200)
 
     def init_aruco_detector(self):
         camera_params = np.load("libs/normal_cam_params.npz")
@@ -201,10 +237,31 @@ class AppPage:
         self.ui.combo_algs.currentIndexChanged.connect(change_alg_mode)
 
         # start play
-        self.ui.btn_start_game.clicked.connect(self.start_game)
+        @Slot()
+        def start_game():
+            logger.info("start game")
+            if self.game_thread is not None:
+                self.shared_memory.game_running = False
+                del self.game_thread
+                self.game_thread = None
+
+            self.game_thread = GameThread(self.shared_memory, self.signals)
+            self.shared_memory.game_running = True
+            self.game_thread.start()
+
+        self.ui.btn_start_game.clicked.connect(start_game)
 
         # stop play
-        self.ui.btn_stop_game.clicked.connect(self.stop_game)
+        @Slot()
+        def stop_game():
+            logger.info("stop game")
+            if self.game_thread is None:
+                return
+            self.shared_memory.game_running = False
+            del self.game_thread
+            self.game_thread = None
+
+        self.ui.btn_stop_game.clicked.connect(stop_game)
 
     # 1.
     def setup_ui(self) -> QWidget:
@@ -212,14 +269,6 @@ class AppPage:
         self.ui.setupUi(self._widget)
         self.setup_ui_dynamics()
         return self._widget
-
-    @Slot()
-    def start_game():
-        pass
-
-    @Slot()
-    def stop_game():
-        pass
 
     @Slot()
     def open_camera(self):
@@ -242,14 +291,6 @@ class AppPage:
         self.ui.label_video_feed0.setPixmap(QPixmap())
         self.ui.label_video_feed1.setPixmap(QPixmap())
         self._widget.update()
-
-    @Slot()
-    def start_game(self):
-        pass
-
-    @Slot()
-    def stop_game(self):
-        pass
 
     @Slot()
     def update_image(self):
@@ -283,6 +324,19 @@ class AppPage:
             setup_video_feed(
                 self.ui.label_video_feed1, gray_frame, QImage.Format.Format_Grayscale8
             )
+
+        if (
+            self.shared_memory.video_feed2_on
+            and self.shared_memory.color_detect_frame is not None
+        ):
+            setup_video_feed(
+                self.ui.label_video_feed2,
+                self.shared_memory.color_detect_frame,
+                QImage.Format.Format_BGR888,
+            )
+
+        if self.shared_memory.video_feed3_on:
+            pass
 
     # 2.
     def get_widget(self) -> QWidget:

@@ -89,31 +89,6 @@ class ChessBoardDetector:
         if rvec is None or len(corners) != 4:
             return None
 
-        # debug
-        if DEBUG:
-            debug_img = bgr_data.copy()
-            for i in range(rvec.shape[0]):
-                # 绘制轴
-                cv2.drawFrameAxes(
-                    debug_img,
-                    self.mtx,
-                    self.dist,
-                    rvec[
-                        i,
-                        :,
-                        :,
-                    ],
-                    tvec[
-                        i,
-                        :,
-                        :,
-                    ],
-                    0.03,
-                )
-                # 在标记周围画一个正方形
-                cv2.aruco.drawDetectedMarkers(debug_img, corners)
-            cv2.imshow("debug1", debug_img)
-
         # 给识别到的二维码角点按照 左上 右上 左下 右下排序
         corners = np.mean(corners, axis=2)
         corners = (np.ceil(corners)).astype(int)
@@ -140,13 +115,38 @@ class ChessBoardDetector:
 
         return res
 
+    def visu_aruco_detect(self, bgr_data, rvec, tvec, corners):
+        debug_img = bgr_data.copy()
+        for i in range(rvec.shape[0]):
+            # 绘制轴
+            cv2.drawFrameAxes(
+                debug_img,
+                self.mtx,
+                self.dist,
+                rvec[
+                    i,
+                    :,
+                    :,
+                ],
+                tvec[
+                    i,
+                    :,
+                    :,
+                ],
+                0.03,
+            )
+            # 在标记周围画一个正方形
+            cv2.aruco.drawDetectedMarkers(debug_img, corners)
+        return debug_img
+
     def rectify_frame(self, bgr_data):
         """
         修正相机视图
         :param bgr_data:
         :return: 返回已经被修正的BGR帧
         """
-        corners = self.detect_board_corners(bgr_data)
+        frame = bgr_data.copy()
+        corners = self.detect_board_corners(frame)
         if corners is None:
             return None
 
@@ -161,9 +161,9 @@ class ChessBoardDetector:
 
         pts2: np.ndarray = np.float32([[0, 0], [640, 0], [0, 480], [640, 480]])
         M = cv2.getPerspectiveTransform(pts1, pts2)
-        res = cv2.warpPerspective(bgr_data, M, (bgr_data.shape[1], bgr_data.shape[0]))
+        res = cv2.warpPerspective(frame, M, (frame.shape[1], frame.shape[0]))
         if DEBUG:
-            debug_img = bgr_data
+            debug_img = frame
             for x, y in pts1:
                 cv2.circle(debug_img, (int(x), int(y)), 3, BGR_RED, -1)
             for x, y in pts2:
@@ -258,7 +258,7 @@ class ChessBoardDetector:
             self.__watch_grid_changed_flag = False
             return True
 
-        self.debug_display_chess(rect_frame)
+        self.visu_chessboard(rect_frame)
         return False
 
     def debug_display_chess_console(self):
@@ -278,7 +278,7 @@ class ChessBoardDetector:
             print()
         print()
 
-    def debug_display_chess(self, rect_bgr):
+    def visu_chessboard(self, rect_bgr):
         """
         修改rect_bgr,把文字打在上面显示
         :param rect_bgr:
@@ -331,7 +331,8 @@ class ChessBoardDetector:
                         1,
                         cv2.LINE_AA,
                     )
-        cv2.imshow("Debug detect", debug_img)
+
+        return debug_img
 
     def get_grid_status(self):
         """

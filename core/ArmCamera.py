@@ -20,6 +20,9 @@ class DummyCamera:
     def update(self):
         pass
 
+    def release(self):
+        pass
+
     def get_frame(self):
         if self.context.curr_frame is not None:
             return self.context.curr_frame.copy()

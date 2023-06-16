@@ -10,13 +10,11 @@ import sys
 from PySide6.QtCore import Qt, QEvent, QObject, Signal, Slot
 from PySide6.QtWidgets import (
     QApplication,
-    QLabel,
     QMainWindow,
-    QPushButton,
-    QVBoxLayout,
     QWidget,
 )
 from layouts.app_page import AppPage
+import assets.assets_rc
 
 
 class MainWindow(QMainWindow):
@@ -30,7 +28,6 @@ class MainWindow(QMainWindow):
         super().__init__(parent)
         self.app_page = AppPage()
         self.app_page.setup_ui()
-        self.app_page.setup_ui_dynamics()
 
         self.setCentralWidget(self.app_page.get_widget())
         self.centralWidget().adjustSize()

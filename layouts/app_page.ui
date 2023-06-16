@@ -226,7 +226,7 @@ border-style:outset;</string>
              </sizepolicy>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
+             <string notr="true">font: 9pt &quot;Microsoft YaHei UI&quot;;</string>
             </property>
             <property name="text">
              <string>默认视频流</string>
@@ -259,7 +259,7 @@ border-style:outset;</string>
              </sizepolicy>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 700 10pt &quot;Microsoft YaHei UI&quot;;</string>
+             <string notr="true">font: 9pt &quot;Microsoft YaHei UI&quot;;</string>
             </property>
             <property name="text">
              <string>灰度流</string>
@@ -504,7 +504,7 @@ border-style:outset;</string>
              </sizepolicy>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
+             <string notr="true">font: 9pt &quot;Microsoft YaHei UI&quot;;</string>
             </property>
             <property name="text">
              <string>机器人先手</string>
@@ -537,7 +537,7 @@ border-style:outset;</string>
              </sizepolicy>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
+             <string notr="true">font: 9pt &quot;Microsoft YaHei UI&quot;;</string>
             </property>
             <property name="text">
              <string>对弈等待(秒)</string>
@@ -567,7 +567,7 @@ border-style:outset;</string>
              </sizepolicy>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
+             <string notr="true">font: 9pt &quot;Microsoft YaHei UI&quot;;</string>
             </property>
             <property name="text">
              <string>等待次数限制</string>
@@ -604,7 +604,7 @@ border-style:outset;</string>
              </sizepolicy>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
+             <string notr="true">font: 9pt &quot;Microsoft YaHei UI&quot;;</string>
             </property>
             <property name="text">
              <string>识别标注视频流</string>
@@ -637,7 +637,7 @@ border-style:outset;</string>
              </sizepolicy>
             </property>
             <property name="styleSheet">
-             <string notr="true">font: 700 9pt &quot;Microsoft YaHei UI&quot;;</string>
+             <string notr="true">font: 9pt &quot;Microsoft YaHei UI&quot;;</string>
             </property>
             <property name="text">
              <string>算法结果展示</string>
@@ -1306,6 +1306,9 @@ border-style:outset;</string>
          </item>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_7">
+           <property name="spacing">
+            <number>1</number>
+           </property>
            <item>
             <widget class="QPushButton" name="btn_start_game">
              <property name="sizePolicy">
@@ -1318,7 +1321,8 @@ border-style:outset;</string>
               <string notr="true">background: rgb(18, 147, 211);
 color: rgb(255,255,255);
 border-radius:10px;
-border-style:outset;</string>
+border-style:outset;
+font: 700 10pt &quot;Microsoft YaHei UI&quot;;</string>
              </property>
              <property name="text">
               <string>开始对弈</string>
@@ -1337,7 +1341,8 @@ border-style:outset;</string>
               <string notr="true">background: rgb(221, 83, 52);
 color: rgb(255,255,255);
 border-radius:10px;
-border-style:outset;</string>
+border-style:outset;
+font: 700 10pt &quot;Microsoft YaHei UI&quot;;</string>
              </property>
              <property name="text">
               <string>结束对弈</string>

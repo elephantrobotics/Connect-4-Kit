@@ -11,6 +11,7 @@ if TYPE_CHECKING:
 import time
 from abc import abstractmethod
 import cv2
+import logging
 
 from core.Board import Board
 from core.ArmCamera import DummyCamera
@@ -18,11 +19,13 @@ from core.ArmInterface import ArmInterface
 from configs.config import *
 from core.Detection import ChessBoardDetector
 from core.Agent import Agent
-
+from core.logger import get_logger
 
 DK_MOVING_CHESS_POS = "moving-chess-pos"
 DK_BOARD = "chess-grid"
 DK_ROBOT_PLAY_SIDE = "robot-side"
+
+logger = get_logger(__name__, logging.DEBUG)
 
 
 class StateMachine:
@@ -45,6 +48,8 @@ class StateMachine:
         self.camera = camera
         self.detector = detector
         self.agent = agent
+        self.context: AppSharedMem = context
+        self.commu: Communicator = communicator
 
     def next_state(self):
         cmd = self.current_state.next_state_cmd
@@ -102,15 +107,15 @@ class StartingState(State):
         if self.starting:
             self.state_machine.data[DK_ROBOT_PLAY_SIDE] = Board.P_RED
             self.next_state_cmd = ObserveState.DEFAULT_CMD
-            print("INFO: Machine move first.")
+            logger.info("INFO: Machine move first.")
         else:
             self.state_machine.data[DK_ROBOT_PLAY_SIDE] = Board.P_YELLOW
             self.next_state_cmd = WaitingPlayerState.DEFAULT_CMD
-            print("INFO: Player move first.")
+            logger.info("INFO: Player move first.")
 
     def operation(self):
         if DEBUG:
-            print(f"Entering state : {self.TAG}")
+            logger.info(f"Entering state : {self.TAG}")
 
         self.arm.recovery()
 
@@ -123,29 +128,36 @@ class ObserveState(State):
 
     def operation(self):
         if DEBUG:
-            print(f"Entering state : {self.TAG}")
+            logger.info(f"Entering state : {self.TAG}")
 
         self.arm.recovery()
         self.arm.observe_posture()
-        print("INFO: Arm standing-by in observation position.")
+        logger.info("INFO: Arm standing-by in observation position.")
         camera = self.state_machine.camera
         detector = self.state_machine.detector
 
-        print("INFO: Starting recognition")
+        logger.info("INFO: Starting recognition")
         # 循环读取相机帧
         while True:
             camera.update()
             frame = camera.get_frame()
             if frame is None:
+                self.state_machine.context.color_detect_frame = None
                 continue
 
-            # 显示相机帧
-            cv2.imshow("Main", frame)
+            rectified_frame = detector.rectify_frame(frame)
+            if rectified_frame is None:
+                self.state_machine.context.color_detect_frame = None
+                continue
+
+            self.state_machine.context.color_detect_frame = detector.visu_chessboard(
+                rectified_frame
+            )
 
             # 检测棋盘
             if detector.detect(frame):
                 detector.update_stable_grid()
-                print("INFO: Grid stabilized.")
+                logger.info("INFO: Grid stabilized.")
                 break
 
             if cv2.waitKey(1) & 0xFF == ord("q"):
@@ -162,7 +174,7 @@ class ObserveState(State):
 
         agent = self.state_machine.agent
         n = agent.plan_move(board)
-        print(f"INFO: Next move {n}")
+        logger.info(f"INFO: Next move {n}")
 
         self.set_global_data(DK_MOVING_CHESS_POS, n)
         self.next_state_cmd = MovingChessPieceState.DEFAULT_CMD
@@ -176,7 +188,7 @@ class MovingChessPieceState(State):
 
     def operation(self):
         if DEBUG:
-            print(f"Entering state : {self.TAG}")
+            logger.info(f"Entering state : {self.TAG}")
 
         stable_board = self.state_machine.detector.stable_board
         watch_board = self.state_machine.detector.watch_board
@@ -188,11 +200,11 @@ class MovingChessPieceState(State):
         self.arm.recovery()
         self.arm.hover_over_chessboard_n(chess_n)
         self.arm.drop_piece()
-        print("INFO: Move complete.")
+        logger.info("INFO: Move complete.")
         watch_board.drop_piece(chess_n, self.state_machine.data[DK_ROBOT_PLAY_SIDE])
         stable_board.drop_piece(chess_n, self.state_machine.data[DK_ROBOT_PLAY_SIDE])
-        print("INFO: Update detector board complete.")
-        print("DEBUG: Now board status:")
+        logger.info("INFO: Update detector board complete.")
+        logger.info("DEBUG: Now board status:")
 
         stable_board.update()
         if stable_board.done:
@@ -209,8 +221,8 @@ class WaitingPlayerState(State):
 
     def operation(self):
         if DEBUG:
-            print(f"Entering state : {self.TAG}")
-            print("INFO: Waiting for grid change.")
+            logger.info(f"Entering state : {self.TAG}")
+            logger.info("INFO: Waiting for grid change.")
         self.arm.recovery()
         self.arm.observe_posture()
         time.sleep(5)
@@ -223,15 +235,22 @@ class WaitingPlayerState(State):
             camera.update()
             frame = camera.get_frame()
             if frame is None:
+                self.state_machine.context.color_detect_frame = None
                 continue
 
-            # 显示相机帧
-            cv2.imshow("Main", frame)
+            rectified_frame = detector.rectify_frame(frame)
+            if rectified_frame is None:
+                self.state_machine.context.color_detect_frame = None
+                continue
+
+            self.state_machine.context.color_detect_frame = detector.visu_chessboard(
+                rectified_frame
+            )
 
             # 检测棋盘
             self.state_machine.detector.detect(frame)
             if detector.is_grid_changed():
-                print("INFO: Grid changed.")
+                logger.info("INFO: Grid changed.")
                 break
 
             if cv2.waitKey(1) & 0xFF == ord("q"):
@@ -247,7 +266,7 @@ class WaitingPlayerState(State):
 
         agent = self.state_machine.agent
         n = agent.plan_move(board)
-        print(f"INFO: Next move {n}")
+        logger.info(f"INFO: Next move {n}")
 
         self.set_global_data(DK_MOVING_CHESS_POS, n)
         self.next_state_cmd = MovingChessPieceState.DEFAULT_CMD
@@ -266,7 +285,7 @@ class OverState(State):
             winner = "RED"
         else:
             winner = "YELLOW"
-        print(f"Winner is {winner}")
+        logger.info(f"Winner is {winner}")
 
 
 class Link:
