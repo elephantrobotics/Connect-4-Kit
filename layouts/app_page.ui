@@ -28,7 +28,10 @@
      <property name="styleSheet">
       <string notr="true">background : rgb(255, 255, 255)</string>
      </property>
-     <layout class="QVBoxLayout" name="verticalLayout_12" stretch="1,1,5,3,4,2,4">
+     <layout class="QVBoxLayout" name="verticalLayout_12" stretch="1,5,3,4,2,4">
+      <property name="spacing">
+       <number>25</number>
+      </property>
       <item>
        <layout class="QHBoxLayout" name="layout_title" stretch="1,8">
         <property name="leftMargin">
@@ -87,50 +90,15 @@
        </layout>
       </item>
       <item>
-       <widget class="QLabel" name="label_separator">
-        <property name="enabled">
-         <bool>true</bool>
-        </property>
-        <property name="sizePolicy">
-         <sizepolicy hsizetype="Minimum" vsizetype="Maximum">
-          <horstretch>0</horstretch>
-          <verstretch>0</verstretch>
-         </sizepolicy>
-        </property>
-        <property name="text">
-         <string>分割线</string>
-        </property>
-       </widget>
-      </item>
-      <item>
        <layout class="QVBoxLayout" name="verticalLayout_4" stretch="1,1,1,1,1">
         <property name="spacing">
-         <number>6</number>
+         <number>5</number>
         </property>
         <item>
-         <layout class="QHBoxLayout" name="layout_cam_selection" stretch="0,0,0">
+         <layout class="QHBoxLayout" name="layout_cam_selection" stretch="0,0">
           <property name="leftMargin">
            <number>0</number>
           </property>
-          <item>
-           <widget class="QLabel" name="label_cam_icon">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="minimumSize">
-             <size>
-              <width>0</width>
-              <height>0</height>
-             </size>
-            </property>
-            <property name="text">
-             <string>X</string>
-            </property>
-           </widget>
-          </item>
           <item>
            <widget class="QLabel" name="label_camera_selection">
             <property name="styleSheet">
@@ -156,7 +124,7 @@
              </sizepolicy>
             </property>
             <property name="text">
-             <string>X</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -297,7 +265,8 @@ border-style:outset;</string>
             <property name="styleSheet">
              <string notr="true">border-radius:5px;
 border:1px solid black;
-border-style:outset;</string>
+border-style:outset;
+background: rgb(213, 213, 213);</string>
             </property>
             <property name="text">
              <string>启动</string>
@@ -315,7 +284,8 @@ border-style:outset;</string>
             <property name="styleSheet">
              <string notr="true">border-radius:5px;
 border:1px solid black;
-border-style:outset;</string>
+border-style:outset;
+background: rgb(213, 213, 213);</string>
             </property>
             <property name="text">
              <string>停止</string>
@@ -328,24 +298,14 @@ border-style:outset;</string>
       </item>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_5" stretch="1,1,1">
+        <property name="spacing">
+         <number>5</number>
+        </property>
         <item>
-         <layout class="QHBoxLayout" name="layout_algorithm_title" stretch="1,8,0">
+         <layout class="QHBoxLayout" name="layout_algorithm_title" stretch="8,0">
           <property name="leftMargin">
            <number>0</number>
           </property>
-          <item>
-           <widget class="QLabel" name="label_16">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>X</string>
-            </property>
-           </widget>
-          </item>
           <item>
            <widget class="QLabel" name="label_17">
             <property name="styleSheet">
@@ -365,7 +325,7 @@ border-style:outset;</string>
              </sizepolicy>
             </property>
             <property name="text">
-             <string>X</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -387,7 +347,8 @@ border-style:outset;</string>
             <property name="styleSheet">
              <string notr="true">border-radius:5px;
 border:1px solid black;
-border-style:outset;</string>
+border-style:outset;
+background: rgb(213, 213, 213);</string>
             </property>
             <property name="text">
              <string>官方模型</string>
@@ -405,7 +366,8 @@ border-style:outset;</string>
             <property name="styleSheet">
              <string notr="true">border-radius:5px;
 border:1px solid black;
-border-style:outset;</string>
+border-style:outset;
+background: rgb(213, 213, 213);</string>
             </property>
             <property name="text">
              <string>自定义模型</string>
@@ -449,25 +411,15 @@ border-style:outset;</string>
        </layout>
       </item>
       <item>
-       <layout class="QVBoxLayout" name="verticalLayout_11">
+       <layout class="QVBoxLayout" name="verticalLayout_11" stretch="1,1,1,1">
+        <property name="spacing">
+         <number>5</number>
+        </property>
         <item>
-         <layout class="QHBoxLayout" name="layout_algorithm_title_2" stretch="1,8,0">
+         <layout class="QHBoxLayout" name="layout_algorithm_title_2" stretch="8,0">
           <property name="leftMargin">
            <number>0</number>
           </property>
-          <item>
-           <widget class="QLabel" name="label_21">
-            <property name="sizePolicy">
-             <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-              <horstretch>0</horstretch>
-              <verstretch>0</verstretch>
-             </sizepolicy>
-            </property>
-            <property name="text">
-             <string>X</string>
-            </property>
-           </widget>
-          </item>
           <item>
            <widget class="QLabel" name="label_22">
             <property name="styleSheet">
@@ -487,7 +439,7 @@ border-style:outset;</string>
              </sizepolicy>
             </property>
             <property name="text">
-             <string>X</string>
+             <string/>
             </property>
            </widget>
           </item>
@@ -511,7 +463,7 @@ border-style:outset;</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignRight|Qt::AlignVCenter">
            <widget class="QCheckBox" name="checkBox">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -591,7 +543,7 @@ border-style:outset;</string>
       <item>
        <layout class="QVBoxLayout" name="verticalLayout_9" stretch="1,1">
         <property name="spacing">
-         <number>6</number>
+         <number>5</number>
         </property>
         <item>
          <layout class="QHBoxLayout" name="horizontalLayout_16" stretch="9,1">
@@ -611,7 +563,7 @@ border-style:outset;</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignRight">
            <widget class="QCheckBox" name="switch_video2_on">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -644,7 +596,7 @@ border-style:outset;</string>
             </property>
            </widget>
           </item>
-          <item>
+          <item alignment="Qt::AlignRight|Qt::AlignVCenter">
            <widget class="QCheckBox" name="switch_video3_on">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
@@ -971,24 +923,20 @@ border-style:outset;</string>
         <property name="frameShadow">
          <enum>QFrame::Raised</enum>
         </property>
-        <layout class="QVBoxLayout" name="verticalLayout_8" stretch="2,4,2,6,4">
+        <layout class="QVBoxLayout" name="verticalLayout_8" stretch="2,4,2,5,4">
+         <property name="spacing">
+          <number>25</number>
+         </property>
          <item>
-          <layout class="QVBoxLayout" name="verticalLayout_6">
+          <layout class="QVBoxLayout" name="verticalLayout_6" stretch="1,1">
+           <property name="spacing">
+            <number>5</number>
+           </property>
+           <property name="sizeConstraint">
+            <enum>QLayout::SetNoConstraint</enum>
+           </property>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="1,9,1">
-             <item>
-              <widget class="QLabel" name="label_5">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>X</string>
-               </property>
-              </widget>
-             </item>
+            <layout class="QHBoxLayout" name="horizontalLayout_5" stretch="9,1">
              <item>
               <widget class="QLabel" name="label_9">
                <property name="styleSheet">
@@ -1008,7 +956,7 @@ border-style:outset;</string>
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>!</string>
+                <string/>
                </property>
               </widget>
              </item>
@@ -1030,7 +978,8 @@ border-style:outset;</string>
                <property name="styleSheet">
                 <string notr="true">border-radius:5px;
 border:1px solid black;
-border-style:outset;</string>
+border-style:outset;
+background: rgb(213, 213, 213);</string>
                </property>
                <property name="text">
                 <string>打开</string>
@@ -1048,7 +997,8 @@ border-style:outset;</string>
                <property name="styleSheet">
                 <string notr="true">border-radius:5px;
 border:1px solid black;
-border-style:outset;</string>
+border-style:outset;
+background: rgb(213, 213, 213)</string>
                </property>
                <property name="text">
                 <string>关闭</string>
@@ -1061,21 +1011,11 @@ border-style:outset;</string>
          </item>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_3">
+           <property name="spacing">
+            <number>5</number>
+           </property>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_4">
-             <item>
-              <widget class="QLabel" name="label_10">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>X</string>
-               </property>
-              </widget>
-             </item>
              <item>
               <widget class="QLabel" name="label_11">
                <property name="styleSheet">
@@ -1095,7 +1035,7 @@ border-style:outset;</string>
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>!</string>
+                <string/>
                </property>
               </widget>
              </item>
@@ -1132,7 +1072,8 @@ border-style:outset;</string>
                <property name="styleSheet">
                 <string notr="true">border-radius:5px;
 border:1px solid black;
-border-style:outset;</string>
+border-style:outset;
+background: rgb(213, 213, 213)</string>
                </property>
                <property name="text">
                 <string>移动至该点</string>
@@ -1150,7 +1091,8 @@ border-style:outset;</string>
                <property name="styleSheet">
                 <string notr="true">border-radius:5px;
 border:1px solid black;
-border-style:outset;</string>
+border-style:outset;
+background: rgb(213, 213, 213)</string>
                </property>
                <property name="text">
                 <string>修改点位</string>
@@ -1175,7 +1117,8 @@ border-style:outset;</string>
                <property name="styleSheet">
                 <string notr="true">border-radius:5px;
 border:1px solid black;
-border-style:outset;</string>
+border-style:outset;
+background: rgb(213, 213, 213)</string>
                </property>
                <property name="text">
                 <string>保存点位</string>
@@ -1193,7 +1136,8 @@ border-style:outset;</string>
                <property name="styleSheet">
                 <string notr="true">border-radius:5px;
 border:1px solid black;
-border-style:outset;</string>
+border-style:outset;
+background: rgb(213, 213, 213);</string>
                </property>
                <property name="text">
                 <string>恢复默认</string>
@@ -1206,21 +1150,11 @@ border-style:outset;</string>
          </item>
          <item>
           <layout class="QVBoxLayout" name="verticalLayout_2">
+           <property name="spacing">
+            <number>5</number>
+           </property>
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_3">
-             <item>
-              <widget class="QLabel" name="label_12">
-               <property name="sizePolicy">
-                <sizepolicy hsizetype="Maximum" vsizetype="Maximum">
-                 <horstretch>0</horstretch>
-                 <verstretch>0</verstretch>
-                </sizepolicy>
-               </property>
-               <property name="text">
-                <string>X</string>
-               </property>
-              </widget>
-             </item>
              <item>
               <widget class="QLabel" name="label_13">
                <property name="styleSheet">
@@ -1240,7 +1174,7 @@ border-style:outset;</string>
                 </sizepolicy>
                </property>
                <property name="text">
-                <string>!</string>
+                <string/>
                </property>
               </widget>
              </item>
@@ -1262,7 +1196,8 @@ border-style:outset;</string>
                <property name="styleSheet">
                 <string notr="true">border-radius:5px;
 border:1px solid black;
-border-style:outset;</string>
+border-style:outset;
+background: rgb(213, 213, 213);</string>
                </property>
                <property name="text">
                 <string>打开</string>
@@ -1280,7 +1215,8 @@ border-style:outset;</string>
                <property name="styleSheet">
                 <string notr="true">border-radius:5px;
 border:1px solid black;
-border-style:outset;</string>
+border-style:outset;
+background: rgb(213, 213, 213);</string>
                </property>
                <property name="text">
                 <string>关闭</string>
