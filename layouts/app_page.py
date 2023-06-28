@@ -1,8 +1,9 @@
 # @author  : Zhu ZhenDong
 # @time    : 2023-06-15 11-41-42
-# @function:
-# @version :
+# @function: This script contains the main classes and functions for the application.
+# @version : 1.0
 
+# Importing necessary libraries and modules
 from collections.abc import Callable, Iterable, Mapping
 import logging
 import time
@@ -31,9 +32,10 @@ from core.ArmCamera import DummyCamera
 from core.StateMachine import *
 from core.logger import get_logger
 
+# Setting up logger
 logger = get_logger(__name__, logging.DEBUG)
 
-
+# Class for handling communication between different parts of the application
 class Communicator(QObject):
     destroy = Signal()
     load_ui = Signal(str)
@@ -43,7 +45,7 @@ class Communicator(QObject):
     def __init__(self, parent=None):
         super().__init__(parent)
 
-
+# Class for shared memory across the application
 class AppSharedMem:
     def __init__(self):
         # camera section
@@ -67,7 +69,7 @@ class AppSharedMem:
         # arm
         self.arm: ArmInterface | None = None
 
-
+# Class for handling camera operations in a separate thread
 class CameraThread(threading.Thread):
     def __init__(self, cam_index: int, shared_memory: AppSharedMem, cam_signal: Signal):
         super().__init__()
@@ -76,7 +78,7 @@ class CameraThread(threading.Thread):
         self.cam: NormalCamera | None = None
         self.cam_signal: Signal = cam_signal
         self.mem: AppSharedMem = shared_memory
-        self.fps = 21
+        self.fps = 10
         self.tick = 1 / self.fps
 
     def run(self):
@@ -92,14 +94,14 @@ class CameraThread(threading.Thread):
         except Exception as e:
             print(e)
 
-
+# Class for handling game operations in a separate thread
 class GameThread(threading.Thread):
     def __init__(self, context: AppSharedMem, communicator: Communicator) -> None:
         super().__init__()
         self.context: AppSharedMem = context
         self.commu: Communicator = communicator
 
-        # 设置先手状态
+        # Setting up the game state
         ROBOT_PLAY_FIRST = context.robot_first
         if ROBOT_PLAY_FIRST:
             ROBOT_SIDE = Board.P_RED
@@ -114,7 +116,7 @@ class GameThread(threading.Thread):
         agent = Agent(ROBOT_SIDE)
         fsm = StateMachine(arm, detector, camera, agent, self.context, self.commu)
 
-        # init states
+        # Initializing states
         start_state = StartingState(fsm, starting=ROBOT_PLAY_FIRST)
         observe_state = ObserveState(fsm)
         moving_state = MovingChessPieceState(fsm)
@@ -149,7 +151,7 @@ class GameThread(threading.Thread):
         except Exception as e:
             print(sys.exc_info())
 
-
+# Main class for the application
 class AppPage:
     def __init__(self):
         self._widget = QWidget()
@@ -163,22 +165,25 @@ class AppPage:
 
         self.init_shared_mem()
 
+    # Initialize shared memory
     def init_shared_mem(self):
         self.shared_memory.arm = ArmInterface("COM5", 115200)
 
+    # Initialize Aruco detector
     def init_aruco_detector(self):
         camera_params = np.load("libs/normal_cam_params.npz")
         mtx, dist = camera_params["mtx"], camera_params["dist"]
         MARKER_SIZE = 22
         self.aruco_detector = ArucoDetector(mtx, dist, MARKER_SIZE)
 
+    # Setup dynamic UI elements
     def setup_ui_dynamics(self):
         self.ui.label_video_feed0.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.ui.label_video_feed1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.ui.label_video_feed2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.ui.label_video_feed3.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
 
-        # change camera index
+        # Function to change camera index
         def change_cam_index(cam_index):
             self.shared_memory.curr_cam_index = cam_index
 
@@ -187,16 +192,16 @@ class AppPage:
         )
         self.signals.curr_cam_index.connect(change_cam_index)
 
-        # open camera
+        # Connect button to open camera
         self.ui.btn_start_camera.clicked.connect(self.open_camera)
 
-        # stop camera
+        # Connect button to stop camera
         self.ui.btn_stop_camera.clicked.connect(self.stop_camera)
 
-        # update video gui
+        # Connect signal to update video GUI
         self.signals.cam_frame_update.connect(self.update_image)
 
-        # turn on/off video0 feed
+        # Function to turn on/off video0 feed
         def switch_video0(status):
             self.shared_memory.video_feed0_on = status
             if status == False:
@@ -204,7 +209,7 @@ class AppPage:
 
         self.ui.switch_video0_on.stateChanged.connect(switch_video0)
 
-        # turn on/off video1 feed
+        # Function to turn on/off video1 feed
         def switch_video1(status):
             self.shared_memory.video_feed1_on = status
             if status == False:
@@ -212,7 +217,7 @@ class AppPage:
 
         self.ui.switch_video1_on.stateChanged.connect(switch_video1)
 
-        # turn on/off video2 feed
+        # Function to turn on/off video2 feed
         def switch_video2(status):
             self.shared_memory.video_feed2_on = status
             if status == False:
@@ -220,7 +225,7 @@ class AppPage:
 
         self.ui.switch_video2_on.stateChanged.connect(switch_video2)
 
-        # turn on/off video3 feed
+        # Function to turn on/off video3 feed
         def switch_video3(status):
             self.shared_memory.video_feed3_on = status
             if status == False:
@@ -228,7 +233,7 @@ class AppPage:
 
         self.ui.switch_video3_on.stateChanged.connect(switch_video3)
 
-        # change current algorithm
+        # Function to change current algorithm
         @Slot()
         def change_alg_mode(alg_index):
             self.shared_memory.curr_alg_mode = self.ui.combo_algs.itemData(alg_index)
@@ -236,7 +241,7 @@ class AppPage:
 
         self.ui.combo_algs.currentIndexChanged.connect(change_alg_mode)
 
-        # start play
+        # Function to start game
         @Slot()
         def start_game():
             logger.info("start game")
@@ -251,25 +256,29 @@ class AppPage:
 
         self.ui.btn_start_game.clicked.connect(start_game)
 
-        # stop play
+        # Function to stop game
         @Slot()
         def stop_game():
             logger.info("stop game")
             if self.game_thread is None:
                 return
             self.shared_memory.game_running = False
+            self.shared_memory.curr_frame = None
+            self.shared_memory.color_detect_frame = None
+            self.shared_memory.aruco_detect_frame = None
             del self.game_thread
             self.game_thread = None
 
         self.ui.btn_stop_game.clicked.connect(stop_game)
 
-    # 1.
+    # Function to setup UI
     def setup_ui(self) -> QWidget:
         self.ui = Ui_AppPage()
         self.ui.setupUi(self._widget)
         self.setup_ui_dynamics()
         return self._widget
 
+    # Function to open camera
     @Slot()
     def open_camera(self):
         cam_index = self.shared_memory.curr_cam_index
@@ -285,22 +294,27 @@ class AppPage:
         )
         self.cam_thread.start()
 
+    # Function to stop camera
     @Slot()
     def stop_camera(self):
         self.cam_thread.running_flag = False
         self.ui.label_video_feed0.setPixmap(QPixmap())
         self.ui.label_video_feed1.setPixmap(QPixmap())
+        self.ui.label_video_feed2.setPixmap(QPixmap())
+        self.ui.label_video_feed3.setPixmap(QPixmap())
+
         self._widget.update()
 
+    # Function to update image
     @Slot()
     def update_image(self):
         """
-        需要注意的是, 这里给出的frame都是相机原始帧, 不经过scale
-        因为部分识别算法使用的是面积判定, scale之后可能导致算法出错
-        如果需要scale的话, 可以在转换成pixmap以后做
+        Note that the frame given here is the original frame from the camera, not scaled.
+        Some recognition algorithms use area determination, and scaling may cause the algorithm to fail.
+        If scaling is needed, it can be done after converting to pixmap.
         """
 
-        # update specific video feed
+        # Function to update specific video feed
         def setup_video_feed(video_label, local_frame, image_format):
             pixmap = numpy_to_pixmap(local_frame, image_format)
             display_label = video_label
@@ -338,10 +352,10 @@ class AppPage:
         if self.shared_memory.video_feed3_on:
             pass
 
-    # 2.
+    # Function to get widget
     def get_widget(self) -> QWidget:
         return self._widget
 
-    # 3.
+    # Function to terminate UI
     def terminate_ui(self) -> None:
         return

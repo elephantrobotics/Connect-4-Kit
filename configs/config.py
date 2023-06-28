@@ -1,7 +1,7 @@
 # @author  : Zhu ZhenDong
 # @time    : 2023-06-15 02-09-56
-# @function:
-# @version :
+# @function: Configuration file
+# @version : 0.1
 
 
 DEBUG = False

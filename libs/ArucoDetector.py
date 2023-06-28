@@ -1,26 +1,27 @@
+# Importing necessary libraries
 import cv2
 import numpy as np
 from typing import *
 
-
+# Defining a class for storing marker information
 class MarkerInfo(TypedDict):
     corners: np.ndarray
     tvec: np.ndarray
     rvec: np.ndarray
     num_id: int
 
+# Defining a class for Aruco marker detection
 class ArucoDetector:
+    # Initializer for the ArucoDetector class
     def __init__(self, mtx: np.ndarray, dist: np.ndarray, marker_size: int):
         self.mtx = mtx
         self.dist = dist
         self.marker_size = marker_size
         aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
         parameters = cv2.aruco.DetectorParameters()
-        # parameters.useAruco3Detection = True
-        # parameters.minMarkerDistanceRate = 0.03
-        # parameters.minDistanceToBorder = 1
         self.detector = cv2.aruco.ArucoDetector(aruco_dict, parameters)
         
+    # Method to estimate pose of single markers
     def estimatePoseSingleMarkers(self, corners):
         """
         This will estimate the rvec and tvec for each of the marker corners detected by:
@@ -49,18 +50,21 @@ class ArucoDetector:
         (rvecs - tvecs).any()
         return rvecs, tvecs
 
+    # Method to detect marker corners in a given frame
     def detect_marker_corners(self, frame: np.ndarray) -> Tuple[np.ndarray, np.ndarray, np.ndarray]:
-        # 灰度化
+        # Converting frame to grayscale
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         corners, ids, rejectedImgPoints = self.detector.detectMarkers(gray)
         return corners, ids, rejectedImgPoints
 
+    # Method to draw detected markers on the frame
     def draw_marker(self, frame: np.ndarray, corners, tvecs, rvecs, ids) -> None:
         cv2.aruco.drawDetectedMarkers(frame, corners, ids, borderColor=(0, 255, 0))
         for i in range(len(ids)):
             corner, tvec, rvec, marker_id = corners[i], tvecs[i], rvecs[i], ids[i]
             cv2.drawFrameAxes(frame, self.mtx, self.dist, rvec, tvec, 5, 3)
 
+    # Method to draw real position information of the markers on the frame
     @classmethod
     def draw_real_position_info(cls, frame: np.ndarray, corners, tvecs, trans_mat):
         n = len(corners)
@@ -75,6 +79,7 @@ class ArucoDetector:
             cv2.putText(frame, f"y:{y}", center + (0, 10), cv2.FONT_HERSHEY_SIMPLEX, font_size, (0, 0, 255), 1, cv2.LINE_AA)
             cv2.putText(frame, f"z:{z}", center + (0, 20), cv2.FONT_HERSHEY_SIMPLEX, font_size, (0, 0, 255), 1, cv2.LINE_AA)
 
+    # Method to draw position information of the markers on the frame
     @classmethod
     def draw_position_info(cls, frame: np.ndarray, corners, tvecs):
         n = len(corners)
@@ -86,6 +91,7 @@ class ArucoDetector:
             cv2.putText(frame, f"y:{y}", center + (0, 10), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 1, cv2.LINE_AA)
             cv2.putText(frame, f"z:{z}", center + (0, 20), cv2.FONT_HERSHEY_SIMPLEX, 0.4, (0, 0, 255), 1, cv2.LINE_AA)
 
+    # Method to print marker position information in the console
     @classmethod
     def console_view_marker_pos3d(cls, data: List[MarkerInfo]):
         data = data.copy()
@@ -98,6 +104,7 @@ class ArucoDetector:
             print(f"x:{x} y:{y} z:{z}")
         print()
 
+    # Method to structure data for each detected marker
     @classmethod
     def make_structure_data(cls, corners, ids, rvecs, tvecs) -> List[MarkerInfo]:
         data = []

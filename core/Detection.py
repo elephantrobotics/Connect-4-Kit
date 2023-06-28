@@ -14,7 +14,7 @@ from configs.config import *
 
 class ChessBoardDetector:
     """
-    检测识别类
+    Class for detecting and recognizing
     """
 
     HSV_DIST = {
@@ -33,36 +33,36 @@ class ChessBoardDetector:
     }
 
     def __init__(self, mtx, dist):
-        # 图像网格
+        # Image grid
         self.bgr_data_grid = [[None for j in range(6)] for i in range(7)]
-        # 逻辑网格-稳定
+        # Logical grid - stable
         self.stable_board = Board()
         self.stable_grid = self.stable_board.grid
-        # 逻辑网格-观望(状态可能不稳定)
+        # Logical grid - watch (status may be unstable)
         self.watch_board = Board()
         self.watch_grid = self.watch_board.grid
 
-        # 上一次观望网格改变的时间
+        # Last time the watch grid changed
         self.grid_change_timestamp = time.time()
 
-        # 观望网格已改变
-        # 生产者-消费者模型变量
+        # Watch grid has changed
+        # Producer-consumer model variable
         self.__watch_grid_changed_flag = False
 
-        # 稳定网格是否更新
-        # 生产者-消费者模型变量
+        # Whether the stable grid is updated
+        # Producer-consumer model variable
         self.__stable_grid_changed_flag = False
 
-        # 网格稳定时间阈值
+        # Grid stability time threshold
         self.stable_thresh = 1
 
-        # 相机内参
+        # Camera internal parameters
         self.mtx = mtx
         self.dist = dist
 
     def is_grid_changed(self):
         """
-        暴露给外部的接口, 消费更新标志以后将标志置False
+        Interface exposed to the outside, set the update flag to False after consuming
         :return:
         """
         if self.__stable_grid_changed_flag:
@@ -73,9 +73,9 @@ class ChessBoardDetector:
 
     def detect_board_corners(self, bgr_data):
         """
-        识别棋盘角落的二维码
-        :param bgr_data: bgr格式视频帧
-        :return: 按空间顺序排列的四个角点坐标
+        Recognize the QR code in the corner of the chessboard
+        :param bgr_data: bgr format video frame
+        :return: Four corner coordinates arranged in spatial order
         """
         dictionary = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
         parameters = cv2.aruco.DetectorParameters()
@@ -89,7 +89,7 @@ class ChessBoardDetector:
         if rvec is None or len(corners) != 4:
             return None
 
-        # 给识别到的二维码角点按照 左上 右上 左下 右下排序
+        # Sort the recognized QR code corners as top left, top right, bottom left, bottom right
         corners = np.mean(corners, axis=2)
         corners = (np.ceil(corners)).astype(int)
         corners = corners.reshape((4, 2))
@@ -118,7 +118,7 @@ class ChessBoardDetector:
     def visu_aruco_detect(self, bgr_data, rvec, tvec, corners):
         debug_img = bgr_data.copy()
         for i in range(rvec.shape[0]):
-            # 绘制轴
+            # Draw axis
             cv2.drawFrameAxes(
                 debug_img,
                 self.mtx,
@@ -135,25 +135,25 @@ class ChessBoardDetector:
                 ],
                 0.03,
             )
-            # 在标记周围画一个正方形
+            # Draw a square around the marker
             cv2.aruco.drawDetectedMarkers(debug_img, corners)
         return debug_img
 
     def rectify_frame(self, bgr_data):
         """
-        修正相机视图
+        Correct the camera view
         :param bgr_data:
-        :return: 返回已经被修正的BGR帧
+        :return: Returns the corrected BGR frame
         """
         frame = bgr_data.copy()
         corners = self.detect_board_corners(frame)
         if corners is None:
             return None
 
-        # 坐标顺序 [x,y]
+        # Coordinate order [x,y]
         pts1: np.ndarray = np.float32(corners)
 
-        # 对坐标点进行微调
+        # Fine-tune the coordinates
         pts1[0] = pts1[0][0] - 13, pts1[0][1] + 13
         pts1[1] = pts1[1][0] + 13, pts1[1][1] + 13
         pts1[2] = pts1[2][0] - 10, pts1[2][1] - 10
@@ -173,28 +173,28 @@ class ChessBoardDetector:
 
     def verify_cell(self, bgr_data):
         """
-        判断某一个格子的内容
+        Determine the content of a cell
         :param bgr_data:
-        :return: red 或 yellow 或 empty
+        :return: red or yellow or empty
         """
-        # 匹配面积要大于这个值才算
+        # The matching area must be larger than this value
         factor_thresh = 0.1
 
         hsv_data = cv2.cvtColor(bgr_data, cv2.COLOR_BGR2HSV)
 
-        # 红色在HSV色环里面占两头位置，因此要拼接一下
+        # Red occupies two ends in the HSV color ring, so it needs to be spliced
         redA_match = cv2.inRange(hsv_data, *self.HSV_DIST["redA"])
         redB_match = cv2.inRange(hsv_data, *self.HSV_DIST["redB"])
         red_match = cv2.bitwise_or(redA_match, redB_match)
 
-        # 计算红色匹配面积占总面积的比值
+        # Calculate the ratio of the red matching area to the total area
         red_factor = np.count_nonzero(red_match) / (
             red_match.shape[0] * red_match.shape[1]
         )
         if red_factor > factor_thresh:
             return Board.P_RED
 
-        # 同红色
+        # Same as red
         yellow_match = cv2.inRange(hsv_data, *self.HSV_DIST["yellow"])
         yellow_match = np.count_nonzero(yellow_match) / (
             yellow_match.shape[0] * yellow_match.shape[1]
@@ -211,17 +211,17 @@ class ChessBoardDetector:
 
     def detect(self, bgr_data):
         """
-        外部调用的主方法,只有在稳定状态才会返回True，其他情况都是False
+        The main method called externally, only returns True in a stable state, otherwise it is False
         :param bgr_data:
         :return: bool
         """
 
-        # 根据二维码信息校正图像
+        # Correct the image based on QR code information
         rect_frame = self.rectify_frame(bgr_data)
         if rect_frame is None:
             return False
 
-        # 切割图像到图像网格
+        # Cut the image to the image grid
         height, width = rect_frame.shape[:2]
         height_interval = int(height / 6)
         width_interval = int(width / 7)
@@ -233,7 +233,7 @@ class ChessBoardDetector:
                 cell = rect_frame[h1:h2, w1:w2]
                 self.bgr_data_grid[i][j] = cell
 
-        # 检测图像网格，更新逻辑网格(不稳定网格)
+        # Detect the image grid and update the logical grid (unstable grid)
         is_grid_changed = False
         for i in range(7):
             for j in range(6):
@@ -242,19 +242,19 @@ class ChessBoardDetector:
                     is_grid_changed = True
                 self.watch_grid[i][j] = self.verify_cell(self.bgr_data_grid[i][j])
 
-        # 如果检测到观望网格更新，记录一下这个时间
+        # If the watch grid update is detected, record this time
         if is_grid_changed:
             self.__watch_grid_changed_flag = True
             self.grid_change_timestamp = time.time()
 
-        # 是否距离上一次网格更新的时间已经超过稳定阈值
+        # Has the time since the last grid update exceeded the stability threshold?
         if time.time() - self.grid_change_timestamp > self.stable_thresh:
-            # 观望网格标记是否为真
+            # Is the watch grid flag true?
             if self.__watch_grid_changed_flag:
                 self.update_stable_grid()
                 self.__stable_grid_changed_flag = True
 
-            # 已经是稳定状态
+            # Already in a stable state
             self.__watch_grid_changed_flag = False
             return True
 
@@ -263,7 +263,7 @@ class ChessBoardDetector:
 
     def debug_display_chess_console(self):
         """
-        用文字形式输出
+        Output in text form
         :return:
         """
         for y in range(6):
@@ -280,7 +280,7 @@ class ChessBoardDetector:
 
     def visu_chessboard(self, rect_bgr):
         """
-        修改rect_bgr,把文字打在上面显示
+        Modify rect_bgr, print the text on it for display
         :param rect_bgr:
         :return:
         """
@@ -336,7 +336,7 @@ class ChessBoardDetector:
 
     def get_grid_status(self):
         """
-        外部获取稳定网格的接口
+        External interface to get stable grid
         :return:
         """
         return self.stable_grid
@@ -344,7 +344,7 @@ class ChessBoardDetector:
     @classmethod
     def debug_grid_view(cls, bgr_data):
         """
-        网格视图，debug用途
+        Grid view, for debug purposes
         :param bgr_data:
         :return:
         """

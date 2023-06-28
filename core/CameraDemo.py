@@ -2,32 +2,32 @@ from ArmCamera import ArmCamera
 from Detection import ChessBoardDetector
 from mouse_callbacks import *
 
-# 创建相机对象
+# Create a camera object
 camera = ArmCamera(1)
-# 创建棋盘检测器对象
+# Create a chessboard detector object
 detector = ChessBoardDetector(camera.mtx, camera.dist)
 
-# 循环读取相机帧
+# Continuously read frames from the camera
 while True:
     camera.update()
     frame = camera.get_frame()
     if frame is None:
         continue
 
-    # 显示相机帧
+    # Display the camera frame
     cv2.imshow("Main", frame)
-    # 绑定鼠标事件
+    # Bind mouse events
     bind_mouse_event(frame, "Main", mouseHSV)
 
-    # 检测棋盘
+    # Detect the chessboard
     detector.detect(frame)
     if detector.is_grid_changed():
-        # 显示棋盘信息
+        # Display chessboard information
         detector.debug_display_chess_console()
 
-    # 按q键退出循环
+    # Exit the loop if 'q' key is pressed
     if cv2.waitKey(1) & 0xFF == ord("q"):
         break
 
-# 关闭所有窗口
+# Close all windows
 cv2.destroyAllWindows()

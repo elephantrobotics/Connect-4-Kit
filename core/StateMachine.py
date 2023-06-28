@@ -2,17 +2,22 @@
 # @time    : 2023-06-15 01-39-27
 # @function: State machine of the game
 # @version : 0.1.0
+
+# Importing necessary libraries and modules
 from __future__ import annotations
 from typing import *
 
+# Checking for type checking
 if TYPE_CHECKING:
     from layouts.app_page import AppSharedMem, Communicator
 
+# Importing necessary modules
 import time
 from abc import abstractmethod
 import cv2
 import logging
 
+# Importing necessary classes from different modules
 from core.Board import Board
 from core.ArmCamera import DummyCamera
 from core.ArmInterface import ArmInterface
@@ -21,14 +26,17 @@ from core.Detection import ChessBoardDetector
 from core.Agent import Agent
 from core.logger import get_logger
 
+# Defining constants
 DK_MOVING_CHESS_POS = "moving-chess-pos"
 DK_BOARD = "chess-grid"
 DK_ROBOT_PLAY_SIDE = "robot-side"
 
+# Setting up logger
 logger = get_logger(__name__, logging.DEBUG)
 
-
+# Defining the StateMachine class
 class StateMachine:
+    # Initializer method
     def __init__(
         self,
         arm: ArmInterface,
@@ -38,6 +46,7 @@ class StateMachine:
         context: AppSharedMem,
         communicator: Communicator,
     ):
+        # Initializing class variables
         self.current_state: Union[State, None] = None
         self.data = {
             DK_MOVING_CHESS_POS: None,
@@ -51,14 +60,16 @@ class StateMachine:
         self.context: AppSharedMem = context
         self.commu: Communicator = communicator
 
+    # Method to move to the next state
     def next_state(self):
         cmd = self.current_state.next_state_cmd
         self.current_state = self.current_state.link.get_end_state(cmd)
 
-
+# Defining the State class
 class State:
     DEFAULT_CMD = "State"
 
+    # Initializer method
     def __init__(self, state_cmd: str, state_machine: StateMachine):
         self.state_cmd = state_cmd
         self.TAG = self.__class__.__str__(self)
@@ -67,9 +78,11 @@ class State:
         self.state_machine = state_machine
         self.arm = self.state_machine.arm
 
+    # Method to add the next state
     def add_next_state(self, cmd: str, state):
         self.link.add_end_state(cmd, state)
 
+    # Abstract method for operation
     @abstractmethod
     def operation(self):
         """
@@ -78,22 +91,27 @@ class State:
         """
         pass
 
+    # Method to set the next state
     def set_next_state(self, state_cmd: str):
         self.next_state_cmd = state_cmd
 
+    # Method to set global data
     def set_global_data(self, key: str, val):
         self.state_machine.data[key] = val
 
+    # Method to display the next states
     def display_next_states(self):
         print(self.link)
 
+    # Method to convert the state to string
     def __str__(self):
         return self.state_cmd
 
-
+# Defining the StartingState class
 class StartingState(State):
     DEFAULT_CMD = "start"
 
+    # Initializer method
     def __init__(
         self,
         state_machine: StateMachine,
@@ -104,6 +122,7 @@ class StartingState(State):
         self.state_machine = state_machine
         self.starting = starting
 
+        # Setting up the initial state
         if self.starting:
             self.state_machine.data[DK_ROBOT_PLAY_SIDE] = Board.P_RED
             self.next_state_cmd = ObserveState.DEFAULT_CMD
@@ -113,19 +132,22 @@ class StartingState(State):
             self.next_state_cmd = WaitingPlayerState.DEFAULT_CMD
             logger.info("INFO: Player move first.")
 
+    # Operation method
     def operation(self):
         if DEBUG:
             logger.info(f"Entering state : {self.TAG}")
 
         self.arm.recovery()
 
-
+# Defining the ObserveState class
 class ObserveState(State):
     DEFAULT_CMD = "obs"
 
+    # Initializer method
     def __init__(self, state_machine: StateMachine, state_cmd: str = DEFAULT_CMD):
         super().__init__(state_cmd, state_machine)
 
+    # Operation method
     def operation(self):
         if DEBUG:
             logger.info(f"Entering state : {self.TAG}")
@@ -179,13 +201,15 @@ class ObserveState(State):
         self.set_global_data(DK_MOVING_CHESS_POS, n)
         self.next_state_cmd = MovingChessPieceState.DEFAULT_CMD
 
-
+# Defining the MovingChessPieceState class
 class MovingChessPieceState(State):
     DEFAULT_CMD = "moving"
 
+    # Initializer method
     def __init__(self, state_machine: StateMachine, state_cmd: str = DEFAULT_CMD):
         super().__init__(state_cmd, state_machine)
 
+    # Operation method
     def operation(self):
         if DEBUG:
             logger.info(f"Entering state : {self.TAG}")
@@ -212,13 +236,15 @@ class MovingChessPieceState(State):
         else:
             self.next_state_cmd = WaitingPlayerState.DEFAULT_CMD
 
-
+# Defining the WaitingPlayerState class
 class WaitingPlayerState(State):
     DEFAULT_CMD = "wait"
 
+    # Initializer method
     def __init__(self, state_machine: StateMachine, state_cmd: str = DEFAULT_CMD):
         super().__init__(state_cmd, state_machine)
 
+    # Operation method
     def operation(self):
         if DEBUG:
             logger.info(f"Entering state : {self.TAG}")
@@ -271,13 +297,15 @@ class WaitingPlayerState(State):
         self.set_global_data(DK_MOVING_CHESS_POS, n)
         self.next_state_cmd = MovingChessPieceState.DEFAULT_CMD
 
-
+# Defining the OverState class
 class OverState(State):
     DEFAULT_CMD = "over"
 
+    # Initializer method
     def __init__(self, state_machine: StateMachine, state_cmd: str = DEFAULT_CMD):
         super().__init__(state_cmd, state_machine)
 
+    # Operation method
     def operation(self):
         self.state_machine.arm.recovery()
         board = self.state_machine.detector.stable_board
@@ -287,8 +315,9 @@ class OverState(State):
             winner = "YELLOW"
         logger.info(f"Winner is {winner}")
 
-
+# Defining the Link class
 class Link:
+    # Initializer method
     def __init__(self, start_state: State = None, end_state: Dict[str, State] = None):
         self.start_state = start_state
 
@@ -297,11 +326,13 @@ class Link:
         else:
             self.end_state = end_state
 
+    # Method to get the end state
     def get_end_state(self, cmd: str):
         if cmd in self.end_state.keys():
             return self.end_state[cmd]
         else:
             return None
 
+    # Method to add the end state
     def add_end_state(self, command: str, state: State):
         self.end_state[command] = state

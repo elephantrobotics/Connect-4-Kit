@@ -2,41 +2,47 @@ import numpy as np
 
 
 class Board:
-    # 用于在终端中显示的符号
+    
+    # Constants for display
     DISPLAY_EMPTY = "O"
     DISPLAY_R = "R"
     DISPLAY_Y = "Y"
 
-    # 用于在grid内表示的符号
+    # Constants for grid representation
     P_EMPTY = 0
     P_RED = 1
     P_YELLOW = 2
 
     def __init__(self):
+        # Initialize board dimensions
         self.width = 7
         self.height = 6
+        # Initialize empty grid
         self.grid = [[Board.P_EMPTY for j in range(self.height)] for i in range(self.width)]
+        # Initialize grids for red and yellow players
         self.grid_red = np.array(
             [[Board.P_EMPTY for j in range(self.height)] for i in range(self.width)], dtype=np.int8)
         self.grid_yellow = np.array(
             [[Board.P_EMPTY for j in range(self.height)] for i in range(self.width)], dtype=np.int8)
+        # Initialize game status
         self.done = False
         self.winner = None
 
     @classmethod
     def opponent(cls, player):
+        # Return the opponent of the current player
         if player == Board.P_RED:
             return Board.P_YELLOW
         elif player == Board.P_YELLOW:
             return Board.P_RED
 
     def reset(self):
+        # Reset the board to its initial state
         self.__init__()
 
     def display(self):
         """
-        用文字形式输出
-        :return:
+        Display the board in text format
         """
         for y in range(6):
             for x in range(7):
@@ -52,10 +58,9 @@ class Board:
 
     def propagate_relative_grid(self):
         """
-        通过主grid，更新相对红方和黄方的grid
-        相对grid是指，看自己都是player1，看别人都是player2
-        因为神经网络只知道自己是p1
-        :return:
+        Update the relative grids for red and yellow players based on the main grid
+        The relative grid is defined such that the current player is always player 1 and the opponent is always player 2
+        This is because the neural network only recognizes the current player as player 1
         """
         self.grid_red = np.array(self.grid)
         self.grid_yellow = np.array(self.grid)
@@ -67,6 +72,9 @@ class Board:
                     self.grid_yellow[x][y] = Board.P_RED
 
     def update_win_status(self):
+        """
+        Check if either player has won and update the game status accordingly
+        """
         if self.check_player_x_win(self.P_RED):
             self.done = True
             self.winner = self.P_RED
@@ -75,10 +83,16 @@ class Board:
             self.winner = self.P_YELLOW
 
     def update(self):
+        """
+        Update the relative grids and the game status
+        """
         self.propagate_relative_grid()
         self.update_win_status()
 
     def _check_symbol(self, player):
+        """
+        Return the symbol to check for a win condition based on the player
+        """
         if player == self.P_RED:
             check = '1 1 1 1'
         else:
@@ -86,14 +100,19 @@ class Board:
         return check
 
     def _check_vertical_win(self, board_state, player):
+        """
+        Check for a vertical win condition
+        """
         check = self._check_symbol(player)
-        # check vertically then horizontally
         for j in range(self.height):
             if check in np.array_str(board_state[:, j]):
                 return True
         return False
 
     def _check_horizontal_win(self, board_state, player):
+        """
+        Check for a horizontal win condition
+        """
         check = self._check_symbol(player)
         for i in range(self.width):
             if check in np.array_str(board_state[i, :]):
@@ -101,8 +120,10 @@ class Board:
         return False
 
     def _check_leading_diag(self, board_state, player):
+        """
+        Check for a win condition in the leading diagonals
+        """
         check = self._check_symbol(player)
-        # check left diagonal and right diagonal
         for k in range(0, self.width - 4 + 1):
             left_diagonal = np.array([board_state[k + d, d] for d in \
                                       range(min(self.width - k,
@@ -111,11 +132,13 @@ class Board:
                                        range(min(self.width - k,
                                                  min(self.width, self.height)))])
             if check in np.array_str(left_diagonal) or check in np.array_str(right_diagonal):
-                print("counter diag")
                 return True
         return False
 
     def _check_counter_diag(self, board_state, player):
+        """
+        Check for a win condition in the counter diagonals
+        """
         check = self._check_symbol(player)
         for k in range(1, self.height - 4 + 1):
             left_diagonal = np.array([board_state[d, d + k] for d in \
@@ -125,11 +148,13 @@ class Board:
                                        range(min(self.height - k,
                                                  min(self.width, self.height)))])
             if check in np.array_str(left_diagonal) or check in np.array_str(right_diagonal):
-                print("leading diag")
                 return True
         return False
 
     def check_player_x_win(self, player):
+        """
+        Check if the given player has won
+        """
         board_state = np.array(self.grid)
         if self._check_vertical_win(board_state, player):
             return True
@@ -142,6 +167,9 @@ class Board:
         return False
 
     def available_actions(self):
+        """
+        Return a list of available actions (columns where a piece can be dropped)
+        """
         actions = []
         for x in range(self.width):
             if self.grid[x][0] == Board.P_EMPTY:
@@ -149,6 +177,9 @@ class Board:
         return actions
 
     def is_n_valid(self, x: int):
+        """
+        Check if a piece can be dropped in the given column
+        """
         if self.grid[x][0] == Board.P_EMPTY:
             return True
         else:
@@ -156,9 +187,7 @@ class Board:
 
     def available_cell_y(self, n: int) -> int:
         """
-        返回第n列的可用单元的y轴坐标
-        :param n:
-        :return:
+        Return the y-coordinate of the available cell in the given column
         """
         for y in range(self.height):
             if self.grid[n][y] != Board.P_EMPTY:
@@ -166,6 +195,9 @@ class Board:
         return self.height - 1
 
     def drop_piece(self, x, player):
+        """
+        Drop a piece of the given player in the given column
+        """
         if self.is_n_valid(x):
             y = self.available_cell_y(x)
             self.grid[x][y] = player
