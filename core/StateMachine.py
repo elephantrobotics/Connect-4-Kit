@@ -32,7 +32,8 @@ DK_BOARD = "chess-grid"
 DK_ROBOT_PLAY_SIDE = "robot-side"
 
 # Setting up logger
-logger = get_logger(__name__, logging.DEBUG)
+logger = get_logger(__name__)
+
 
 # Defining the StateMachine class
 class StateMachine:
@@ -64,6 +65,7 @@ class StateMachine:
     def next_state(self):
         cmd = self.current_state.next_state_cmd
         self.current_state = self.current_state.link.get_end_state(cmd)
+
 
 # Defining the State class
 class State:
@@ -107,6 +109,7 @@ class State:
     def __str__(self):
         return self.state_cmd
 
+
 # Defining the StartingState class
 class StartingState(State):
     DEFAULT_CMD = "start"
@@ -138,6 +141,7 @@ class StartingState(State):
             logger.info(f"Entering state : {self.TAG}")
 
         self.arm.recovery()
+
 
 # Defining the ObserveState class
 class ObserveState(State):
@@ -201,6 +205,7 @@ class ObserveState(State):
         self.set_global_data(DK_MOVING_CHESS_POS, n)
         self.next_state_cmd = MovingChessPieceState.DEFAULT_CMD
 
+
 # Defining the MovingChessPieceState class
 class MovingChessPieceState(State):
     DEFAULT_CMD = "moving"
@@ -235,6 +240,7 @@ class MovingChessPieceState(State):
             self.next_state_cmd = OverState.DEFAULT_CMD
         else:
             self.next_state_cmd = WaitingPlayerState.DEFAULT_CMD
+
 
 # Defining the WaitingPlayerState class
 class WaitingPlayerState(State):
@@ -297,6 +303,7 @@ class WaitingPlayerState(State):
         self.set_global_data(DK_MOVING_CHESS_POS, n)
         self.next_state_cmd = MovingChessPieceState.DEFAULT_CMD
 
+
 # Defining the OverState class
 class OverState(State):
     DEFAULT_CMD = "over"
@@ -314,6 +321,7 @@ class OverState(State):
         else:
             winner = "YELLOW"
         logger.info(f"Winner is {winner}")
+
 
 # Defining the Link class
 class Link:

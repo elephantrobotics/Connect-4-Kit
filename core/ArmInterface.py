@@ -8,7 +8,7 @@ class ArmInterface:
         # Define arm speeds
         self.ARM_SPEED = 60
         self.ARM_SPEED_PRECISE = 10
-
+        self.port = port
         # Define angle tables for different positions
         self.angle_table = {
             "recovery": [0, 0, 0, 0, 0, 45],
@@ -99,7 +99,9 @@ class ArmInterface:
             time.sleep(2)
         else:
             self.pump_off()
-            raise Exception(f"Input error, expected chessboard input point must be between 0 and 6, got {n}")
+            raise Exception(
+                f"Input error, expected chessboard input point must be between 0 and 6, got {n}"
+            )
 
     # Method to move to the observation posture
     def observe_posture(self):

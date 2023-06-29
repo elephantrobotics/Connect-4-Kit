@@ -5,21 +5,31 @@
 
 import logging
 import sys
+from pathlib import Path
+
+log_path = Path("./logs/debug.log")
+formatter = logging.Formatter("%(levelname)s - %(asctime)s - %(name)s - %(message)s")
 
 
-def get_logger(name, level):
-"""     This function is used to get a logger with a specific name and level
+def get_logger(name, level=logging.DEBUG):
+    """This function is used to get a logger with a specific name and level
     The logger will output to the standard output (console)
     The output format of the logger is: level - time - name - message
     name: the name of the logger
     level: the level of the logger
     return: a logger with the specified name and level"""
-    logger = logging.getLogger(name)
-    handler = logging.StreamHandler(sys.stdout)
-    handler.setLevel(level)
-    formatter = logging.Formatter(
-        "%(levelname)s - %(asctime)s - %(name)s - %(message)s"
-    )
-    handler.setFormatter(formatter)
-    logger.addHandler(handler)
+
+    logger: logging.Logger = logging.getLogger(name)
+    logger.level = level
+
+    # add std handler
+    std_hdlr = logging.StreamHandler(sys.stdout)
+    std_hdlr.setLevel(level)
+    std_hdlr.setFormatter(formatter)
+    logger.addHandler(std_hdlr)
+
+    # add file handler
+    file_hdlr = logging.FileHandler(log_path)
+    file_hdlr.setFormatter(formatter)
+    logger.addHandler(file_hdlr)
     return logger

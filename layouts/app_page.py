@@ -13,11 +13,12 @@ import cv2
 import numpy as np
 import threading
 from typing import *
+import serial
 
 from PySide6 import QtCore
 from PySide6.QtCore import Signal, QObject, Slot, Qt
 from PySide6.QtGui import QPixmap, QImage
-from PySide6.QtWidgets import QWidget, QLabel
+from PySide6.QtWidgets import QWidget, QLabel, QComboBox
 from layouts.app_page_ui import Ui_AppPage
 
 from libs.NormalCamera import NormalCamera
@@ -33,7 +34,8 @@ from core.StateMachine import *
 from core.logger import get_logger
 
 # Setting up logger
-logger = get_logger(__name__, logging.DEBUG)
+logger = get_logger(__name__)
+
 
 # Class for handling communication between different parts of the application
 class Communicator(QObject):
@@ -44,6 +46,7 @@ class Communicator(QObject):
 
     def __init__(self, parent=None):
         super().__init__(parent)
+
 
 # Class for shared memory across the application
 class AppSharedMem:
@@ -69,6 +72,7 @@ class AppSharedMem:
         # arm
         self.arm: ArmInterface | None = None
 
+
 # Class for handling camera operations in a separate thread
 class CameraThread(threading.Thread):
     def __init__(self, cam_index: int, shared_memory: AppSharedMem, cam_signal: Signal):
@@ -93,6 +97,7 @@ class CameraThread(threading.Thread):
                 time.sleep(self.tick)
         except Exception as e:
             print(e)
+
 
 # Class for handling game operations in a separate thread
 class GameThread(threading.Thread):
@@ -151,6 +156,22 @@ class GameThread(threading.Thread):
         except Exception as e:
             print(sys.exc_info())
 
+
+class SerialComboBox(QComboBox):
+    # _res = Signal(dict)
+
+    def __init__(self, parent):
+        super(SerialComboBox, self).__init__(parent)
+
+    def mousePressEvent(self, QMouseEvent):
+        self.clear()
+        serial_ports = serial.tools.list_ports.comports()
+        for port in serial_ports:
+            self.addItem(port.device)
+        QComboBox.mousePressEvent(self, QMouseEvent)
+        logger.debug("Serial port updated.")
+
+
 # Main class for the application
 class AppPage:
     def __init__(self):
@@ -163,11 +184,7 @@ class AppPage:
         self.cam_thread: Union[CameraThread, None] = None
         self.game_thread: Union[GameThread, None] = None
 
-        self.init_shared_mem()
-
-    # Initialize shared memory
-    def init_shared_mem(self):
-        self.shared_memory.arm = ArmInterface("COM5", 115200)
+        logger.debug("App Page")
 
     # Initialize Aruco detector
     def init_aruco_detector(self):
@@ -270,6 +287,39 @@ class AppPage:
             self.game_thread = None
 
         self.ui.btn_stop_game.clicked.connect(stop_game)
+
+        # update com port lists
+        @Slot()
+        def update_com():
+            serial_ports = serial.tools.list_ports.comports()
+            self.ui.combo_com_selection.clear()
+            for port in serial_ports:
+                self.ui.combo_com_selection.addItem(port.device)
+            logger.debug("Serial ports updated.")
+
+        self.ui.combo_com_selection.deleteLater()
+        self.ui.combo_com_selection = SerialComboBox(self.ui.frame_interact_panel)
+        self.ui.horizontalLayout_18.addWidget(self.ui.combo_com_selection)
+
+        @Slot()
+        def connect_arm():
+            com_port = self.ui.combo_com_selection.currentText()
+            if com_port is None:
+                return
+            if com_port.startswith("COM"):
+                self.shared_memory.arm = ArmInterface(com_port, 115200)
+                logger.debug("Serial port connected.")
+            # TODO : add linux com port
+
+        self.ui.btn_connect_com.clicked.connect(connect_arm)
+
+        @Slot()
+        def release_arm():
+            del self.shared_memory.arm
+            self.shared_memory.arm = None
+            logger.debug("Serial port released. ")
+
+        self.ui.btn_stop_com.clicked.connect(release_arm)
 
     # Function to setup UI
     def setup_ui(self) -> QWidget:

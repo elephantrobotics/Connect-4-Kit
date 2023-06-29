@@ -57,8 +57,6 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-# import assets_rc
-
 
 class Ui_AppPage(object):
     def setupUi(self, AppPage):
@@ -73,7 +71,6 @@ class Ui_AppPage(object):
         self.frame_interact_panel.setObjectName("frame_interact_panel")
         self.frame_interact_panel.setStyleSheet("background : rgb(255, 255, 255)")
         self.verticalLayout_12 = QVBoxLayout(self.frame_interact_panel)
-        self.verticalLayout_12.setSpacing(25)
         self.verticalLayout_12.setObjectName("verticalLayout_12")
         self.layout_title = QHBoxLayout()
         self.layout_title.setObjectName("layout_title")
@@ -109,6 +106,94 @@ class Ui_AppPage(object):
 
         self.verticalLayout_12.addLayout(self.layout_title)
 
+        self.horizontalLayout_20 = QHBoxLayout()
+        self.horizontalLayout_20.setObjectName("horizontalLayout_20")
+        self.label_camera_selection_2 = QLabel(self.frame_interact_panel)
+        self.label_camera_selection_2.setObjectName("label_camera_selection_2")
+        self.label_camera_selection_2.setStyleSheet(
+            'font: 700 10pt "Microsoft YaHei UI";'
+        )
+        self.label_camera_selection_2.setScaledContents(False)
+        self.label_camera_selection_2.setWordWrap(False)
+
+        self.horizontalLayout_20.addWidget(self.label_camera_selection_2)
+
+        self.label_5 = QLabel(self.frame_interact_panel)
+        self.label_5.setObjectName("label_5")
+        sizePolicy.setHeightForWidth(self.label_5.sizePolicy().hasHeightForWidth())
+        self.label_5.setSizePolicy(sizePolicy)
+
+        self.horizontalLayout_20.addWidget(self.label_5)
+
+        self.horizontalLayout_20.setStretch(0, 9)
+        self.horizontalLayout_20.setStretch(1, 1)
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_20)
+
+        self.horizontalLayout_18 = QHBoxLayout()
+        self.horizontalLayout_18.setObjectName("horizontalLayout_18")
+        self.combo_com_selection = QComboBox(self.frame_interact_panel)
+        self.combo_com_selection.addItem("")
+        self.combo_com_selection.addItem("")
+        self.combo_com_selection.addItem("")
+        self.combo_com_selection.addItem("")
+        self.combo_com_selection.addItem("")
+        self.combo_com_selection.addItem("")
+        self.combo_com_selection.addItem("")
+        self.combo_com_selection.setObjectName("combo_com_selection")
+        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
+        sizePolicy2.setHorizontalStretch(0)
+        sizePolicy2.setVerticalStretch(0)
+        sizePolicy2.setHeightForWidth(
+            self.combo_com_selection.sizePolicy().hasHeightForWidth()
+        )
+        self.combo_com_selection.setSizePolicy(sizePolicy2)
+        self.combo_com_selection.setStyleSheet(
+            "border-radius:5px;\n" "border:1px solid black;\n" "border-style:outset;"
+        )
+
+        self.horizontalLayout_18.addWidget(self.combo_com_selection)
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_18)
+
+        self.horizontalLayout_21 = QHBoxLayout()
+        self.horizontalLayout_21.setSpacing(1)
+        self.horizontalLayout_21.setObjectName("horizontalLayout_21")
+        self.btn_connect_com = QPushButton(self.frame_interact_panel)
+        self.btn_connect_com.setObjectName("btn_connect_com")
+        sizePolicy2.setHeightForWidth(
+            self.btn_connect_com.sizePolicy().hasHeightForWidth()
+        )
+        self.btn_connect_com.setSizePolicy(sizePolicy2)
+        self.btn_connect_com.setStyleSheet(
+            "border-radius:5px;\n"
+            "border:1px solid black;\n"
+            "border-style:outset;\n"
+            "background: rgb(213, 213, 213);"
+        )
+
+        self.horizontalLayout_21.addWidget(self.btn_connect_com)
+
+        self.btn_stop_com = QPushButton(self.frame_interact_panel)
+        self.btn_stop_com.setObjectName("btn_stop_com")
+        sizePolicy2.setHeightForWidth(
+            self.btn_stop_com.sizePolicy().hasHeightForWidth()
+        )
+        self.btn_stop_com.setSizePolicy(sizePolicy2)
+        self.btn_stop_com.setStyleSheet(
+            "border-radius:5px;\n"
+            "border:1px solid black;\n"
+            "border-style:outset;\n"
+            "background: rgb(213, 213, 213);"
+        )
+
+        self.horizontalLayout_21.addWidget(self.btn_stop_com)
+
+        self.horizontalLayout_21.setStretch(0, 1)
+        self.horizontalLayout_21.setStretch(1, 1)
+
+        self.verticalLayout_12.addLayout(self.horizontalLayout_21)
+
         self.verticalLayout_4 = QVBoxLayout()
         self.verticalLayout_4.setSpacing(5)
         self.verticalLayout_4.setObjectName("verticalLayout_4")
@@ -143,9 +228,6 @@ class Ui_AppPage(object):
         self.combo_camera_selection.addItem("")
         self.combo_camera_selection.addItem("")
         self.combo_camera_selection.setObjectName("combo_camera_selection")
-        sizePolicy2 = QSizePolicy(QSizePolicy.Preferred, QSizePolicy.Preferred)
-        sizePolicy2.setHorizontalStretch(0)
-        sizePolicy2.setVerticalStretch(0)
         sizePolicy2.setHeightForWidth(
             self.combo_camera_selection.sizePolicy().hasHeightForWidth()
         )
@@ -509,13 +591,6 @@ class Ui_AppPage(object):
 
         self.verticalLayout_12.addItem(self.verticalSpacer_2)
 
-        self.verticalLayout_12.setStretch(0, 1)
-        self.verticalLayout_12.setStretch(1, 5)
-        self.verticalLayout_12.setStretch(2, 3)
-        self.verticalLayout_12.setStretch(3, 4)
-        self.verticalLayout_12.setStretch(4, 2)
-        self.verticalLayout_12.setStretch(5, 4)
-
         self.horizontalLayout_13.addWidget(self.frame_interact_panel)
 
         self.frame_video = QFrame(AppPage)
@@ -652,27 +727,6 @@ class Ui_AppPage(object):
         self.verticalLayout.setSpacing(0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.verticalLayout.setContentsMargins(10, 0, 9, 10)
-        self.horizontalLayout_18 = QHBoxLayout()
-        self.horizontalLayout_18.setObjectName("horizontalLayout_18")
-        self.horizontalSpacer = QSpacerItem(
-            40, 20, QSizePolicy.Expanding, QSizePolicy.Minimum
-        )
-
-        self.horizontalLayout_18.addItem(self.horizontalSpacer)
-
-        self.btn_back = QPushButton(self.frame_arm_control)
-        self.btn_back.setObjectName("btn_back")
-        sizePolicy7 = QSizePolicy(QSizePolicy.Fixed, QSizePolicy.Fixed)
-        sizePolicy7.setHorizontalStretch(0)
-        sizePolicy7.setVerticalStretch(0)
-        sizePolicy7.setHeightForWidth(self.btn_back.sizePolicy().hasHeightForWidth())
-        self.btn_back.setSizePolicy(sizePolicy7)
-        self.btn_back.setMinimumSize(QSize(32, 32))
-
-        self.horizontalLayout_18.addWidget(self.btn_back)
-
-        self.verticalLayout.addLayout(self.horizontalLayout_18)
-
         self.frame_10 = QFrame(self.frame_arm_control)
         self.frame_10.setObjectName("frame_10")
         self.frame_10.setStyleSheet("")
@@ -953,8 +1007,7 @@ class Ui_AppPage(object):
 
         self.verticalLayout.addWidget(self.frame_10)
 
-        self.verticalLayout.setStretch(0, 1)
-        self.verticalLayout.setStretch(1, 7)
+        self.verticalLayout.setStretch(0, 7)
 
         self.horizontalLayout_13.addWidget(self.frame_arm_control)
 
@@ -964,6 +1017,7 @@ class Ui_AppPage(object):
 
         self.retranslateUi(AppPage)
 
+        self.combo_com_selection.setCurrentIndex(-1)
         self.combo_camera_selection.setCurrentIndex(-1)
 
         QMetaObject.connectSlotsByName(AppPage)
@@ -977,6 +1031,38 @@ class Ui_AppPage(object):
             QCoreApplication.translate(
                 "AppPage", "\u56db\u5b50\u68cb\u5957\u88c5", None
             )
+        )
+        self.label_camera_selection_2.setText(
+            QCoreApplication.translate("AppPage", "\u4e32\u53e3\u9009\u62e9", None)
+        )
+        self.label_5.setText("")
+        self.combo_com_selection.setItemText(
+            0, QCoreApplication.translate("AppPage", "0", None)
+        )
+        self.combo_com_selection.setItemText(
+            1, QCoreApplication.translate("AppPage", "1", None)
+        )
+        self.combo_com_selection.setItemText(
+            2, QCoreApplication.translate("AppPage", "2", None)
+        )
+        self.combo_com_selection.setItemText(
+            3, QCoreApplication.translate("AppPage", "3", None)
+        )
+        self.combo_com_selection.setItemText(
+            4, QCoreApplication.translate("AppPage", "4", None)
+        )
+        self.combo_com_selection.setItemText(
+            5, QCoreApplication.translate("AppPage", "5", None)
+        )
+        self.combo_com_selection.setItemText(
+            6, QCoreApplication.translate("AppPage", "6", None)
+        )
+
+        self.btn_connect_com.setText(
+            QCoreApplication.translate("AppPage", "\u542f\u52a8", None)
+        )
+        self.btn_stop_com.setText(
+            QCoreApplication.translate("AppPage", "\u505c\u6b62", None)
         )
         self.label_camera_selection.setText(
             QCoreApplication.translate("AppPage", "\u76f8\u673a\u9009\u62e9", None)
@@ -1102,9 +1188,6 @@ class Ui_AppPage(object):
         )
         self.label_video_feed3.setText(
             QCoreApplication.translate("AppPage", "Video3", None)
-        )
-        self.btn_back.setText(
-            QCoreApplication.translate("AppPage", "\u8fd4\u56de", None)
         )
         self.label_9.setText(
             QCoreApplication.translate(

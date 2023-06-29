@@ -6,17 +6,26 @@
 # Importing necessary libraries and modules
 from typing import *
 import sys
+from core.logger import get_logger
 
-from PySide6.QtCore import Qt, QEvent, QObject, Signal, Slot
-from PySide6.QtWidgets import (
-    QApplication,
-    QMainWindow,
-    QWidget,
+from PySide6.QtCore import (
+    Qt,
+    QEvent,
+    QObject,
+    Signal,
+    Slot,
+    QTranslator,
+    QLibraryInfo,
+    QLocale,
 )
+from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
+
 # Importing the layout of the application
 from layouts.app_page import AppPage
+
 # Importing the assets for the application
 import assets.assets_rc
+
 
 # Defining the main window class for the application
 class MainWindow(QMainWindow):
@@ -39,10 +48,25 @@ class MainWindow(QMainWindow):
         # Adjusting the size of the central widget
         self.centralWidget().adjustSize()
 
+
 # Checking if the script is being run directly
 if __name__ == "__main__":
+    logger = get_logger(__name__)
+    logger.debug("Program Start.")
+
+    trans = QTranslator()
+    trans.load("./assets/locales/zh-CN.qm")
+
     # Creating an instance of QApplication
     app = QApplication(sys.argv)
+
+    path = "./assets/locales/"
+    translator = QTranslator(app)
+
+    if translator.load(path + QLocale.system().name()):
+        logger.debug(QLocale.system().name() + " translation loaded.")
+        app.installTranslator(translator)
+
     # Creating an instance of MainWindow
     main_window = MainWindow()
     # Displaying the main window
