@@ -55,18 +55,19 @@ if __name__ == "__main__":
     logger.debug("Program Start.")
 
     trans = QTranslator()
-    trans.load("./assets/locales/en.qm")
 
     # Creating an instance of QApplication
     app = QApplication(sys.argv)
-    app.installTranslator(trans)
 
     path = "./assets/locales/"
     translator = QTranslator(app)
 
-    # if translator.load(path + QLocale.system().name()):
-    #     logger.debug(QLocale.system().name() + " translation loaded.")
-    #     app.installTranslator(translator)
+    if translator.load(path + QLocale.system().name()):
+        logger.debug(QLocale.system().name() + " translation loaded.")
+
+        # debug use
+        # translator.load(path + "en")
+        app.installTranslator(translator)
 
     # Creating an instance of MainWindow
     main_window = MainWindow()

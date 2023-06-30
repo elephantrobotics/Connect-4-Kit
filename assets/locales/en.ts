@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE TS>
-<TS version="2.1" language="en" sourcelanguage="zh_CN">
+<TS version="2.1" language="en_US" sourcelanguage="zh_CN">
 <context>
     <name>AppPage</name>
     <message>
@@ -11,17 +11,17 @@
     <message>
         <location filename="../../layouts/app_page.ui" line="83"/>
         <source>四子棋套装</source>
-        <translation type="unfinished">Connect 4 Suit</translation>
+        <translation type="unfinished">Connect-4 Kit</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="97"/>
         <source>串口选择</source>
-        <translation type="unfinished">Select Serial port</translation>
+        <translation type="unfinished">Serial port selection</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="240"/>
         <source>相机选择</source>
-        <translation type="unfinished">Select Camera</translation>
+        <translation type="unfinished">Camera selection</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="142"/>
@@ -69,12 +69,12 @@
         <location filename="../../layouts/app_page.ui" line="332"/>
         <location filename="../../layouts/app_page.ui" line="823"/>
         <source>默认视频流</source>
-        <translation type="unfinished">Default video feed</translation>
+        <translation type="unfinished">Default Video</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="365"/>
         <source>灰度流</source>
-        <translation type="unfinished">Gray video feed</translation>
+        <translation type="unfinished">Gray Video</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="199"/>
@@ -91,54 +91,54 @@
     <message>
         <location filename="../../layouts/app_page.ui" line="447"/>
         <source>对弈模型选择</source>
-        <translation type="unfinished">Select Agent</translation>
+        <translation type="unfinished">Agent Select</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="486"/>
         <source>官方模型</source>
-        <translation type="unfinished">Official Agent</translation>
+        <translation type="unfinished">Default</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="505"/>
         <source>自定义模型</source>
-        <translation type="unfinished">Custom Agent</translation>
+        <translation type="unfinished">DIY</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="522"/>
         <source>模型</source>
-        <translation type="unfinished">Agent</translation>
+        <translation type="unfinished">Model</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="561"/>
         <source>设定对弈规则</source>
-        <translation type="unfinished">Rules</translation>
+        <translation type="unfinished">Game Rules</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="594"/>
         <source>机器人先手</source>
-        <translation type="unfinished">Robot play first</translation>
+        <translation type="unfinished">Robot first</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="627"/>
         <source>对弈等待(秒)</source>
-        <translation type="unfinished">Robot waiting</translation>
+        <translation type="unfinished">Waiting Time(s)</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="657"/>
         <source>等待次数限制</source>
-        <translation type="unfinished">Wait times</translation>
+        <translation type="unfinished">Max Wait Times</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="694"/>
         <location filename="../../layouts/app_page.ui" line="904"/>
         <source>识别标注视频流</source>
-        <translation type="unfinished">Recognize video feed</translation>
+        <translation type="unfinished">Recognize Video</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="727"/>
         <location filename="../../layouts/app_page.ui" line="940"/>
         <source>算法结果展示</source>
-        <translation type="unfinished">Algorithm video feed</translation>
+        <translation type="unfinished">Algorithm Video</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="845"/>
@@ -148,7 +148,7 @@
     <message>
         <location filename="../../layouts/app_page.ui" line="868"/>
         <source>灰度视频流</source>
-        <translation type="unfinished">Gray video feed</translation>
+        <translation type="unfinished">Gray Video</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="884"/>
@@ -172,29 +172,29 @@
     <message>
         <location filename="../../layouts/app_page.ui" line="1042"/>
         <source>机器人调试开关</source>
-        <translation type="unfinished">Robot debug</translation>
+        <translation type="unfinished">Robot Test</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="1081"/>
         <location filename="../../layouts/app_page.ui" line="1299"/>
         <source>打开</source>
-        <translation type="unfinished">Open</translation>
+        <translation type="unfinished">Turn On</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="1100"/>
         <location filename="../../layouts/app_page.ui" line="1318"/>
         <source>关闭</source>
-        <translation type="unfinished">Close</translation>
+        <translation type="unfinished">Turn Off</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="1121"/>
         <source>移动路径点位调试</source>
-        <translation type="unfinished">Move point</translation>
+        <translation type="unfinished">Moving Path</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="1175"/>
         <source>移动至该点</source>
-        <translation type="unfinished">Move</translation>
+        <translation type="unfinished">Move To</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="1194"/>
@@ -209,12 +209,12 @@
     <message>
         <location filename="../../layouts/app_page.ui" line="1239"/>
         <source>恢复默认</source>
-        <translation type="unfinished">Default</translation>
+        <translation type="unfinished">Reset</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="1260"/>
         <source>吸泵调试</source>
-        <translation type="unfinished">Pump</translation>
+        <translation type="unfinished">Pump Test</translation>
     </message>
     <message>
         <location filename="../../layouts/app_page.ui" line="1360"/>
