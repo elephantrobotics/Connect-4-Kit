@@ -8,9 +8,10 @@
             "name": "Python: 当前文件",
             "type": "python",
             "request": "launch",
+            "cwd": "${workspaceFolder}",
             "program": "${file}",
             "console": "integratedTerminal",
-            "justMyCode": true
+            "justMyCode": false
         },
         {
             "name": "Python: Project",

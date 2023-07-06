@@ -1,15 +1,21 @@
 import sys
-
 sys.path.append("..")
-print(sys.path)
-
 
 from core.ArmCamera import ArmCamera
 from core.Detection import ChessBoardDetector
 from core.mouse_callbacks import *
+from core.ArmInterface import ArmInterface
+from tests.interaction import select_com
+
+com_port = select_com()
+arm = ArmInterface(com_port, 115200)
+arm.mc.send_angles(arm.angle_table["observe"], arm.ARM_SPEED)
+
+# change it in according to your case
+cam_index = 1
 
 # Create a camera object
-camera = ArmCamera(1)
+camera = ArmCamera(cam_index)
 # Create a chessboard detector object
 detector = ChessBoardDetector(camera.mtx, camera.dist)
 

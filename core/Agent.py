@@ -17,6 +17,7 @@ EPS_START = 0.9
 EPS_END = 0.05
 EPS_DECAY = 2000
 
+
 # Define the Agent class
 class Agent:
     # Initialize the agent with a player side and a policy network
@@ -93,6 +94,7 @@ class Agent:
         # If no winning or blocking move is found, use the model to predict the next move
         return self.model_predict(state, available_actions)
 
+
 # Define the demo function
 def demo0(board: Board, agent1: Agent, agent2: Agent):
     # Reset and display the board
@@ -125,6 +127,7 @@ def demo0(board: Board, agent1: Agent, agent2: Agent):
         board.update()
         if board.done:
             break
+
 
 # Define the main function
 if __name__ == "__main__":

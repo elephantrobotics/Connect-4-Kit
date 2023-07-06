@@ -6,7 +6,6 @@
 import sys
 
 sys.path.append("..")
-print(sys.path)
 
 import time
 from core.ArmInterface import ArmInterface

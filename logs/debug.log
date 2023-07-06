@@ -1,23 +1,15 @@
-DEBUG - 2023-06-29 15:16:52,334 - __main__ - Program Start.
-DEBUG - 2023-06-29 15:16:52,349 - __main__ - zh_CN translation loaded.
-DEBUG - 2023-06-29 15:16:52,355 - layouts.app_page - App Page
-DEBUG - 2023-06-29 16:51:14,405 - __main__ - Program Start.
-DEBUG - 2023-06-29 16:51:14,448 - __main__ - zh_CN translation loaded.
-DEBUG - 2023-06-29 16:51:14,487 - layouts.app_page - App Page
-DEBUG - 2023-06-29 16:52:02,626 - __main__ - Program Start.
-DEBUG - 2023-06-29 16:52:02,652 - layouts.app_page - App Page
-DEBUG - 2023-06-29 16:59:58,506 - __main__ - Program Start.
-DEBUG - 2023-06-29 16:59:58,528 - layouts.app_page - App Page
-DEBUG - 2023-06-29 17:00:30,864 - __main__ - Program Start.
-DEBUG - 2023-06-29 17:00:30,891 - layouts.app_page - App Page
-DEBUG - 2023-06-29 17:13:53,949 - __main__ - Program Start.
-DEBUG - 2023-06-29 17:13:53,976 - layouts.app_page - App Page
-DEBUG - 2023-06-30 14:00:32,809 - __main__ - Program Start.
-DEBUG - 2023-06-30 14:00:32,836 - __main__ - zh_CN translation loaded.
-DEBUG - 2023-06-30 14:00:32,885 - layouts.app_page - App Page
-DEBUG - 2023-06-30 14:01:44,290 - __main__ - Program Start.
-DEBUG - 2023-06-30 14:01:44,309 - __main__ - zh_CN translation loaded.
-DEBUG - 2023-06-30 14:01:44,314 - layouts.app_page - App Page
-DEBUG - 2023-06-30 14:01:52,796 - __main__ - Program Start.
-DEBUG - 2023-06-30 14:01:52,816 - __main__ - zh_CN translation loaded.
-DEBUG - 2023-06-30 14:01:52,821 - layouts.app_page - App Page
+/*
+ * Filename: d:\Work\connect4-app\logs\debug.log
+ * Path: d:\Work\connect4-app\logs
+ * Created Date: Thursday, July 6th 2023, 11:00:09 am
+ * Author: Zhu ZhenDong
+ * 
+ * Copyright (c) 2023 Elephant Robotics
+ */
+
+DEBUG - 2023-07-06 11:00:18,886 - __main__ - Program Start.
+DEBUG - 2023-07-06 11:00:19,053 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-06 11:00:19,091 - layouts.app_page - App Page
+DEBUG - 2023-07-06 11:00:20,916 - layouts.app_page - Serial port updated.
+DEBUG - 2023-07-06 11:00:22,529 - layouts.app_page - Serial port connected.
+INFO - 2023-07-06 11:00:45,520 - layouts.app_page - stop game
