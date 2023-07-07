@@ -9,16 +9,11 @@ import sys
 from core.logger import get_logger
 
 from PySide6.QtCore import (
-    Qt,
-    QEvent,
-    QObject,
-    Signal,
-    Slot,
     QTranslator,
-    QLibraryInfo,
     QLocale,
 )
 from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
+from PySide6.QtGui import QIcon
 
 # Importing the layout of the application
 from layouts.app_page import AppPage
@@ -72,6 +67,9 @@ if __name__ == "__main__":
     # Creating an instance of MainWindow
     main_window = MainWindow()
     # Displaying the main window
+    main_window.setWindowTitle("Connect-4-Kit")
+    main_window.setWindowIcon(QIcon("assets\icons\connect4-icon.png"))
     main_window.show()
+
     # Executing the application
     app.exec()

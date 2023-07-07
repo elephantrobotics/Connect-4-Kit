@@ -18,7 +18,7 @@ import serial
 from PySide6 import QtCore
 from PySide6.QtCore import Signal, QObject, Slot, Qt
 from PySide6.QtGui import QPixmap, QImage
-from PySide6.QtWidgets import QWidget, QLabel, QComboBox
+from PySide6.QtWidgets import QWidget, QLabel, QComboBox, QMessageBox
 from layouts.app_page_ui import Ui_AppPage
 
 from libs.NormalCamera import NormalCamera
@@ -68,6 +68,7 @@ class AppSharedMem:
         self.robot_first = False
         self.aruco_detect_frame: np.ndarray | None = None
         self.color_detect_frame: np.ndarray | None = None
+        self.wait: int | None = None
 
         # arm
         self.arm: ArmInterface | None = None
@@ -262,6 +263,14 @@ class AppPage:
         @Slot()
         def start_game():
             logger.info("start game")
+
+            if self.shared_memory.arm is None:
+                QMessageBox.warning(None, "", "请先连接机械臂")
+                return
+            if self.cam_thread is None:
+                QMessageBox.warning(None, "请先连接相机")
+                return
+
             if self.game_thread is not None:
                 self.shared_memory.game_running = False
                 del self.game_thread
@@ -308,7 +317,9 @@ class AppPage:
                 return
             if com_port.startswith("COM"):
                 self.shared_memory.arm = ArmInterface(com_port, 115200)
+                QMessageBox.information(None, "", "机械臂连接成功")
                 logger.debug("Serial port connected.")
+
             # TODO : add linux com port
 
         self.ui.btn_connect_com.clicked.connect(connect_arm)
@@ -317,9 +328,19 @@ class AppPage:
         def release_arm():
             del self.shared_memory.arm
             self.shared_memory.arm = None
+            QMessageBox.information(None, "", "机械臂连接已关闭")
             logger.debug("Serial port released. ")
 
         self.ui.btn_stop_com.clicked.connect(release_arm)
+
+        @Slot()
+        def btn_gservo():
+            if self.shared_memory.arm == None:
+                QMessageBox.warning(None, "", "请先连接机械臂")
+            # self.shared_memory.arm.mc.send_angles([0, 0, 0, 0, 0, 0], 50)
+            self.shared_memory.arm.drop_piece()
+
+        self.ui.btn_gservo.clicked.connect(btn_gservo)
 
     # Function to setup UI
     def setup_ui(self) -> QWidget:

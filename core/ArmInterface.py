@@ -120,4 +120,4 @@ class ArmInterface:
 
     # Method to drop the chess piece
     def drop_piece(self):
-        self.mc.set_gservo_round()
+        self.mc.set_gservo_round(12)

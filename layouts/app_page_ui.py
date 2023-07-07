@@ -924,33 +924,18 @@ class Ui_AppPage(object):
         self.horizontalLayout_6 = QHBoxLayout()
         self.horizontalLayout_6.setSpacing(1)
         self.horizontalLayout_6.setObjectName("horizontalLayout_6")
-        self.pushButton = QPushButton(self.frame_10)
-        self.pushButton.setObjectName("pushButton")
-        sizePolicy2.setHeightForWidth(self.pushButton.sizePolicy().hasHeightForWidth())
-        self.pushButton.setSizePolicy(sizePolicy2)
-        self.pushButton.setStyleSheet(
+        self.btn_gservo = QPushButton(self.frame_10)
+        self.btn_gservo.setObjectName("btn_gservo")
+        sizePolicy2.setHeightForWidth(self.btn_gservo.sizePolicy().hasHeightForWidth())
+        self.btn_gservo.setSizePolicy(sizePolicy2)
+        self.btn_gservo.setStyleSheet(
             "border-radius:5px;\n"
             "border:1px solid black;\n"
             "border-style:outset;\n"
             "background: rgb(213, 213, 213);"
         )
 
-        self.horizontalLayout_6.addWidget(self.pushButton)
-
-        self.pushButton_2 = QPushButton(self.frame_10)
-        self.pushButton_2.setObjectName("pushButton_2")
-        sizePolicy2.setHeightForWidth(
-            self.pushButton_2.sizePolicy().hasHeightForWidth()
-        )
-        self.pushButton_2.setSizePolicy(sizePolicy2)
-        self.pushButton_2.setStyleSheet(
-            "border-radius:5px;\n"
-            "border:1px solid black;\n"
-            "border-style:outset;\n"
-            "background: rgb(213, 213, 213);"
-        )
-
-        self.horizontalLayout_6.addWidget(self.pushButton_2)
+        self.horizontalLayout_6.addWidget(self.btn_gservo)
 
         self.verticalLayout_2.addLayout(self.horizontalLayout_6)
 
@@ -1222,14 +1207,13 @@ class Ui_AppPage(object):
             QCoreApplication.translate("AppPage", "\u6062\u590d\u9ed8\u8ba4", None)
         )
         self.label_13.setText(
-            QCoreApplication.translate("AppPage", "\u5438\u6cf5\u8c03\u8bd5", None)
+            QCoreApplication.translate(
+                "AppPage", "\u4e0b\u68cb\u88c5\u7f6e\u8c03\u8bd5", None
+            )
         )
         self.label_15.setText("")
-        self.pushButton.setText(
-            QCoreApplication.translate("AppPage", "\u6253\u5f00", None)
-        )
-        self.pushButton_2.setText(
-            QCoreApplication.translate("AppPage", "\u5173\u95ed", None)
+        self.btn_gservo.setText(
+            QCoreApplication.translate("AppPage", "\u8f6c\u52a8\u4e00\u5708", None)
         )
         self.btn_start_game.setText(
             QCoreApplication.translate("AppPage", "\u5f00\u59cb\u5bf9\u5f08", None)

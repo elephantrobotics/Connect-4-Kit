@@ -13,3 +13,83 @@ DEBUG - 2023-07-06 11:00:19,091 - layouts.app_page - App Page
 DEBUG - 2023-07-06 11:00:20,916 - layouts.app_page - Serial port updated.
 DEBUG - 2023-07-06 11:00:22,529 - layouts.app_page - Serial port connected.
 INFO - 2023-07-06 11:00:45,520 - layouts.app_page - stop game
+DEBUG - 2023-07-07 14:42:01,716 - __main__ - Program Start.
+DEBUG - 2023-07-07 14:42:01,844 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 14:42:01,890 - layouts.app_page - App Page
+DEBUG - 2023-07-07 14:42:03,700 - layouts.app_page - Serial port updated.
+DEBUG - 2023-07-07 14:42:05,045 - layouts.app_page - Serial port connected.
+DEBUG - 2023-07-07 14:42:45,127 - layouts.app_page - Serial port released. 
+DEBUG - 2023-07-07 14:44:35,460 - __main__ - Program Start.
+DEBUG - 2023-07-07 14:44:35,475 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 14:44:35,481 - layouts.app_page - App Page
+DEBUG - 2023-07-07 14:44:36,922 - layouts.app_page - Serial port updated.
+DEBUG - 2023-07-07 14:44:39,244 - layouts.app_page - Serial port connected.
+DEBUG - 2023-07-07 14:51:32,155 - __main__ - Program Start.
+DEBUG - 2023-07-07 14:51:32,172 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 14:51:32,177 - layouts.app_page - App Page
+DEBUG - 2023-07-07 14:51:33,707 - layouts.app_page - Serial port updated.
+DEBUG - 2023-07-07 14:51:36,457 - layouts.app_page - Serial port connected.
+DEBUG - 2023-07-07 14:52:27,721 - __main__ - Program Start.
+DEBUG - 2023-07-07 14:52:27,737 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 14:52:27,743 - layouts.app_page - App Page
+DEBUG - 2023-07-07 14:52:30,205 - layouts.app_page - Serial port updated.
+DEBUG - 2023-07-07 14:52:32,395 - layouts.app_page - Serial port connected.
+DEBUG - 2023-07-07 14:54:08,192 - __main__ - Program Start.
+DEBUG - 2023-07-07 14:54:08,207 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 14:54:08,213 - layouts.app_page - App Page
+DEBUG - 2023-07-07 14:54:09,741 - layouts.app_page - Serial port updated.
+DEBUG - 2023-07-07 14:54:12,033 - layouts.app_page - Serial port connected.
+DEBUG - 2023-07-07 14:54:52,873 - __main__ - Program Start.
+DEBUG - 2023-07-07 14:54:52,887 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 14:54:52,893 - layouts.app_page - App Page
+DEBUG - 2023-07-07 14:54:55,557 - layouts.app_page - Serial port updated.
+DEBUG - 2023-07-07 14:54:57,393 - layouts.app_page - Serial port connected.
+DEBUG - 2023-07-07 15:02:12,050 - __main__ - Program Start.
+DEBUG - 2023-07-07 15:02:12,066 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 15:02:12,082 - layouts.app_page - App Page
+DEBUG - 2023-07-07 15:02:14,709 - layouts.app_page - Serial port updated.
+DEBUG - 2023-07-07 15:02:16,633 - layouts.app_page - Serial port connected.
+DEBUG - 2023-07-07 15:02:18,480 - layouts.app_page - Serial port released. 
+INFO - 2023-07-07 15:03:27,515 - layouts.app_page - start game
+INFO - 2023-07-07 15:03:27,595 - core.StateMachine - INFO: Player move first.
+INFO - 2023-07-07 15:03:29,811 - layouts.app_page - start game
+INFO - 2023-07-07 15:03:29,822 - core.StateMachine - INFO: Player move first.
+INFO - 2023-07-07 15:03:29,987 - layouts.app_page - start game
+INFO - 2023-07-07 15:03:29,998 - core.StateMachine - INFO: Player move first.
+DEBUG - 2023-07-07 15:03:52,481 - __main__ - Program Start.
+DEBUG - 2023-07-07 15:03:52,497 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 15:03:52,503 - layouts.app_page - App Page
+DEBUG - 2023-07-07 15:04:06,527 - layouts.app_page - Serial port updated.
+DEBUG - 2023-07-07 15:04:09,048 - layouts.app_page - Serial port connected.
+INFO - 2023-07-07 15:06:16,075 - layouts.app_page - start game
+INFO - 2023-07-07 15:06:16,103 - core.StateMachine - INFO: Player move first.
+INFO - 2023-07-07 15:06:36,664 - core.StateMachine - INFO: Grid changed.
+INFO - 2023-07-07 15:06:36,683 - core.StateMachine - INFO: Next move 2
+INFO - 2023-07-07 15:06:40,711 - core.StateMachine - INFO: Move complete.
+INFO - 2023-07-07 15:06:40,711 - core.StateMachine - INFO: Update detector board complete.
+INFO - 2023-07-07 15:06:40,711 - core.StateMachine - DEBUG: Now board status:
+DEBUG - 2023-07-07 15:16:13,003 - __main__ - Program Start.
+DEBUG - 2023-07-07 15:16:13,023 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 15:16:13,028 - layouts.app_page - App Page
+DEBUG - 2023-07-07 15:17:16,652 - __main__ - Program Start.
+DEBUG - 2023-07-07 15:17:16,670 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 15:17:16,675 - layouts.app_page - App Page
+DEBUG - 2023-07-07 15:37:40,959 - __main__ - Program Start.
+DEBUG - 2023-07-07 15:37:40,974 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 15:37:40,981 - layouts.app_page - App Page
+DEBUG - 2023-07-07 15:38:35,332 - __main__ - Program Start.
+DEBUG - 2023-07-07 15:38:35,348 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 15:38:35,353 - layouts.app_page - App Page
+DEBUG - 2023-07-07 15:43:01,425 - __main__ - Program Start.
+DEBUG - 2023-07-07 15:43:01,544 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 15:43:01,551 - layouts.app_page - App Page
+DEBUG - 2023-07-07 15:43:58,003 - __main__ - Program Start.
+DEBUG - 2023-07-07 15:43:58,021 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 15:43:58,028 - layouts.app_page - App Page
+DEBUG - 2023-07-07 15:45:32,965 - __main__ - Program Start.
+DEBUG - 2023-07-07 15:45:32,981 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 15:45:32,986 - layouts.app_page - App Page
+INFO - 2023-07-07 15:45:41,507 - layouts.app_page - stop game
+DEBUG - 2023-07-07 15:46:14,715 - __main__ - Program Start.
+DEBUG - 2023-07-07 15:46:14,728 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-07 15:46:14,735 - layouts.app_page - App Page
