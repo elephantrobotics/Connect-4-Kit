@@ -6,6 +6,7 @@
 # Importing necessary libraries and modules
 from typing import *
 import sys
+import logging
 from core.logger import get_logger
 
 from PySide6.QtCore import (
@@ -46,6 +47,10 @@ class MainWindow(QMainWindow):
 
 # Checking if the script is being run directly
 if __name__ == "__main__":
+    # set global logger to ignore most information
+    # let child logger do specific job
+    logging.getLogger().setLevel(logging.CRITICAL)
+
     logger = get_logger(__name__)
     logger.debug("Program Start.")
 
@@ -60,8 +65,8 @@ if __name__ == "__main__":
     if translator.load(path + QLocale.system().name()):
         logger.debug(QLocale.system().name() + " translation loaded.")
 
-        # debug use
-        # translator.load(path + "en")
+        # debug use : change to en temporarily
+        translator.load(path + "en")
         app.installTranslator(translator)
 
     # Creating an instance of MainWindow

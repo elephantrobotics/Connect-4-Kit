@@ -20,6 +20,14 @@
             "program": "app.py",
             "console": "integratedTerminal",
             "justMyCode": false
+        },
+        {
+            "name": "Python: Project with profiler",
+            "type": "python",
+            "request": "launch",
+            "module": "cProfile",
+            "args": ["-o", "/tmp/tmp.prof", "app.py"],
+            "justMyCode": false
         }
     ]
 }

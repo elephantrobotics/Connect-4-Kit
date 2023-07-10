@@ -1,6 +1,10 @@
 import time
 from pymycobot import MyCobot
 from typing import *
+import logging
+from core.logger import get_logger
+
+logger = get_logger(__name__, filepath="logs/robot.log")
 
 
 class ArmInterface:
@@ -29,13 +33,21 @@ class ArmInterface:
         self.retry = 5
 
         # Initialize MyCobot instance
-        self.mc = MyCobot(port, baudrate, timeout=0.5)
-        self.mc.set_fresh_mode(0)
+        self.mc = MyCobot(port, baudrate, timeout=0.5, debug=True)
 
-    # Method to set Z-axis coordinate
-    def set_z_linear(self, val: int):
-        self.mc.send_coord(3, val, self.ARM_SPEED_PRECISE)
-        time.sleep(2)
+        # counter mycobot module contaminating the root logger
+        logging.getLogger().setLevel(logging.CRITICAL)
+        self.mc.log.setLevel(logging.DEBUG)
+        self.mc.log.propagate = False
+
+        # Set up log to file
+        mc_file_hdlr = logging.FileHandler("logs/robot.log")
+        mc_file_hdlr.setFormatter(
+            logging.Formatter("%(levelname)s - %(asctime)s - %(name)s - %(message)s")
+        )
+        self.mc.log.addHandler(mc_file_hdlr)
+
+        self.mc.set_fresh_mode(0)
 
     # Method to turn on the pump
     def pump_on(self):
@@ -47,33 +59,15 @@ class ArmInterface:
 
     # Method to send angles with retry logic
     def send_angles(self, angle, speed):
-        for i in range(self.retry):
-            try:
-                self.mc.send_angles(angle, speed)
-                break
-            except Exception as e:
-                print(f"ERR: {e}")
-                print(f"ERR: Retry {i}")
+        self.mc.send_angles(angle, speed)
 
     # Method to set basic output with retry logic
     def set_basic_output(self, val1, val2):
-        for i in range(self.retry):
-            try:
-                self.mc.set_basic_output(val1, val2)
-                break
-            except Exception as e:
-                print(f"ERR: {e}")
-                print(f"ERR: Retry {i}")
+        self.mc.set_basic_output(val1, val2)
 
     # Method to send coordinates with retry logic
     def send_coord(self, arm_id, coord, speed):
-        for i in range(self.retry):
-            try:
-                self.mc.send_coord(arm_id, coord, speed)
-                break
-            except Exception as e:
-                print(f"ERR: {e}")
-                print(f"ERR: Retry {i}")
+        self.mc.send_coord(arm_id, coord, speed)
 
     # Method to turn off the pump
     def pump_off(self):
@@ -101,6 +95,7 @@ class ArmInterface:
     # Method to move to the top of the chessboard
     def hover_over_chessboard_n(self, n: int):
         if n is not None and 0 <= n <= 6:
+            logger.debug(f"Move to chess position {n}, angles {self.chess_table[n]}")
             self.send_angles(self.chess_table[n], self.ARM_SPEED)
             time.sleep(2)
         else:
@@ -111,13 +106,16 @@ class ArmInterface:
 
     # Method to move to the observation posture
     def observe_posture(self):
+        logger.debug(f"Move to observe position {self.angle_table['observe']}")
         self.send_angles(self.angle_table["observe"], self.ARM_SPEED)
         time.sleep(2)
 
     # Method to move the arm
     def move(self, action: str):
+        logger.debug(f"Action move: {action} Angles {self.angle_table[action]}")
         self.mc.send_angles(self.angle_table[action], self.ARM_SPEED)
 
     # Method to drop the chess piece
     def drop_piece(self):
+        logger.debug(f"Dropping piece at {self.mc.get_angles()}")
         self.mc.set_gservo_round(12)

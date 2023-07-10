@@ -1,6 +1,6 @@
 # Importing necessary libraries and modules
 from typing import *
-import cv2
+import logging
 import numpy as np
 from PySide6.QtGui import QPixmap, QImage
 from typing import *

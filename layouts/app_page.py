@@ -18,7 +18,14 @@ import serial
 from PySide6 import QtCore
 from PySide6.QtCore import Signal, QObject, Slot, Qt
 from PySide6.QtGui import QPixmap, QImage
-from PySide6.QtWidgets import QWidget, QLabel, QComboBox, QMessageBox
+from PySide6.QtWidgets import (
+    QWidget,
+    QLabel,
+    QComboBox,
+    QMessageBox,
+    QDialog,
+    QBoxLayout,
+)
 from layouts.app_page_ui import Ui_AppPage
 
 from libs.NormalCamera import NormalCamera
@@ -78,6 +85,7 @@ class AppSharedMem:
 class CameraThread(threading.Thread):
     def __init__(self, cam_index: int, shared_memory: AppSharedMem, cam_signal: Signal):
         super().__init__()
+
         self.running_flag: bool = True
         self.cam_index: int = cam_index
         self.cam: NormalCamera | None = None
@@ -86,8 +94,12 @@ class CameraThread(threading.Thread):
         self.fps = 10
         self.tick = 1 / self.fps
 
-    def run(self):
         self.cam = NormalCamera(cam_index=self.cam_index)
+        logger.debug("Normal camera object created.")
+
+        logger.debug(f"CameraThread instance {id(self)} created.")
+
+    def run(self):
         try:
             while self.running_flag:
                 frame = self.cam.raw_color_frame()
@@ -145,9 +157,13 @@ class GameThread(threading.Thread):
 
         self.fsm = fsm
 
+        logger.debug(f"GameThread {id(self)} created.")
+
     def run(self):
         if self.fsm.current_state is None:
             raise Exception("fsm must have a starting state.")
+
+        logger.debug(f"GameThread {id(self)} running.")
 
         try:
             while self.fsm.current_state is not None and self.context.game_running:
@@ -171,6 +187,7 @@ class SerialComboBox(QComboBox):
             self.addItem(port.device)
         QComboBox.mousePressEvent(self, QMouseEvent)
         logger.debug("Serial port updated.")
+        logger.debug(f"Now serial ports: {list(map(str,serial_ports))}")
 
 
 # Main class for the application
@@ -185,7 +202,7 @@ class AppPage:
         self.cam_thread: Union[CameraThread, None] = None
         self.game_thread: Union[GameThread, None] = None
 
-        logger.debug("App Page")
+        logger.debug("App Page created.")
 
     # Initialize Aruco detector
     def init_aruco_detector(self):
@@ -193,6 +210,7 @@ class AppPage:
         mtx, dist = camera_params["mtx"], camera_params["dist"]
         MARKER_SIZE = 22
         self.aruco_detector = ArucoDetector(mtx, dist, MARKER_SIZE)
+        logger.debug("Aruco detector initialized.")
 
     # Setup dynamic UI elements
     def setup_ui_dynamics(self):
@@ -204,6 +222,7 @@ class AppPage:
         # Function to change camera index
         def change_cam_index(cam_index):
             self.shared_memory.curr_cam_index = cam_index
+            logger.debug(f"Camera index changed to {cam_index}")
 
         self.ui.combo_camera_selection.currentIndexChanged.connect(
             self.signals.curr_cam_index
@@ -222,8 +241,11 @@ class AppPage:
         # Function to turn on/off video0 feed
         def switch_video0(status):
             self.shared_memory.video_feed0_on = status
+
             if status == False:
                 self.ui.label_video_feed0.setPixmap(QPixmap())
+
+            logger.debug(f"Video0 switched to {False if status == 0 else True}")
 
         self.ui.switch_video0_on.stateChanged.connect(switch_video0)
 
@@ -232,6 +254,7 @@ class AppPage:
             self.shared_memory.video_feed1_on = status
             if status == False:
                 self.ui.label_video_feed1.setPixmap(QPixmap())
+            logger.debug(f"Video1 switched to {False if status == 0 else True}")
 
         self.ui.switch_video1_on.stateChanged.connect(switch_video1)
 
@@ -240,6 +263,7 @@ class AppPage:
             self.shared_memory.video_feed2_on = status
             if status == False:
                 self.ui.label_video_feed2.setPixmap(QPixmap())
+            logger.debug(f"Video2 switched to {False if status == 0 else True}")
 
         self.ui.switch_video2_on.stateChanged.connect(switch_video2)
 
@@ -248,27 +272,19 @@ class AppPage:
             self.shared_memory.video_feed3_on = status
             if status == False:
                 self.ui.label_video_feed3.setPixmap(QPixmap())
+            logger.debug(f"Video3 switched to {False if status == 0 else True}")
 
         self.ui.switch_video3_on.stateChanged.connect(switch_video3)
-
-        # Function to change current algorithm
-        @Slot()
-        def change_alg_mode(alg_index):
-            self.shared_memory.curr_alg_mode = self.ui.combo_algs.itemData(alg_index)
-            print(self.shared_memory.curr_alg_mode)
-
-        self.ui.combo_algs.currentIndexChanged.connect(change_alg_mode)
 
         # Function to start game
         @Slot()
         def start_game():
-            logger.info("start game")
-
+            logger.debug("Start game button pressed.")
             if self.shared_memory.arm is None:
-                QMessageBox.warning(None, "", "请先连接机械臂")
+                QMessageBox.warning(None, self.tr("错误"), self.tr("请先连接机械臂"))
                 return
             if self.cam_thread is None:
-                QMessageBox.warning(None, "请先连接相机")
+                QMessageBox.warning(None, self.tr("错误"), self.tr("请先连接相机"))
                 return
 
             if self.game_thread is not None:
@@ -280,45 +296,59 @@ class AppPage:
             self.shared_memory.game_running = True
             self.game_thread.start()
 
+            logger.debug("Game stared.")
+
         self.ui.btn_start_game.clicked.connect(start_game)
 
         # Function to stop game
         @Slot()
         def stop_game():
-            logger.info("stop game")
+            logger.info("Stop game button pressed.")
             if self.game_thread is None:
                 return
+
             self.shared_memory.game_running = False
             self.shared_memory.curr_frame = None
             self.shared_memory.color_detect_frame = None
             self.shared_memory.aruco_detect_frame = None
+
+            # wait for threads to exit
+            dialog = self.loading_dialog(self.tr("等待线程退出"))
+            dialog.show()
+
+            self.game_thread.join()
+
+            dialog.close()
+
             del self.game_thread
             self.game_thread = None
 
+            # clear ui
+            self.shared_memory.curr_frame = None
+            self.shared_memory.color_detect_frame = None
+            self.shared_memory.aruco_detect_frame = None
+            self.ui.label_video_feed2.setPixmap(QPixmap())
+            logger.debug("Game stopped.")
+
         self.ui.btn_stop_game.clicked.connect(stop_game)
 
-        # update com port lists
-        @Slot()
-        def update_com():
-            serial_ports = serial.tools.list_ports.comports()
-            self.ui.combo_com_selection.clear()
-            for port in serial_ports:
-                self.ui.combo_com_selection.addItem(port.device)
-            logger.debug("Serial ports updated.")
-
+        # dynamically replace serial port select combox
         self.ui.combo_com_selection.deleteLater()
         self.ui.combo_com_selection = SerialComboBox(self.ui.frame_interact_panel)
         self.ui.horizontalLayout_18.addWidget(self.ui.combo_com_selection)
 
         @Slot()
         def connect_arm():
+            logger.debug("Connect arm button pressed.")
+
             com_port = self.ui.combo_com_selection.currentText()
             if com_port is None:
                 return
+
             if com_port.startswith("COM"):
                 self.shared_memory.arm = ArmInterface(com_port, 115200)
-                QMessageBox.information(None, "", "机械臂连接成功")
-                logger.debug("Serial port connected.")
+                QMessageBox.information(None, self.tr("成功"), self.tr("机械臂连接成功"))
+                logger.debug(f"Serial port {com_port} connected.")
 
             # TODO : add linux com port
 
@@ -326,18 +356,26 @@ class AppPage:
 
         @Slot()
         def release_arm():
+            logger.debug("Release arm button pressed.")
+
+            # release before open
+            if self.shared_memory.arm is None:
+                return
+
             del self.shared_memory.arm
             self.shared_memory.arm = None
-            QMessageBox.information(None, "", "机械臂连接已关闭")
-            logger.debug("Serial port released. ")
+            QMessageBox.information(None, self.tr("成功"), self.tr("机械臂连接已关闭"))
+            logger.debug("Arm released.")
 
         self.ui.btn_stop_com.clicked.connect(release_arm)
 
         @Slot()
         def btn_gservo():
+            logger.debug("Drop piece button pressed.")
+
             if self.shared_memory.arm == None:
-                QMessageBox.warning(None, "", "请先连接机械臂")
-            # self.shared_memory.arm.mc.send_angles([0, 0, 0, 0, 0, 0], 50)
+                QMessageBox.warning(None, self.tr("成功"), self.tr("请先连接机械臂"))
+
             self.shared_memory.arm.drop_piece()
 
         self.ui.btn_gservo.clicked.connect(btn_gservo)
@@ -352,6 +390,11 @@ class AppPage:
     # Function to open camera
     @Slot()
     def open_camera(self):
+        # open before specify cam index
+        if self.shared_memory.curr_cam_index is None:
+            QMessageBox.warning(None, self.tr("错误"), self.tr("请先选择相机编号"))
+            return
+
         cam_index = self.shared_memory.curr_cam_index
 
         self.ui.label_video_feed0.setPixmap(QPixmap())
@@ -360,20 +403,32 @@ class AppPage:
         if self.cam_thread is not None:
             self.cam_thread.running_flag = False
 
+        dialog = self.loading_dialog(self.tr("等待相机启动"))
+        dialog.show()
+
         self.cam_thread = CameraThread(
             cam_index, self.shared_memory, self.signals.cam_frame_update
         )
+
+        dialog.close()
+
         self.cam_thread.start()
+        self.ui.combo_camera_selection.setEnabled(False)
 
     # Function to stop camera
     @Slot()
     def stop_camera(self):
+        # stop before start
+        if self.cam_thread is None:
+            return
+
         self.cam_thread.running_flag = False
         self.ui.label_video_feed0.setPixmap(QPixmap())
         self.ui.label_video_feed1.setPixmap(QPixmap())
         self.ui.label_video_feed2.setPixmap(QPixmap())
         self.ui.label_video_feed3.setPixmap(QPixmap())
 
+        self.ui.combo_camera_selection.setEnabled(True)
         self._widget.update()
 
     # Function to update image
@@ -430,3 +485,16 @@ class AppPage:
     # Function to terminate UI
     def terminate_ui(self) -> None:
         return
+
+    # Utility
+    def loading_dialog(self, text):
+        dialog = QDialog(self._widget)
+        layout = QBoxLayout(QBoxLayout.Direction.TopToBottom)
+        layout.addWidget(QLabel(text))
+        dialog.setLayout(layout)
+        dialog.setWindowTitle(" ")
+
+        return dialog
+
+    def tr(self, text):
+        return self._widget.tr(text)
