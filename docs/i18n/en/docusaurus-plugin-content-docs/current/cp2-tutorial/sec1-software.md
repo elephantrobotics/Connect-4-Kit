@@ -2,29 +2,29 @@
 sidebar_position: 1
 ---
 
-# 软件环境准备
+# Software Environment Preparation
 
-## Python安装
+## Python Installation
 
-Python是本项目的主开发语言，需要使用3.10版本以上，下面介绍在各个平台如何安装配置环境
+Python is the main programming language used in this project and requires version 3.10 or above. Below are instructions on how to install and configure the environment on different platforms.
 
 ### Windows
 
-访问[Python3.10官方下载页面](https://www.python.org/downloads/release/python-31011/)，选择MSI版本下载并安装即可
+Visit the [Python 3.10 official download page](https://www.python.org/downloads/release/python-31011/) and download the MSI version. Run the installer and follow the prompts to install Python.
 
 ![](attachment/2023-07-06-14-41-35.png)
 
-注意：安装过程中记得勾选自动添加到环境变量
+Note: Remember to check the option to automatically add Python to the environment variables during the installation process.
 
-安装完毕后，`Win+R`打开运行，输入`CMD`，在弹出的CMD窗口中输入`python`以检查是否成功
+After installation, press Win+R to open the Run dialog, type CMD, and press Enter. In the opened CMD window, type python to check if the installation was successful.
 
 ![](attachment/2023-07-06-14-42-56.png)
 
 ### Ubuntu
 
-Python需要使用3.10版本以上，这里介绍一下如何在Ubuntu上安装别的版本
+Python needs to be version 3.10 or above. Here is how to install a different version of Python on Ubuntu.
 
-首先添加自定义仓库，请勿直接安装
+First, add the custom repository. Do not install directly.
 
 ```bash
 sudo apt install software-properties-common
@@ -32,14 +32,14 @@ sudo add-apt-repository ppa:deadsnakes/ppa
 sudo apt update
 ```
 
-然后使用apt安装python3.10版本和相关工具
+Then, use apt to install Python 3.10 and related tools.
 
 ```bash
 sudo apt-get install python3.10
 sudo apt-get install python3.10-distutils
 ```
 
-检验是否安装成功
+Verify the installation.
 
 ```bash
 python3.10 --version
@@ -48,13 +48,13 @@ python3.10 --version
 
 ## Git
 
-Git是用来下载和管理代码的工具，在本项目中用来拉取项目代码
+Git is a tool used to download and manage code. In this project, it is used to clone the project repository.
 
-Git的下载安装请参考[官方教程](https://git-scm.com/book/zh/v2/%E8%B5%B7%E6%AD%A5-%E5%AE%89%E8%A3%85-Git)
+Refer to the [Official Tutorial](https://git-scm.com/book/en/v2/Getting-Started-Installing-Git) for downloading and installing Git.
 
-## 配置项目环境
+## Setup project
 
-按顺序执行以下命令
+Execute the following commands in order.
 
 ```bash
 git clone https://github.com/elephantrobotics/Connect-4-Kit.git
@@ -62,4 +62,7 @@ cd Connect-4-Kit
 pip install -r requirements.txt
 ```
 
-Done.
+## Check robot firmware version
+
+The firmware version of ATOM should be `6.3`.
+If it's not, please use Mystudio to update the firmware to this version.

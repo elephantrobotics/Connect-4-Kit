@@ -4,46 +4,46 @@ sidebar_position: 1
 
 import ReactPlayer from "react-player"
 
-# 单元测试
+# Unit Testing
 
-## 机器人测试
+## Robot Testing
 
-进入`tests`目录，在此处打开终端并输入`python test1_robot.py`
+Navigate to the tests directory and open the terminal here. Enter python test1_robot.py in the terminal.
 
 ![](attachment/2023-07-06-14-55-35.png)
 
-根据提示输入连接机器人的串口（输入序号即可，例如上面的输入 0）
+Follow the prompt to input the serial port for connecting to the robot (enter the corresponding index, e.g., 0 in the above example).
 
-观察机器人的运动，如果 6 个轴都有变化，说明机械臂的通信正常；如果机器人没有动作，则说明可能通信或者固件存在问题。
+Observe the movement of the robot. If all 6 axes show changes, it indicates that the communication with the robotic arm is functioning properly. If the robot does not move, there may be communication or firmware issues.
 
-## 相机测试
+## Camera Testing
 
-进入`tests`目录，在此处打开终端并输入`python test2_camera.py`
+Navigate to the `tests` directory and open the terminal here. Enter `python test2_camera.py` in the terminal.
 
-观察相机图像是否清晰，如果图像模糊，可能需要考虑擦拭镜片。
+Observe if the camera image is clear. If the image is blurry, consider cleaning the lens.
 
 ![](attachment/2023-07-07-16-38-52.png)
 
-## 下棋装置测试
+## Chess Trigger Testing
 
-下棋装置是一个固定在机械臂末端的特殊结构，测试这个项目需要先安装好下棋装置是否能够正常运行
-**注意：运行前下棋装置的需要装入足量的棋子（>5 个）**
+The chess trigger is a special structure fixed to the end of the robotic arm. To test this project, make sure the chess trigger is installed properly and can function correctly.
+**Note: Before running the test, make sure the chess trigger is loaded with enough chess pieces (>5).**
 
-<ReactPlayer playing controls url="/videos/test3.mp4" />
+<ReactPlayer playing controls url="/docs/connect-4/videos/test3.mp4" />
 
-进入`tests`目录，在此处打开终端并输入`python test3_trigger.py`
+Navigate to the `tests` directory and open the terminal here. Enter `python test3_trigger.py` in the terminal.
 
-观察下棋装置是否能将旗子推出装置
+Observe if the chess trigger can push the chess pieces out.
 
-## 机器人运动点测试
+## Robot Movement Point Testing
 
-这个测试需要完全安装好棋盘和机械臂，机械臂会按顺序尝试访问所有点位，你需要观察机械臂抵达的点位的精准度
+This test requires the chessboard and robotic arm to be fully installed. The robotic arm will attempt to visit all the points in order. You need to observe the accuracy of the robotic arm reaching each point.
 
-进入`tests`目录，在此处打开终端并输入`python test4_drop_point.py`
+Navigate to the `tests` directory and open the terminal here. Enter `python test4_drop_point.py` in the terminal.
 
-## 图像采集点测试
+## Image Capture Point Testing
 
-在这个测试中，机械臂会自动移动到观察姿态，如果二维码和机械臂的相对位置正确，你会看到另一个仅有棋盘的窗口
+In this test, the robotic arm will automatically move to the observation position. If the QR codes and the relative position of the robotic arm are correct, you will see another window with only the chessboard.
 ![](attachment/2023-07-07-15-42-21.png)
 
-进入`tests`目录，在此处打开终端并输入`python test5_img.py`
+Navigate to the `tests` directory and open the terminal here. Enter `python test5_img.py` in the terminal.

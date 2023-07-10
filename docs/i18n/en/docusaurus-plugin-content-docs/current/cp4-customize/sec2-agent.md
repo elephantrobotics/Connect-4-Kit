@@ -2,16 +2,16 @@
 sidebar_position: 2
 ---
 
-# 对弈模型优化
+# Optimization of the Game Model
 
-官方的对弈模型采用的是基于pytorch[^1]训练的DQN[^2]网络，以ONNX[^3]形式导出使用。
+The official gaming model is based on a DQN[^2] network trained with PyTorch[^1] and exported in the ONNX[^3] format for usage.
 
-不过你也可以训练自己的对弈模型，你可以使用任何你喜欢的框架训练。但是模型文件必须要导出为ONNX格式。
+However, you can also train your own gaming model using any framework you prefer. The model file must be exported in the ONNX format.
 
-模型输入一个矩阵形态的棋盘状态，输出6个位置的决策值，其中决策值最高的将会作为下一次机械臂的下棋位置。
+The model takes a matrix-shaped chessboard state as input and outputs decision values for 6 positions. The position with the highest decision value will be selected as the next chess move for the robotic arm.
 
-[^1]: PyTorch是一个开源的机器学习框架，主要用于构建深度神经网络模型。它提供了丰富的工具和库，用于处理各种机器学习任务，包括计算机视觉、自然语言处理、图像和语音识别等。PyTorch采用动态图计算的方式，使得模型的构建和调试更加灵活和直观。
+[^1]: PyTorch is an open-source machine learning framework primarily used for building deep neural network models. It provides a rich set of tools and libraries for various machine learning tasks, including computer vision, natural language processing, image and speech recognition, etc. PyTorch adopts a dynamic graph computation approach, making model construction and debugging more flexible and intuitive.
 
-[^2]: DQN是一种强化学习算法，全称为Deep Q-Network。它结合了深度神经网络和Q-learning算法，用于解决强化学习问题。DQN在强化学习领域中取得了重要的突破，特别是在处理具有高维状态空间的任务时，如游戏玩法。
+[^2]: DQN is a reinforcement learning algorithm, which stands for Deep Q-Network. It combines deep neural networks and Q-learning algorithm to solve reinforcement learning problems. DQN has made significant breakthroughs in the field of reinforcement learning, particularly in tasks with high-dimensional state spaces, such as gameplay in games.
 
-[^3]: ONNX是开放神经网络交换（Open Neural Network Exchange）的缩写，是一个开源的跨平台机器学习模型交换格式。它允许用户在不同的深度学习框架之间无缝迁移模型。ONNX可以将深度学习模型导出为一个独立的文件，使得模型可以在不同的框架（如PyTorch、TensorFlow等）或硬件平台上进行部署和运行，提高了模型的可移植性和灵活性。
+[^3]: ONNX (Open Neural Network Exchange) is an open-source cross-platform machine learning model interchange format. It allows users to seamlessly migrate models between different deep learning frameworks. ONNX can export deep learning models as independent files, enabling the deployment and execution of models on different frameworks (such as PyTorch, TensorFlow, etc.) or hardware platforms, thereby improving model portability and flexibility.

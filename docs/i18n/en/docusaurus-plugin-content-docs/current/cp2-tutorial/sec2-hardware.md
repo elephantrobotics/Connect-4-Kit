@@ -2,68 +2,76 @@
 sidebar_position: 2
 ---
 
-# 硬件安装
+# Hardware Installation
 
-## 底盘棋子架安装
+## Chassis and Piece Holder Installation
 
-取出棋盘底盘和棋子架
+Take out the chessboard chassis and the piece holder.
+
 ![](attachment/2023-07-07-15-58-07.png)
 ![](attachment/2023-07-07-15-58-29.png)
 
-在对应孔位拧上螺丝
+Screw the screws into the corresponding holes.
+
 ![](attachment/2023-07-07-16-05-10.png)
 
-## 棋盘安装
+## Chessboard Installation
 
-在棋盘下侧的两个角落，贴上二维码
+Attach QR codes to the two corners on the underside of the chessboard.
+
 ![](attachment/2023-07-07-16-22-47.png)
 
-在棋盘帽的两个角落，贴上二维码
+Attach QR codes to the two corners of the chessboard cap.
+
 ![](attachment/2023-07-07-16-23-53.png)
 
-有二维码的一面，面向机械臂放置到棋盘底座上
+Place the side with QR codes facing the robotic arm on the chessboard base.
+
 ![](attachment/2023-07-07-16-27-52.png)
 
-## 机械臂安装
+## Robotic Arm Installation
 
-先使用螺丝固定机械臂到底盘上
+Secure the robotic arm to the chassis using screws.
+
 ![](attachment/2023-07-07-16-16-51.png)
 
-取出相机模组和下棋模组，使用乐高件连接在一起
+Take out the camera module and the chess-playing module, and connect them together using LEGO pieces.
+
 ![](attachment/2023-07-07-16-17-19.png)
 
-将连接好的相机模组和下棋模组安装到机械臂上
-**注意：区分安装方向**
+Install the connected camera module and chess-playing module onto the robotic arm.
+**Note: Pay attention to the installation orientation.**
 
-以机械臂的旋转标志为参照物，如图所示安装
+Use the rotation indicator on the robotic arm as a reference point for installation, as shown in the diagram.
 
 ![](attachment/2023-07-07-16-18-27.png)
 
-将下棋模组的线，连接到机械臂上
+Connect the wires from the chess-playing module to the robotic arm.
 
 ![](attachment/2023-07-07-16-19-41.png)
 
-略微拧松下棋模组侧面的螺丝
+Slightly loosen the screws on the side of the chess-playing module.
 ![](attachment/2023-07-07-16-20-18.png)
 
-插入棋桶以后拧紧
+Insert the chess bucket and tighten it.
 ![](attachment/2023-07-07-17-23-29.png)
 
-将机械臂扶正，接入电源；（机械臂上电以后关节会锁定）
+Align the robotic arm, power it on, and the joints will lock.
 ![](attachment/2023-07-07-16-26-47.png)
 ![](attachment/2023-07-07-16-28-19.png)
 
-至此，机械臂硬件部分安装完成
+At this point, the hardware installation of the robotic arm is complete.
 
-## 通信连接
+## Communication Connection
 
-### M5版本
+### M5 Version
 
-机械臂本体和相机需要连接到PC
+The robotic arm body and the camera need to be connected to the PC.
 
-机械臂的连接端口
+Connection port on the robotic arm:
+
 ![](attachment/2023-07-07-16-30-58.png)
 
-### Pi版本
+### Pi Version
 
-Pi版本机械臂无需连接自身，相机模块需要连接到机械臂上的USB端口
+For the Pi version of the robotic arm, there is no need to connect to itself. The camera module needs to be connected to the USB port on the robotic arm.

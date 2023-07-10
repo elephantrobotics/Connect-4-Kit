@@ -62,4 +62,6 @@ cd Connect-4-Kit
 pip install -r requirements.txt
 ```
 
-Done.
+## 检查机械臂的固件版本
+
+机械臂的固件版本需为6.3，如果不满足，请使用mystudio更新到这个版本。

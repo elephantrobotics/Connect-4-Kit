@@ -93,3 +93,6 @@ INFO - 2023-07-07 15:45:41,507 - layouts.app_page - stop game
 DEBUG - 2023-07-07 15:46:14,715 - __main__ - Program Start.
 DEBUG - 2023-07-07 15:46:14,728 - __main__ - zh_CN translation loaded.
 DEBUG - 2023-07-07 15:46:14,735 - layouts.app_page - App Page
+DEBUG - 2023-07-10 10:59:24,650 - __main__ - Program Start.
+DEBUG - 2023-07-10 10:59:24,774 - __main__ - zh_CN translation loaded.
+DEBUG - 2023-07-10 10:59:24,820 - layouts.app_page - App Page

@@ -2,23 +2,23 @@
 sidebar_position: 2
 ---
 
-# 运行程序
+# Running the Program
 
-## 使用图形化界面
+## Using the Graphical User Interface
 
-在工程目录下打开任意终端程序，输入以下命令
+Open any terminal program in the project directory and enter the following command:
 
-> 你可以在文件夹空白处，按住Shift+右键，选择在此处打开Powershell来在该位置快速打开终端
+> You can quickly open the terminal at the current location by holding Shift and right-clicking on a blank area in the folder, then selecting "Open PowerShell here."
 
 ```bash
 python app.py
 ```
 
-![](attachment/2023-07-07-15-46-24.png)
+![](attachment/2023-07-10-10-59-54.png)
 
-## 使用命令行
+## Using the Command Line
 
-在工程目录打开任意终端程序，在Ubuntu系统下可以右键文件夹空白处，单击`在此处打开Terminal`
+Open any terminal program in the project directory. In Ubuntu, you can right-click on a blank area in the folder and select "Open Terminal Here."
 
 ```bash
 cd core

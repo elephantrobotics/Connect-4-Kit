@@ -2,18 +2,19 @@
 sidebar_position: 1
 ---
 
-# 套装支持的功能
+# Supported Features of the Suite
 
-- 视觉能力: 利用OpenCV进行图像处理和机器视觉分析，实时检测和识别棋盘以及棋子的位置，确保准确的棋局感知；通过实时视频流输入，模块能够即时捕捉棋局变化，为后续决策提供最新的状态信息。
-- 决策能力: 基于PyTorch训练的DQN网络，模块能够分析当前棋局状态，预测并生成最佳的下棋策略，以最大化胜利的可能性。通过深度强化学习技术，模块能够从大量的对局数据中学习，并不断优化自身的决策能力，逐步提高对弈水平。通过高效的算法设计和优化，模块能够在短时间内进行棋局分析和决策，实现快速而准确的落子。
-- 运动能力: 使用MyCobot 280机械臂，模块能够精确地定位棋子的目标位置，并通过精准的移动操作将棋子放置到指定位置上
+- Visual Capability: Utilizing OpenCV for image processing and machine vision analysis, the suite can perform real-time detection and recognition of the chessboard and chess pieces' positions, ensuring accurate perception of the game state. Through real-time video stream input, the module can capture changes in the game state instantly, providing the latest information for subsequent decision-making.
 
-## 待开发功能
+- Decision-Making Ability: Using a DQN network trained on PyTorch, the module can analyze the current game state, predict and generate the best chess-playing strategies to maximize the likelihood of winning. Through deep reinforcement learning techniques, the module can learn from a large amount of game data and continuously optimize its decision-making ability, gradually improving its level of play. With efficient algorithm design and optimization, the module can perform game analysis and decision-making in a short time, achieving fast and accurate moves.
 
-:grey_question: 对弈等待时间自定义功能
-:grey_question: 对弈等待次数限制功能
-:grey_question: 算法结果展示框暂时保留不使用
-:grey_question: 对弈模型选择功能
-:grey_question: 机器人调试开关功能
-:grey_question: 移动路径点调试功能
-:grey_question: 对弈功能
+- Manipulation Capability: Using the MyCobot 280 robotic arm, the module can accurately locate the target position of chess pieces and place them in the specified positions through precise movement operations.
+
+## Planned Features
+
+:grey_question: Customizable wait time for gameplay.
+:grey_question: Limitation of gameplay attempts.
+:grey_question: Temporary retention of algorithm result display box.
+:grey_question: Selection of gameplay models.
+:grey_question: Robot debugging switch functionality.
+:grey_question: Debugging of movement path points.

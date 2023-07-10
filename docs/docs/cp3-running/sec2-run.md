@@ -10,8 +10,6 @@ sidebar_position: 2
 
 > Windows系统: 可以在文件夹空白处，按住Shift+右键，选择在此处打开Powershell来在该位置快速打开终端
 
-> Ubuntu系统: 可以在文件夹空白处，右键，选择在此处打开Termianl
-
 ```bash
 python app.py
 ```

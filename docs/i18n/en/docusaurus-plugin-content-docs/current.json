@@ -1,0 +1,26 @@
+{
+    "version.label": {
+        "message": "Next",
+        "description": "The label for version current"
+    },
+    "sidebar.tutorialSidebar.category.功能介绍": {
+        "message": "Introduction",
+        "description": "The label for category 功能介绍 in sidebar tutorialSidebar"
+    },
+    "sidebar.tutorialSidebar.category.功能介绍.link.generated-index.description": {
+        "message": "Introduction",
+        "description": "The generated-index page description for category 功能介绍 in sidebar tutorialSidebar"
+    },
+    "sidebar.tutorialSidebar.category.使用教程": {
+        "message": "Tutorial",
+        "description": "The label for category 使用教程 in sidebar tutorialSidebar"
+    },
+    "sidebar.tutorialSidebar.category.运行代码": {
+        "message": "Run the code",
+        "description": "The label for category 运行代码 in sidebar tutorialSidebar"
+    },
+    "sidebar.tutorialSidebar.category.自定义": {
+        "message": "Customization",
+        "description": "The label for category 自定义 in sidebar tutorialSidebar"
+    }
+}

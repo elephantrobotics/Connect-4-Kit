@@ -2,15 +2,10 @@
 sidebar_position: 1
 ---
 
-# 如何搭建Python开发环境
+# Setting Up Python Development Environment
 
-如果需要对代码进行自定义，你需要一个Python开发环境，本节介绍一下基于流行的Visual Studio Code的开发环境搭建。
+If you need to customize the code, you will need a Python development environment. This section will guide you through setting up the development environment using the popular Visual Studio Code.
 
-在开始搭建环境之前，首先需要确保你已经安装了Python，如果你还没有安装，请看[软件环境配置](/cp2-tutorial/sec1-software.md)
+Before setting up the environment, make sure you have installed Python. If you haven't, please refer to the[Software Environment Setup](/cp2-tutorial/sec1-software.md)
 
-先前往[VS Code官网](https://code.visualstudio.com/)下载对应的系统的安装包并安装
-
-安装完毕以后，打开VS Code
-
-点击左侧的`扩展`按钮
-![](attachment/2023-07-07-17-41-45.png)
+First, go to the[VS Code official website](https://code.visualstudio.com/)and download the installation package for your system. Install it after downloading.
