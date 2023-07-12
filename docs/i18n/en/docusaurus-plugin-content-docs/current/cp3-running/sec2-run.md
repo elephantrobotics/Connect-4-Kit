@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # Running the Program
 
-## Using the Graphical User Interface
+## Windows
 
 Open any terminal program in the project directory and enter the following command:
 
@@ -16,11 +16,10 @@ python app.py
 
 ![](attachment/2023-07-10-10-59-54.png)
 
-## Using the Command Line
+## Linux(Pi version)
 
-Open any terminal program in the project directory. In Ubuntu, you can right-click on a blank area in the folder and select "Open Terminal Here."
+Open any terminal program in the project directory and enter the following command:
 
 ```bash
-cd core
-python main.py
+python3.11 app.py
 ```

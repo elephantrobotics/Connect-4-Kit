@@ -4,7 +4,7 @@ sidebar_position: 2
 
 # 运行程序
 
-## 使用图形化界面
+## Windows系统
 
 在工程目录下打开任意终端程序，输入以下命令
 
@@ -16,9 +16,10 @@ python app.py
 
 ![](attachment/2023-07-07-15-46-24.png)
 
-## 使用命令行版本
+## Linux系统（PI版本）
+
+在工程目录下打开任意终端程序，输入以下命令
 
 ```bash
-cd core
-python main.py
+python3.11 app.py
 ```

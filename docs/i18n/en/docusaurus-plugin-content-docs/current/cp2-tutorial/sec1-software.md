@@ -4,6 +4,8 @@ sidebar_position: 1
 
 # Software Environment Preparation
 
+> 本教程是为M5连接PC准备的，如果使用PI版本的机械臂则无需准备软件环境，直接装配机器后参考[启动说明](/cp3-running/sec2-run.md)启动即可
+
 ## Python Installation
 
 Python is the main programming language used in this project and requires version 3.10 or above. Below are instructions on how to install and configure the environment on different platforms.
