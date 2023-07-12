@@ -44,8 +44,8 @@ class StateMachine:
         detector: ChessBoardDetector,
         camera: DummyCamera,
         agent: Agent,
-        context: AppSharedMem,
-        communicator: Communicator,
+        context: AppSharedMem = None,
+        communicator: Communicator = None,
     ):
         # Initializing class variables
         self.current_state: Union[State, None] = None

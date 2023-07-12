@@ -16,7 +16,7 @@ python app.py
 
 ![](attachment/2023-07-07-15-46-24.png)
 
-## 使用命令行
+## 使用命令行版本
 
 ```bash
 cd core
