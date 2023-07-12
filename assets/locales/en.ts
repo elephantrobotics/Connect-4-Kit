@@ -235,54 +235,100 @@
         <translation>Stop</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="284"/>
-        <location filename="../../layouts/app_page.py" line="287"/>
-        <location filename="../../layouts/app_page.py" line="395"/>
         <source>错误</source>
-        <translation>Error</translation>
+        <translation type="vanished">Error</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="284"/>
-        <location filename="../../layouts/app_page.py" line="377"/>
         <source>请先连接机械臂</source>
-        <translation>Please connect arm first.</translation>
+        <translation type="vanished">Please connect arm first.</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="287"/>
         <source>请先连接相机</source>
-        <translation>Please connect camera first.</translation>
+        <translation type="vanished">Please connect camera first.</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="316"/>
         <source>等待线程退出</source>
-        <translation>Waitting for threads to exit.</translation>
+        <translation type="vanished">Waitting for threads to exit.</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="350"/>
-        <location filename="../../layouts/app_page.py" line="367"/>
-        <location filename="../../layouts/app_page.py" line="377"/>
         <source>成功</source>
-        <translation>Success</translation>
+        <translation type="vanished">Success</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="350"/>
         <source>机械臂连接成功</source>
-        <translation>Arm connected.</translation>
+        <translation type="vanished">Arm connected.</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="367"/>
         <source>机械臂连接已关闭</source>
-        <translation>Arm released.</translation>
+        <translation type="vanished">Arm released.</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="395"/>
         <source>请先选择相机编号</source>
-        <translation>Please choose camera index first.</translation>
+        <translation type="vanished">Please choose camera index first.</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="406"/>
         <source>等待相机启动</source>
-        <translation>Waitting for camera to open.</translation>
+        <translation type="vanished">Waitting for camera to open.</translation>
+    </message>
+</context>
+<context>
+    <name>QObject</name>
+    <message>
+        <location filename="../../layouts/app_page.py" line="285"/>
+        <location filename="../../layouts/app_page.py" line="288"/>
+        <location filename="../../layouts/app_page.py" line="405"/>
+        <source>错误</source>
+        <translation type="unfinished">Error</translation>
+    </message>
+    <message>
+        <location filename="../../layouts/app_page.py" line="285"/>
+        <location filename="../../layouts/app_page.py" line="387"/>
+        <source>请先连接机械臂</source>
+        <translation type="unfinished">Please connect arm first.</translation>
+    </message>
+    <message>
+        <location filename="../../layouts/app_page.py" line="288"/>
+        <source>请先连接相机</source>
+        <translation type="unfinished">Please connect camera first.</translation>
+    </message>
+    <message>
+        <location filename="../../layouts/app_page.py" line="317"/>
+        <source>等待线程退出</source>
+        <translation type="unfinished">Waitting for threads to exit.</translation>
+    </message>
+    <message>
+        <location filename="../../layouts/app_page.py" line="360"/>
+        <location filename="../../layouts/app_page.py" line="377"/>
+        <location filename="../../layouts/app_page.py" line="387"/>
+        <source>成功</source>
+        <translation type="unfinished">Success</translation>
+    </message>
+    <message>
+        <location filename="../../layouts/app_page.py" line="360"/>
+        <source>机械臂连接成功</source>
+        <translation type="unfinished">Arm connected.</translation>
+    </message>
+    <message>
+        <location filename="../../layouts/app_page.py" line="377"/>
+        <source>机械臂连接已关闭</source>
+        <translation type="unfinished">Arm released.</translation>
+    </message>
+    <message>
+        <location filename="../../layouts/app_page.py" line="405"/>
+        <source>请先选择相机编号</source>
+        <translation type="unfinished">Please choose camera index first.</translation>
+    </message>
+    <message>
+        <location filename="../../layouts/app_page.py" line="416"/>
+        <source>等待相机启动</source>
+        <translation type="unfinished">Waitting for camera to open.</translation>
+    </message>
+</context>
+<context>
+    <name>self._widget</name>
+    <message>
+        <source>成功</source>
+        <translation type="obsolete">Success</translation>
     </message>
 </context>
 </TS>

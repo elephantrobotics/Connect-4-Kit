@@ -282,10 +282,10 @@ class AppPage:
         def start_game():
             logger.debug("Start game button pressed.")
             if self.shared_memory.arm is None:
-                QMessageBox.warning(None, self.tr("错误"), self.tr("请先连接机械臂"))
+                QMessageBox.warning(None, QObject.tr("错误"), QObject.tr("请先连接机械臂"))
                 return
             if self.cam_thread is None:
-                QMessageBox.warning(None, self.tr("错误"), self.tr("请先连接相机"))
+                QMessageBox.warning(None, QObject.tr("错误"), QObject.tr("请先连接相机"))
                 return
 
             if self.game_thread is not None:
@@ -314,7 +314,7 @@ class AppPage:
             self.shared_memory.aruco_detect_frame = None
 
             # wait for threads to exit
-            dialog = self.loading_dialog(self.tr("等待线程退出"))
+            dialog = self.loading_dialog(QObject.tr("等待线程退出"))
             dialog.show()
 
             self.game_thread.join()
@@ -357,7 +357,7 @@ class AppPage:
 
             if com_port.startswith("COM") or com_port.startswith("/dev/ttyAMA"):
                 self.shared_memory.arm = ArmInterface(com_port, baud)
-                QMessageBox.information(None, self.tr("成功"), self.tr("机械臂连接成功"))
+                QMessageBox.information(None, QObject.tr("成功"), QObject.tr("机械臂连接成功"))
                 logger.debug(f"Serial port {com_port} connected.")
 
             # TODO : add linux com port
@@ -374,7 +374,7 @@ class AppPage:
 
             del self.shared_memory.arm
             self.shared_memory.arm = None
-            QMessageBox.information(None, self.tr("成功"), self.tr("机械臂连接已关闭"))
+            QMessageBox.information(None, QObject.tr("成功"), QObject.tr("机械臂连接已关闭"))
             logger.debug("Arm released.")
 
         self.ui.btn_stop_com.clicked.connect(release_arm)
@@ -384,7 +384,7 @@ class AppPage:
             logger.debug("Drop piece button pressed.")
 
             if self.shared_memory.arm == None:
-                QMessageBox.warning(None, self.tr("成功"), self.tr("请先连接机械臂"))
+                QMessageBox.warning(None, QObject.tr("成功"), QObject.tr("请先连接机械臂"))
 
             self.shared_memory.arm.drop_piece()
 
@@ -402,7 +402,7 @@ class AppPage:
     def open_camera(self):
         # open before specify cam index
         if self.shared_memory.curr_cam_index is None:
-            QMessageBox.warning(None, self.tr("错误"), self.tr("请先选择相机编号"))
+            QMessageBox.warning(None, QObject.tr("错误"), QObject.tr("请先选择相机编号"))
             return
 
         cam_index = self.shared_memory.curr_cam_index
@@ -413,7 +413,7 @@ class AppPage:
         if self.cam_thread is not None:
             self.cam_thread.running_flag = False
 
-        dialog = self.loading_dialog(self.tr("等待相机启动"))
+        dialog = self.loading_dialog(QObject.tr("等待相机启动"))
         dialog.show()
 
         self.cam_thread = CameraThread(
@@ -507,4 +507,7 @@ class AppPage:
         return dialog
 
     def tr(self, text):
-        return self._widget.tr(text)
+        # a = self._widget.tr("成功")
+        a = QObject.tr(text)
+        # a = QObject.tr("成功")
+        return a

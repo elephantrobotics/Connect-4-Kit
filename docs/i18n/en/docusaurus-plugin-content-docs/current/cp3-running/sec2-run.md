@@ -14,7 +14,7 @@ Open any terminal program in the project directory and enter the following comma
 python app.py
 ```
 
-![](attachment/2023-07-10-10-59-54.png)
+![](attachment/2023-07-12-18-39-07.png)
 
 ## Linux(Pi version)
 

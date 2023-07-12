@@ -4,7 +4,7 @@ sidebar_position: 1
 
 # Software Environment Preparation
 
-> 本教程是为M5连接PC准备的，如果使用PI版本的机械臂则无需准备软件环境，直接装配机器后参考[启动说明](/cp3-running/sec2-run.md)启动即可
+> Pi version's system come with necessary python environment, you only need to download the latest source code。If you are using Pi version, you can start from Setup project.
 
 ## Python Installation
 
