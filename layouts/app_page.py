@@ -14,6 +14,7 @@ import numpy as np
 import threading
 from typing import *
 import serial
+import platform
 
 from PySide6 import QtCore
 from PySide6.QtCore import Signal, QObject, Slot, Qt
@@ -345,8 +346,17 @@ class AppPage:
             if com_port is None:
                 return
 
-            if com_port.startswith("COM"):
-                self.shared_memory.arm = ArmInterface(com_port, 115200)
+            system_name = platform.system().lower()
+            if system_name == "windows":
+                baud = 115200
+            elif system_name == "linux":
+                baud = 1000000
+            else:
+                logger.error(f"Platform {system_name} not supported")
+                raise Exception("Platform {system_name} not supported")
+
+            if com_port.startswith("COM") or com_port.startswith("/dev/ttyAMA"):
+                self.shared_memory.arm = ArmInterface(com_port, baud)
                 QMessageBox.information(None, self.tr("成功"), self.tr("机械臂连接成功"))
                 logger.debug(f"Serial port {com_port} connected.")
 
