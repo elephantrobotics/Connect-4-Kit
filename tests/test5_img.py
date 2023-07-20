@@ -14,7 +14,7 @@ arm = ArmInterface(com_port, 115200)
 arm.mc.send_angles(arm.angle_table["observe"], arm.ARM_SPEED)
 
 # change it in according to your case
-cam_index = 0
+cam_index = 1
 
 # Create a camera object
 camera = ArmCamera(cam_index)
