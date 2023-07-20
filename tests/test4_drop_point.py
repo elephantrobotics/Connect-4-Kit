@@ -4,8 +4,9 @@
 # @version :
 
 import sys
+import os
 
-sys.path.append("..")
+sys.path.append(os.getcwd())
 
 import time
 from core.ArmInterface import ArmInterface
