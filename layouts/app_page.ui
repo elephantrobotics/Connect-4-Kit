@@ -596,7 +596,7 @@ border-style:outset;</string>
            </widget>
           </item>
           <item alignment="Qt::AlignRight|Qt::AlignVCenter">
-           <widget class="QCheckBox" name="checkBox">
+           <widget class="QCheckBox" name="check_robot_first">
             <property name="sizePolicy">
              <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
               <horstretch>0</horstretch>

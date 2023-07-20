@@ -239,6 +239,14 @@ class AppPage:
         # Connect signal to update video GUI
         self.signals.cam_frame_update.connect(self.update_image)
 
+        def check_robot_first(state):
+            if state:
+                self.shared_memory.robot_first = True
+            else:
+                self.shared_memory.robot_first = False
+
+        self.ui.check_robot_first.stateChanged.connect(check_robot_first)
+
         # Function to turn on/off video0 feed
         def switch_video0(status):
             self.shared_memory.video_feed0_on = status
@@ -503,6 +511,8 @@ class AppPage:
         layout.addWidget(QLabel(text))
         dialog.setLayout(layout)
         dialog.setWindowTitle(" ")
+        # Disable close button
+        dialog.setWindowFlag(Qt.WindowCloseButtonHint, False)
 
         return dialog
 

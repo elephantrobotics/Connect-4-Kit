@@ -1,6 +1,7 @@
 import sys
+import os
 
-sys.path.append("..")
+sys.path.append(os.getcwd())
 
 from core.ArmCamera import ArmCamera
 from core.Detection import ChessBoardDetector
