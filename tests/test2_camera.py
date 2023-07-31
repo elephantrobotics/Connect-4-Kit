@@ -1,8 +1,3 @@
-# @author  : Zhu ZhenDong
-# @time    : 2023-07-06 10-27-06
-# @function:
-# @version :
-
 import cv2
 import time
 

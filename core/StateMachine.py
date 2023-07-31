@@ -169,11 +169,13 @@ class ObserveState(State):
             frame = camera.get_frame()
             if frame is None:
                 self.state_machine.context.color_detect_frame = None
+                time.sleep(1 / FPS)
                 continue
 
             rectified_frame = detector.rectify_frame(frame)
             if rectified_frame is None:
                 self.state_machine.context.color_detect_frame = None
+                time.sleep(1 / FPS)
                 continue
 
             self.state_machine.context.color_detect_frame = detector.visu_chessboard(
@@ -196,6 +198,7 @@ class ObserveState(State):
 
         if board.done:
             self.next_state_cmd = OverState.DEFAULT_CMD
+            time.sleep(0.1)
             return
 
         agent = self.state_machine.agent
@@ -236,6 +239,7 @@ class MovingChessPieceState(State):
         logger.info("DEBUG: Now board status:")
 
         stable_board.update()
+        
         if stable_board.done:
             self.next_state_cmd = OverState.DEFAULT_CMD
         else:
@@ -255,6 +259,7 @@ class WaitingPlayerState(State):
         if DEBUG:
             logger.info(f"Entering state : {self.TAG}")
             logger.info("INFO: Waiting for grid change.")
+            
         self.arm.recovery()
         self.arm.observe_posture()
         time.sleep(5)
@@ -268,11 +273,13 @@ class WaitingPlayerState(State):
             frame = camera.get_frame()
             if frame is None:
                 self.state_machine.context.color_detect_frame = None
+                time.sleep(1 / FPS)
                 continue
 
             rectified_frame = detector.rectify_frame(frame)
             if rectified_frame is None:
                 self.state_machine.context.color_detect_frame = None
+                time.sleep(1 / FPS)
                 continue
 
             self.state_machine.context.color_detect_frame = detector.visu_chessboard(

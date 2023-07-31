@@ -21,13 +21,13 @@ class ArmInterface:
 
         # Define chess table for different positions
         self.chess_table = [None for _ in range(7)]
-        self.chess_table[6] = [-16.69, -40.25, -73.21, 104.41, 18.19, 45.43]
-        self.chess_table[5] = [-8.87, -34.27, -84.46, 110.21, 10.19, 46.23]  # 需要向前一点
-        self.chess_table[4] = [1.58, -27.33, -95.09, 114.43, -0.26, 47.81]
-        self.chess_table[3] = [14.23, -22.58, -102.48, 116.89, -12.74, 49.21]
-        self.chess_table[2] = [26.89, -21.7, -103.79, 116.98, -25.57, 50.8]
-        self.chess_table[1] = [38.49, -22.76, -102.39, 115.57, -36.12, 52.47]  # 向后
-        self.chess_table[0] = [48.33, -25.13, -95.88, 111.79, -46.58, 54.22]  # 向后
+        self.chess_table[6] = [-23.11, -49.92, -58.35, 96.85, 29.0, 45.08]
+        self.chess_table[5] = [-13.97, -39.37, -77.6, 105.82, 19.86, 46.05]
+        self.chess_table[4] = [-3.16, -31.64, -90.87, 112.5, 9.22, 48.07]
+        self.chess_table[3] = [9.84, -25.48, -101.07, 115.83, -4.39, 49.92]
+        self.chess_table[2] = [21.26, -22.93, -106.17, 117.5, -17.57, 50.18]
+        self.chess_table[1] = [33.57, -23.9, -103.88, 116.63, -29.09, 56.86]
+        self.chess_table[0] = [45.96, -26.45, -98.87, 111.79, -45.08, 59.76]
 
         # Define retry count
         self.retry = 5
@@ -36,7 +36,7 @@ class ArmInterface:
         self.mc = MyCobot(port, baudrate, timeout=0.5, debug=True)
 
         # counter mycobot module contaminating the root logger
-        logging.getLogger().setLevel(logging.CRITICAL)
+        # logging.getLogger().setLevel(logging.CRITICAL)
         self.mc.log.setLevel(logging.DEBUG)
         self.mc.log.propagate = False
 
@@ -97,7 +97,7 @@ class ArmInterface:
         if n is not None and 0 <= n <= 6:
             logger.debug(f"Move to chess position {n}, angles {self.chess_table[n]}")
             self.send_angles(self.chess_table[n], self.ARM_SPEED)
-            time.sleep(2)
+            time.sleep(3)
         else:
             self.pump_off()
             raise Exception(
@@ -119,3 +119,4 @@ class ArmInterface:
     def drop_piece(self):
         logger.debug(f"Dropping piece at {self.mc.get_angles()}")
         self.mc.set_gservo_round(12)
+        time.sleep(3)

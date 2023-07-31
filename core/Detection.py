@@ -23,14 +23,14 @@ class ChessBoardDetector:
         "yellow": (np.array([15, 100, 150]), np.array([26, 255, 255])),
     }
 
-    default_hough_params = {
-        "method": cv2.HOUGH_GRADIENT_ALT,
-        "dp": 1.5,
-        "minDist": 20,
-        "param2": 0.6,
-        "minRadius": 15,
-        "maxRadius": 40,
-    }
+    # default_hough_params = {
+    #     "method": cv2.HOUGH_GRADIENT_ALT,
+    #     "dp": 1.5,
+    #     "minDist": 20,
+    #     "param2": 0.6,
+    #     "minRadius": 15,
+    #     "maxRadius": 40,
+    # }
 
     def __init__(self, mtx, dist):
         # Image grid

@@ -19,6 +19,10 @@ class ArucoDetector:
         self.marker_size = marker_size
         aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
         parameters = cv2.aruco.DetectorParameters()
+        parameters.adaptiveThreshWinSizeMin = 5
+        parameters.adaptiveThreshWinSizeMax = 30
+        parameters.adaptiveThreshWinSizeStep = 4
+        parameters.minDistanceToBorder = 1
         self.detector = cv2.aruco.ArucoDetector(aruco_dict, parameters)
         
     # Method to estimate pose of single markers

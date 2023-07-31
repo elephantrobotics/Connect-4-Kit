@@ -1,9 +1,3 @@
-# @author  : Zhu ZhenDong
-# @time    : 2023-06-15 11-41-38
-# @function: Program main entrance
-# @version : 0.1
-
-# Importing necessary libraries and modules
 from typing import *
 import sys
 import logging

@@ -848,13 +848,24 @@ class Ui_AppPage(object):
         self.verticalLayout_7.setObjectName(u"verticalLayout_7")
         self.btn_start_game = QPushButton(self.frame_10)
         self.btn_start_game.setObjectName(u"btn_start_game")
+        self.btn_start_game.setEnabled(True)
         sizePolicy2.setHeightForWidth(self.btn_start_game.sizePolicy().hasHeightForWidth())
         self.btn_start_game.setSizePolicy(sizePolicy2)
-        self.btn_start_game.setStyleSheet(u"background: rgb(18, 147, 211);\n"
+        self.btn_start_game.setStyleSheet(u"QPushButton:enabled{\n"
+"background: rgb(18, 147, 211);\n"
 "color: rgb(255,255,255);\n"
 "border-radius:10px;\n"
 "border-style:outset;\n"
-"font: 700 10pt \"Microsoft YaHei UI\";")
+"font: 700 10pt \"Microsoft YaHei UI\";\n"
+"}\n"
+"\n"
+"QPushButton:disabled{\n"
+"background: rgb(211, 211, 211);\n"
+"color: rgb(255,255,255);\n"
+"border-radius:10px;\n"
+"border-style:outset;\n"
+"font: 700 10pt \"Microsoft YaHei UI\";\n"
+"}")
 
         self.verticalLayout_7.addWidget(self.btn_start_game)
 
@@ -862,11 +873,21 @@ class Ui_AppPage(object):
         self.btn_stop_game.setObjectName(u"btn_stop_game")
         sizePolicy2.setHeightForWidth(self.btn_stop_game.sizePolicy().hasHeightForWidth())
         self.btn_stop_game.setSizePolicy(sizePolicy2)
-        self.btn_stop_game.setStyleSheet(u"background: rgb(221, 83, 52);\n"
+        self.btn_stop_game.setStyleSheet(u"QPushButton:enabled{\n"
+"background: rgb(221, 83, 52);\n"
 "color: rgb(255,255,255);\n"
 "border-radius:10px;\n"
 "border-style:outset;\n"
-"font: 700 10pt \"Microsoft YaHei UI\";")
+"font: 700 10pt \"Microsoft YaHei UI\";\n"
+"}\n"
+"\n"
+"QPushButton:disabled{\n"
+"background: rgb(211, 211, 211);\n"
+"color: rgb(255,255,255);\n"
+"border-radius:10px;\n"
+"border-style:outset;\n"
+"font: 700 10pt \"Microsoft YaHei UI\";\n"
+"}")
 
         self.verticalLayout_7.addWidget(self.btn_stop_game)
 

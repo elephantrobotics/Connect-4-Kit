@@ -306,6 +306,7 @@ class AppPage:
             self.game_thread.start()
 
             logger.debug("Game stared.")
+            self.ui.btn_start_game.setDisabled(True)
 
         self.ui.btn_start_game.clicked.connect(start_game)
 
@@ -316,18 +317,16 @@ class AppPage:
             if self.game_thread is None:
                 return
 
-            self.shared_memory.game_running = False
-            self.shared_memory.curr_frame = None
-            self.shared_memory.color_detect_frame = None
-            self.shared_memory.aruco_detect_frame = None
-
             # wait for threads to exit
             dialog = self.loading_dialog(QObject.tr("等待线程退出"))
             dialog.show()
 
+            self.shared_memory.game_running = False
             self.game_thread.join()
 
-            dialog.close()
+            self.shared_memory.curr_frame = None
+            self.shared_memory.color_detect_frame = None
+            self.shared_memory.aruco_detect_frame = None
 
             del self.game_thread
             self.game_thread = None
@@ -337,6 +336,11 @@ class AppPage:
             self.shared_memory.color_detect_frame = None
             self.shared_memory.aruco_detect_frame = None
             self.ui.label_video_feed2.setPixmap(QPixmap())
+
+            # allow to use start game button
+            self.ui.btn_start_game.setEnabled(True)
+
+            dialog.close()
             logger.debug("Game stopped.")
 
         self.ui.btn_stop_game.clicked.connect(stop_game)
@@ -513,6 +517,7 @@ class AppPage:
         dialog.setWindowTitle(" ")
         # Disable close button
         dialog.setWindowFlag(Qt.WindowCloseButtonHint, False)
+        self._widget.update()
 
         return dialog
 

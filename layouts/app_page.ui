@@ -1324,6 +1324,9 @@ background: rgb(213, 213, 213);</string>
            </property>
            <item>
             <widget class="QPushButton" name="btn_start_game">
+             <property name="enabled">
+              <bool>true</bool>
+             </property>
              <property name="sizePolicy">
               <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
                <horstretch>0</horstretch>
@@ -1331,11 +1334,21 @@ background: rgb(213, 213, 213);</string>
               </sizepolicy>
              </property>
              <property name="styleSheet">
-              <string notr="true">background: rgb(18, 147, 211);
+              <string notr="true">QPushButton:enabled{
+background: rgb(18, 147, 211);
 color: rgb(255,255,255);
 border-radius:10px;
 border-style:outset;
-font: 700 10pt &quot;Microsoft YaHei UI&quot;;</string>
+font: 700 10pt &quot;Microsoft YaHei UI&quot;;
+}
+
+QPushButton:disabled{
+background: rgb(211, 211, 211);
+color: rgb(255,255,255);
+border-radius:10px;
+border-style:outset;
+font: 700 10pt &quot;Microsoft YaHei UI&quot;;
+}</string>
              </property>
              <property name="text">
               <string>开始对弈</string>
@@ -1351,11 +1364,21 @@ font: 700 10pt &quot;Microsoft YaHei UI&quot;;</string>
               </sizepolicy>
              </property>
              <property name="styleSheet">
-              <string notr="true">background: rgb(221, 83, 52);
+              <string notr="true">QPushButton:enabled{
+background: rgb(221, 83, 52);
 color: rgb(255,255,255);
 border-radius:10px;
 border-style:outset;
-font: 700 10pt &quot;Microsoft YaHei UI&quot;;</string>
+font: 700 10pt &quot;Microsoft YaHei UI&quot;;
+}
+
+QPushButton:disabled{
+background: rgb(211, 211, 211);
+color: rgb(255,255,255);
+border-radius:10px;
+border-style:outset;
+font: 700 10pt &quot;Microsoft YaHei UI&quot;;
+}</string>
              </property>
              <property name="text">
               <string>结束对弈</string>
