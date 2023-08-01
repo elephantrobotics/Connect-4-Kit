@@ -60,6 +60,7 @@ class StateMachine:
         self.agent = agent
         self.context: AppSharedMem = context
         self.commu: Communicator = communicator
+        self.winner = None
 
     # Method to move to the next state
     def next_state(self):
@@ -164,7 +165,7 @@ class ObserveState(State):
 
         logger.info("INFO: Starting recognition")
         # 循环读取相机帧
-        while True:
+        while self.state_machine.context.game_running:
             camera.update()
             frame = camera.get_frame()
             if frame is None:
@@ -239,7 +240,7 @@ class MovingChessPieceState(State):
         logger.info("DEBUG: Now board status:")
 
         stable_board.update()
-        
+
         if stable_board.done:
             self.next_state_cmd = OverState.DEFAULT_CMD
         else:
@@ -259,16 +260,16 @@ class WaitingPlayerState(State):
         if DEBUG:
             logger.info(f"Entering state : {self.TAG}")
             logger.info("INFO: Waiting for grid change.")
-            
+
         self.arm.recovery()
         self.arm.observe_posture()
-        time.sleep(5)
+        time.sleep(3)
 
         camera = self.state_machine.camera
         detector = self.state_machine.detector
 
         # 循环读取相机帧
-        while True:
+        while self.state_machine.context.game_running:
             camera.update()
             frame = camera.get_frame()
             if frame is None:
@@ -324,10 +325,11 @@ class OverState(State):
         self.state_machine.arm.recovery()
         board = self.state_machine.detector.stable_board
         if board.winner == 1:
-            winner = "RED"
+            self.state_machine.winner = "RED"
+
         else:
-            winner = "YELLOW"
-        logger.info(f"Winner is {winner}")
+            self.state_machine.winner = "YELLOW"
+        logger.info(f"Winner is {self.state_machine.winner}")
 
 
 # Defining the Link class

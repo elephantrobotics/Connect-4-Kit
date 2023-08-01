@@ -4,8 +4,6 @@
 # @version : 1.0
 
 # Importing necessary libraries and modules
-from collections.abc import Callable, Iterable, Mapping
-import logging
 import time
 import sys
 from typing import Any
@@ -51,6 +49,8 @@ class Communicator(QObject):
     load_ui = Signal(str)
     curr_cam_index = Signal(int)
     cam_frame_update = Signal()
+    info_msgbox = Signal(str)
+    stop_game = Signal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -59,6 +59,8 @@ class Communicator(QObject):
 # Class for shared memory across the application
 class AppSharedMem:
     def __init__(self):
+        self.ui_page: AppPage = None
+
         # camera section
         self.camera_on_flag: bool = False
         self.curr_cam_index: Union[None, int] = None
@@ -174,6 +176,13 @@ class GameThread(threading.Thread):
         except Exception as e:
             print(sys.exc_info())
 
+        # exit by game over
+        if self.fsm.winner is not None:
+            self.commu.stop_game.emit()
+            self.commu.info_msgbox.emit(f"Winner is {self.fsm.winner}")
+        else:
+            self.context.arm.recovery()
+
 
 class SerialComboBox(QComboBox):
     # _res = Signal(dict)
@@ -203,6 +212,7 @@ class AppPage:
         self.cam_thread: Union[CameraThread, None] = None
         self.game_thread: Union[GameThread, None] = None
 
+        self.shared_memory.ui_page = self
         logger.debug("App Page created.")
 
     # Initialize Aruco detector
@@ -310,40 +320,7 @@ class AppPage:
 
         self.ui.btn_start_game.clicked.connect(start_game)
 
-        # Function to stop game
-        @Slot()
-        def stop_game():
-            logger.info("Stop game button pressed.")
-            if self.game_thread is None:
-                return
-
-            # wait for threads to exit
-            dialog = self.loading_dialog(QObject.tr("等待线程退出"))
-            dialog.show()
-
-            self.shared_memory.game_running = False
-            self.game_thread.join()
-
-            self.shared_memory.curr_frame = None
-            self.shared_memory.color_detect_frame = None
-            self.shared_memory.aruco_detect_frame = None
-
-            del self.game_thread
-            self.game_thread = None
-
-            # clear ui
-            self.shared_memory.curr_frame = None
-            self.shared_memory.color_detect_frame = None
-            self.shared_memory.aruco_detect_frame = None
-            self.ui.label_video_feed2.setPixmap(QPixmap())
-
-            # allow to use start game button
-            self.ui.btn_start_game.setEnabled(True)
-
-            dialog.close()
-            logger.debug("Game stopped.")
-
-        self.ui.btn_stop_game.clicked.connect(stop_game)
+        self.ui.btn_stop_game.clicked.connect(self.stop_game)
 
         # dynamically replace serial port select combox
         self.ui.combo_com_selection.deleteLater()
@@ -353,6 +330,10 @@ class AppPage:
         @Slot()
         def connect_arm():
             logger.debug("Connect arm button pressed.")
+
+            if self.shared_memory.arm is not None:
+                logger.info("Arm already connected. connect arm signal ignored.")
+                return
 
             com_port = self.ui.combo_com_selection.currentText()
             if com_port is None:
@@ -376,6 +357,7 @@ class AppPage:
 
         self.ui.btn_connect_com.clicked.connect(connect_arm)
 
+        # btn release arm
         @Slot()
         def release_arm():
             logger.debug("Release arm button pressed.")
@@ -391,6 +373,7 @@ class AppPage:
 
         self.ui.btn_stop_com.clicked.connect(release_arm)
 
+        # btn gservo
         @Slot()
         def btn_gservo():
             logger.debug("Drop piece button pressed.")
@@ -401,6 +384,10 @@ class AppPage:
             self.shared_memory.arm.drop_piece()
 
         self.ui.btn_gservo.clicked.connect(btn_gservo)
+
+        # connect load dialog signal
+        self.signals.info_msgbox.connect(self.info_messagebox)
+        self.signals.stop_game.connect(self.stop_game)
 
     # Function to setup UI
     def setup_ui(self) -> QWidget:
@@ -452,6 +439,40 @@ class AppPage:
 
         self.ui.combo_camera_selection.setEnabled(True)
         self._widget.update()
+
+    # Function to stop game
+    @Slot()
+    def stop_game(self):
+        logger.info("Stop game button pressed.")
+        if self.game_thread is None:
+            logger.info("Game is not started yet. ignore stop game signal.")
+            return
+
+        # wait for threads to exit
+        dialog = self.loading_dialog(QObject.tr("等待线程退出"))
+        dialog.show()
+
+        self.shared_memory.game_running = False
+        self.game_thread.join()
+
+        self.shared_memory.curr_frame = None
+        self.shared_memory.color_detect_frame = None
+        self.shared_memory.aruco_detect_frame = None
+
+        del self.game_thread
+        self.game_thread = None
+
+        # clear ui
+        self.shared_memory.curr_frame = None
+        self.shared_memory.color_detect_frame = None
+        self.shared_memory.aruco_detect_frame = None
+        self.ui.label_video_feed2.setPixmap(QPixmap())
+
+        # allow to use start game button
+        self.ui.btn_start_game.setEnabled(True)
+
+        dialog.close()
+        logger.debug("Game stopped.")
 
     # Function to update image
     @Slot()
@@ -507,6 +528,10 @@ class AppPage:
     # Function to terminate UI
     def terminate_ui(self) -> None:
         return
+
+    @Slot()
+    def info_messagebox(self, text):
+        QMessageBox.information(self._widget, "Info", text)
 
     # Utility
     def loading_dialog(self, text):

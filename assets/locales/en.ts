@@ -225,12 +225,12 @@
         <translation type="obsolete">Pump Test</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.ui" line="1341"/>
+        <location filename="../../layouts/app_page.ui" line="1354"/>
         <source>开始对弈</source>
         <translation>Start</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.ui" line="1361"/>
+        <location filename="../../layouts/app_page.ui" line="1384"/>
         <source>结束对弈</source>
         <translation>Stop</translation>
     </message>
@@ -274,54 +274,54 @@
 <context>
     <name>QObject</name>
     <message>
-        <location filename="../../layouts/app_page.py" line="285"/>
-        <location filename="../../layouts/app_page.py" line="288"/>
-        <location filename="../../layouts/app_page.py" line="405"/>
+        <location filename="../../layouts/app_page.py" line="303"/>
+        <location filename="../../layouts/app_page.py" line="306"/>
+        <location filename="../../layouts/app_page.py" line="400"/>
         <source>错误</source>
-        <translation type="unfinished">Error</translation>
+        <translation>Error</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="285"/>
-        <location filename="../../layouts/app_page.py" line="387"/>
+        <location filename="../../layouts/app_page.py" line="303"/>
+        <location filename="../../layouts/app_page.py" line="378"/>
         <source>请先连接机械臂</source>
-        <translation type="unfinished">Please connect arm first.</translation>
+        <translation>Please connect arm first</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="288"/>
+        <location filename="../../layouts/app_page.py" line="306"/>
         <source>请先连接相机</source>
-        <translation type="unfinished">Please connect camera first.</translation>
+        <translation>Please connect camera first</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="317"/>
+        <location filename="../../layouts/app_page.py" line="448"/>
         <source>等待线程退出</source>
-        <translation type="unfinished">Waitting for threads to exit.</translation>
+        <translation>Waiting for threads to exit</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="360"/>
-        <location filename="../../layouts/app_page.py" line="377"/>
-        <location filename="../../layouts/app_page.py" line="387"/>
+        <location filename="../../layouts/app_page.py" line="349"/>
+        <location filename="../../layouts/app_page.py" line="367"/>
+        <location filename="../../layouts/app_page.py" line="378"/>
         <source>成功</source>
-        <translation type="unfinished">Success</translation>
+        <translation>Success</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="360"/>
+        <location filename="../../layouts/app_page.py" line="349"/>
         <source>机械臂连接成功</source>
-        <translation type="unfinished">Arm connected.</translation>
+        <translation>Arm connected</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="377"/>
+        <location filename="../../layouts/app_page.py" line="367"/>
         <source>机械臂连接已关闭</source>
-        <translation type="unfinished">Arm released.</translation>
+        <translation>Arm released</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="405"/>
+        <location filename="../../layouts/app_page.py" line="400"/>
         <source>请先选择相机编号</source>
-        <translation type="unfinished">Please choose camera index first.</translation>
+        <translation>Please choose camera index first</translation>
     </message>
     <message>
-        <location filename="../../layouts/app_page.py" line="416"/>
+        <location filename="../../layouts/app_page.py" line="411"/>
         <source>等待相机启动</source>
-        <translation type="unfinished">Waitting for camera to open.</translation>
+        <translation>Waitting for camera to open</translation>
     </message>
 </context>
 <context>
