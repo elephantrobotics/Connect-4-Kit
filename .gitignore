@@ -1,5 +1,4 @@
 __pycache__
 venv
-logs/*.log
 tmp
 .vscode

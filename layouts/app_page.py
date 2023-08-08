@@ -1,8 +1,3 @@
-# @author  : Zhu ZhenDong
-# @time    : 2023-06-15 11-41-42
-# @function: This script contains the main classes and functions for the application.
-# @version : 1.0
-
 # Importing necessary libraries and modules
 import time
 import sys
