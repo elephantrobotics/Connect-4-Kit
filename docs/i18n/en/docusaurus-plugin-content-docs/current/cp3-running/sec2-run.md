@@ -4,6 +4,12 @@ sidebar_position: 2
 
 # Running the Program
 
+## Before you run
+
+This product utilizes pure optical recognition. Therefore, please avoid wearing red or yellow clothing as much as possible, so as not to affect the robot's judgment. For the sake of stability, please also try to keep your arms out of the camera's field of view.
+
+Lighting conditions may have an impact on the recognition of QR codes. Before operation, be sure to first conduct the "Image Capture Point Test." Once you've debugged and achieved stable QR code recognition, you can proceed.
+
 ## Windows
 
 Open any terminal program in the project directory and enter the following command:

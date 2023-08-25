@@ -214,7 +214,7 @@ class AppPage:
     def init_aruco_detector(self):
         camera_params = np.load("libs/normal_cam_params.npz")
         mtx, dist = camera_params["mtx"], camera_params["dist"]
-        MARKER_SIZE = 22
+        MARKER_SIZE = 15
         self.aruco_detector = ArucoDetector(mtx, dist, MARKER_SIZE)
         logger.debug("Aruco detector initialized.")
 

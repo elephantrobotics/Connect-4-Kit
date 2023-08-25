@@ -19,7 +19,7 @@ class ChessBoardDetector:
 
     HSV_DIST = {
         "redA": (np.array([0, 120, 50]), np.array([3, 255, 255])),
-        "redB": (np.array([176, 120, 50]), np.array([179, 255, 255])),
+        "redB": (np.array([170, 100, 50]), np.array([179, 255, 255])),
         "yellow": (np.array([15, 100, 150]), np.array([26, 255, 255])),
     }
 
