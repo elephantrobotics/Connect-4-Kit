@@ -9,5 +9,5 @@ robot.send_angles([0, 0, 0, 0, 0, 45], 50)
 time.sleep(5)
 
 for i in range(5):
-    robot.set_gservo_round(12)
+    robot.move_round()
     time.sleep(1)

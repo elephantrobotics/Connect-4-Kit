@@ -8,9 +8,9 @@ import ReactPlayer from "react-player"
 
 ## Robot Testing
 
-Navigate to the tests directory and open the terminal here. Enter python test1_robot.py in the terminal.
+Open the terminal in root directory. Enter `python .\tests\test1_robot.py` in the terminal.
 
-![](attachment/2023-07-06-14-55-35.png)
+![](attachment/2023-08-31-11-18-54.png)
 
 Follow the prompt to input the serial port for connecting to the robot (enter the corresponding index, e.g., 0 in the above example).
 
@@ -18,11 +18,13 @@ Observe the movement of the robot. If all 6 axes show changes, it indicates that
 
 ## Camera Testing
 
-Navigate to the `tests` directory and open the terminal here. Enter `python test2_camera.py` in the terminal.
+Open the terminal in root directory. Enter `python .\tests\test2_camera.py` in the terminal.
+
+If the camera has no image, you can try modifying the `cam_index` in `test2_camera.py`. You can attempt numbers like `0, 1, 2, 3`, etc.
 
 Observe if the camera image is clear. If the image is blurry, consider cleaning the lens.
 
-![](attachment/2023-07-07-16-38-52.png)
+![](attachment/2023-08-31-11-20-35.png)
 
 ## Chess Trigger Testing
 
@@ -31,7 +33,7 @@ The chess trigger is a special structure fixed to the end of the robotic arm. To
 
 <ReactPlayer playing controls url="/docs/connect-4/videos/test3.mp4" />
 
-Navigate to the `tests` directory and open the terminal here. Enter `python test3_trigger.py` in the terminal.
+Open the terminal in root directory. Enter `python .\tests\test3_tigger.py` in the terminal.
 
 Observe if the chess trigger can push the chess pieces out.
 
@@ -39,11 +41,15 @@ Observe if the chess trigger can push the chess pieces out.
 
 This test requires the chessboard and robotic arm to be fully installed. The robotic arm will attempt to visit all the points in order. You need to observe the accuracy of the robotic arm reaching each point.
 
-Navigate to the `tests` directory and open the terminal here. Enter `python test4_drop_point.py` in the terminal.
+Open the terminal in root directory. Enter `python .\tests\test4_drop_point.py` in the terminal.
+
+If it doesn't meet your expectations, you can manually modify the values in `self.chess_table` within `core\ArmInterface.py`. You can use software like [myBlockly](https://www.elephantrobotics.com/download/) to assist with the operation.
 
 ## Image Capture Point Testing
 
 In this test, the robotic arm will automatically move to the observation position. If the QR codes and the relative position of the robotic arm are correct, you will see another window with only the chessboard.
 ![](attachment/2023-07-07-15-42-21.png)
 
-Navigate to the `tests` directory and open the terminal here. Enter `python test5_img.py` in the terminal.
+Navigate to the `tests` directory and open the terminal here. Enter `python .\tests\test5_img.py` in the terminal.
+
+If the camera has no image, you can try modifying the `cam_index` in `test5_img.py`. You can attempt numbers like `0, 1, 2, 3`, etc.

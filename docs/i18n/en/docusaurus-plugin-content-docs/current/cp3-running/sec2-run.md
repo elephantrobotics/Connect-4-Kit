@@ -6,9 +6,11 @@ sidebar_position: 2
 
 ## Before you run
 
-This product utilizes pure optical recognition. Therefore, please avoid wearing red or yellow clothing as much as possible, so as not to affect the robot's judgment. For the sake of stability, please also try to keep your arms out of the camera's field of view.
+1. This product relies on pure optical recognition. Please ensure that within the visible range through the holes of the chessboard, there are no red or yellow objects present. (For example, avoid wearing red or yellow clothes; do not stack game pieces on the table, place them inside the piece container; try to keep your arms outside the recognition area, etc.)
 
-Lighting conditions may have an impact on the recognition of QR codes. Before operation, be sure to first conduct the "Image Capture Point Test." Once you've debugged and achieved stable QR code recognition, you can proceed.
+2. Lighting conditions can impact the recognition of QR codes. Before running, be sure to perform the "Image Collection Point Test" first. Fine-tune the system until QR codes can be consistently recognized under stable conditions.
+
+3. The player going first must use red game pieces, while the player going second must use yellow game pieces. Before running, make sure to fill the robotic arm with the corresponding game pieces.
 
 ## Windows
 

@@ -8,9 +8,9 @@ import ReactPlayer from "react-player"
 
 ## 机器人测试
 
-进入`tests`目录，在此处打开终端并输入`python test1_robot.py`
+进入根目录，在此处打开终端并输入`python .\tests\test1_robot.py`
 
-![](attachment/2023-07-06-14-55-35.png)
+![](attachment/2023-08-31-11-28-32.png)
 
 根据提示输入连接机器人的串口（输入序号即可，例如上面的输入 0）
 
@@ -18,11 +18,11 @@ import ReactPlayer from "react-player"
 
 ## 相机测试
 
-进入`tests`目录，在此处打开终端并输入`python test2_camera.py`
-
+进入根目录，在此处打开终端并输入`python .\tests\test2_camera.py`
+如果相机没有图像，可以尝试修改`test2_camera.py`中的 cam_index, 可以尝试`0,1,2,3`等数字
 观察相机图像是否清晰，如果图像模糊，可能需要考虑擦拭镜片。
 
-![](attachment/2023-07-07-16-38-52.png)
+![](attachment/2023-08-31-11-28-57.png)
 
 ## 下棋装置测试
 
@@ -31,7 +31,7 @@ import ReactPlayer from "react-player"
 
 <ReactPlayer playing controls url="/docs/connect-4/videos/test3.mp4" />
 
-进入`tests`目录，在此处打开终端并输入`python test3_trigger.py`
+进入根目录，在此处打开终端并输入`python .\tests\test3_trigger.py`
 
 观察下棋装置是否能将旗子推出装置
 
@@ -39,11 +39,15 @@ import ReactPlayer from "react-player"
 
 这个测试需要完全安装好棋盘和机械臂，机械臂会按顺序尝试访问所有点位，你需要观察机械臂抵达的点位的精准度
 
-进入`tests`目录，在此处打开终端并输入`python test4_drop_point.py`
+进入根目录，在此处打开终端并输入`python .\tests\test4_drop_point.py`
+
+如果不符合预期，您可以自行修改`core\ArmInterface.py`中的`self.chess_table`中的值，可以通过[myBlockly](https://www.elephantrobotics.com/download/)等软件辅助操作
 
 ## 图像采集点测试
 
 在这个测试中，机械臂会自动移动到观察姿态，如果二维码和机械臂的相对位置正确，你会看到另一个仅有棋盘的窗口
-![](attachment/2023-07-07-15-42-21.png)
+![](attachment/2023-08-31-11-29-19.png)
 
-进入`tests`目录，在此处打开终端并输入`python test5_img.py`
+进入根目录，在此处打开终端并输入`python .\tests\test5_img.py`
+
+如果相机没有图像，可以尝试修改`test5_img.py`中的 cam_index, 可以尝试`0,1,2,3`等数字

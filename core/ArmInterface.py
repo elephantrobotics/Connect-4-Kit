@@ -118,5 +118,5 @@ class ArmInterface:
     # Method to drop the chess piece
     def drop_piece(self):
         logger.debug(f"Dropping piece at {self.mc.get_angles()}")
-        self.mc.set_gservo_round(12)
+        self.mc.move_round()
         time.sleep(3)

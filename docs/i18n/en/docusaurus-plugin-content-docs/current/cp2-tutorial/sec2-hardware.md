@@ -72,6 +72,8 @@ Connection port on the robotic arm:
 
 ![](attachment/2023-07-07-16-30-58.png)
 
+Also make sure that the screen on robot arm's base displaying "Atom : OK"
+
 ### Pi Version
 
 For the Pi version of the robotic arm, there is no need to connect to itself. The camera module needs to be connected to the USB port on the robotic arm.
