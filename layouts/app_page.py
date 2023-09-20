@@ -348,8 +348,6 @@ class AppPage:
                 QMessageBox.information(None, QObject.tr("成功"), QObject.tr("机械臂连接成功"))
                 logger.debug(f"Serial port {com_port} connected.")
 
-            # TODO : add linux com port
-
         self.ui.btn_connect_com.clicked.connect(connect_arm)
 
         # btn release arm

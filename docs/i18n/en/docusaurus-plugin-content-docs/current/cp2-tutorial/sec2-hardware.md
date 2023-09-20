@@ -4,61 +4,49 @@ sidebar_position: 2
 
 # Hardware Installation
 
-## Chassis and Piece Holder Installation
-
-Take out the chessboard chassis and the piece holder.
-
-![](attachment/2023-07-07-15-58-07.png)
-![](attachment/2023-07-07-15-58-29.png)
-
-Screw the screws into the corresponding holes.
-
-![](attachment/2023-07-07-16-05-10.png)
-
 ## Chessboard Installation
 
-Attach QR codes to the two corners on the underside of the chessboard.
+Attach QR codes to the bottom corners of the chessboard.
+![Image](attachment/2023-07-07-16-22-47.png)
 
-![](attachment/2023-07-07-16-22-47.png)
+Attach QR codes to the top corners of the chessboard cap.
+![Image](attachment/2023-07-07-16-23-53.png)
 
-Attach QR codes to the two corners of the chessboard cap.
+Place the side of the chessboard with QR codes facing the robotic arm on the chessboard base.
+![Image](attachment/2023-09-13-15-37-50.png)
 
-![](attachment/2023-07-07-16-23-53.png)
-
-Place the side with QR codes facing the robotic arm on the chessboard base.
-
-![](attachment/2023-07-07-16-27-52.png)
+Fasten the screws on the chess piece rack.
+![Image](attachment/2023-09-13-15-39-34.png)
 
 ## Robotic Arm Installation
 
-Secure the robotic arm to the chassis using screws.
+Secure the robotic arm to the base using screws.
+![Image](attachment/2023-09-13-15-41-05.png)
 
-![](attachment/2023-07-07-16-16-51.png)
+Retrieve the chess-playing device and connectors; **note the small fixed structure on the device here**.
+![Image](attachment/2023-09-13-15-41-36.png)
 
-Take out the camera module and the chess-playing module, and connect them together using LEGO pieces.
+Assemble them together using screws.
+![Image](attachment/2023-09-13-15-42-44.png)
 
-![](attachment/2023-07-07-16-17-19.png)
+Connect the LEGO parts and the camera together.
+![Image](attachment/2023-09-13-15-43-41.png)
 
-Install the connected camera module and chess-playing module onto the robotic arm.
-**Note: Pay attention to the installation orientation.**
+Install the assembled camera module and chess-playing module on the robotic arm.
+**Note: Pay attention to the installation direction as shown in the reference to the robotic arm's rotation marker**.
+![Image](attachment/2023-09-13-15-44-44.png)
 
-Use the rotation indicator on the robotic arm as a reference point for installation, as shown in the diagram.
-
-![](attachment/2023-07-07-16-18-27.png)
-
-Connect the wires from the chess-playing module to the robotic arm.
-
-![](attachment/2023-07-07-16-19-41.png)
+Connect the cable from the chess-playing module to the robotic arm.
+![Image](attachment/2023-09-13-15-45-04.png)
 
 Slightly loosen the screws on the side of the chess-playing module.
-![](attachment/2023-07-07-16-20-18.png)
+![Image](attachment/2023-07-07-16-20-18.png)
 
 Insert the chess bucket and tighten it.
-![](attachment/2023-07-07-17-23-29.png)
+![Image](attachment/2023-07-07-17-23-29.png)
 
-Align the robotic arm, power it on, and the joints will lock.
-![](attachment/2023-07-07-16-26-47.png)
-![](attachment/2023-07-07-16-28-19.png)
+Position the robotic arm correctly, connect the power supply; (the joints of the robotic arm will lock after powering up).
+![Image](attachment/2023-07-07-16-26-47.png)
 
 At this point, the hardware installation of the robotic arm is complete.
 
@@ -66,14 +54,13 @@ At this point, the hardware installation of the robotic arm is complete.
 
 ### M5 Version
 
-The robotic arm body and the camera need to be connected to the PC.
+The main body of the robotic arm and the camera need to be connected to the PC, with the camera connected to the computer via USB and the robotic arm requiring a Type-C interface cable connection to the computer.
 
-Connection port on the robotic arm:
+The connection port of the robotic arm:
+![Image](attachment/2023-07-07-16-30-58.png)
 
-![](attachment/2023-07-07-16-30-58.png)
-
-Also make sure that the screen on robot arm's base displaying "Atom : OK"
+Ensure that "Atom: OK" is displayed on the robotic arm's screen.
 
 ### Pi Version
 
-For the Pi version of the robotic arm, there is no need to connect to itself. The camera module needs to be connected to the USB port on the robotic arm.
+For the Pi version of the robotic arm, there is no need to connect it to itself. The camera module needs to be connected to the USB port on the robotic arm.

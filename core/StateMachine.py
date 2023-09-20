@@ -30,6 +30,7 @@ from core.logger import get_logger
 DK_MOVING_CHESS_POS = "moving-chess-pos"
 DK_BOARD = "chess-grid"
 DK_ROBOT_PLAY_SIDE = "robot-side"
+DK_HUMAN_PLAY_SIDE = "human-side"
 
 # Setting up logger
 logger = get_logger(__name__)
@@ -53,6 +54,7 @@ class StateMachine:
             DK_MOVING_CHESS_POS: None,
             DK_BOARD: None,
             DK_ROBOT_PLAY_SIDE: None,
+            DK_HUMAN_PLAY_SIDE: None,
         }
         self.arm = arm
         self.camera = camera
@@ -61,6 +63,7 @@ class StateMachine:
         self.context: AppSharedMem = context
         self.commu: Communicator = communicator
         self.winner = None
+        self.robot_first = self.context.robot_first
 
     # Method to move to the next state
     def next_state(self):
@@ -129,10 +132,12 @@ class StartingState(State):
         # Setting up the initial state
         if self.starting:
             self.state_machine.data[DK_ROBOT_PLAY_SIDE] = Board.P_RED
+            self.state_machine.data[DK_HUMAN_PLAY_SIDE] = Board.P_YELLOW
             self.next_state_cmd = ObserveState.DEFAULT_CMD
             logger.info("INFO: Machine move first.")
         else:
             self.state_machine.data[DK_ROBOT_PLAY_SIDE] = Board.P_YELLOW
+            self.state_machine.data[DK_ROBOT_PLAY_SIDE] = Board.P_RED
             self.next_state_cmd = WaitingPlayerState.DEFAULT_CMD
             logger.info("INFO: Player move first.")
 
@@ -156,7 +161,6 @@ class ObserveState(State):
     def operation(self):
         if DEBUG:
             logger.info(f"Entering state : {self.TAG}")
-
         self.arm.recovery()
         self.arm.observe_posture()
         logger.info("INFO: Arm standing-by in observation position.")
@@ -185,8 +189,23 @@ class ObserveState(State):
 
             # 检测棋盘
             if detector.detect(frame):
-                detector.update_stable_grid()
                 logger.info("INFO: Grid stabilized.")
+
+                # Check if piece difference is greater than 1
+                if not detector.stable_board.check_board_state_valid():
+                    logger.error("Board state invalid.")
+                    self.state_machine.commu.stop_game.emit()
+
+                if detector.stable_board.last_drop_pos is not None:
+                    x, y = detector.stable_board.last_drop_pos
+                    virtual_entry = detector.stable_board.last_drop_color
+                    actual_entry = detector.stable_board.grid[x][y]
+                    if actual_entry == virtual_entry:
+                        logger.info("check position success")
+                    else:
+                        logger.error("check position failed")
+                        continue
+
                 break
 
             if cv2.waitKey(1) & 0xFF == ord("q"):
@@ -287,17 +306,62 @@ class WaitingPlayerState(State):
                 rectified_frame
             )
 
+            if not detector.stable_board.check_board_state_valid():
+                logger.error("Board state invalid.")
+                self.state_machine.commu.stop_game.emit()
+
             # 检测棋盘
             self.state_machine.detector.detect(frame)
             if detector.is_grid_changed():
                 logger.info("INFO: Grid changed.")
+
+                if detector.stable_board.last_drop_pos is not None:
+                    x, y = detector.stable_board.last_drop_pos
+                    detector.stable_board.reset_last_state()
+                    detector.watch_board.reset_last_state()
+                    virtual_entry = detector.stable_board.last_drop_color
+                    actual_entry = detector.stable_board.grid[x][y]
+                    if actual_entry == virtual_entry:
+                        logger.info("check position success")
+                        break
+                    else:
+                        diff = detector.change_diff
+                        diff_robot = list(
+                            filter(
+                                lambda x: (x[0] != detector.stable_board.last_drop_pos)
+                                and (
+                                    x[2] == self.state_machine.data[DK_ROBOT_PLAY_SIDE]
+                                ),
+                                diff,
+                            )
+                        )
+                        diff_human = list(
+                            filter(
+                                lambda x: (x[0] != detector.stable_board.last_drop_pos)
+                                and (
+                                    x[2] == self.state_machine.data[DK_HUMAN_PLAY_SIDE]
+                                ),
+                                diff,
+                            )
+                        )
+                        logger.debug(f"diff:{diff}")
+                        logger.error("robot drop position error.")
+
+                        if len(diff_robot) == 1 and len(diff_human) == 1:
+                            logger.warning("将错就错")
+                            break
+                        elif len(diff_robot) == 1 and len(diff_human) == 0:
+                            logger.warning("将错就错且继续等待")
+                            continue
+                        elif len(diff_robot) == 0 and len(diff_human) == 0:
+                            logger.warning("补救一下，重下一颗")
+                            break
+                        else:
+                            logger.error("无法补救，终止对弈")
+                            self.state_machine.commu.stop_game.emit()
+
                 break
-
-            if cv2.waitKey(1) & 0xFF == ord("q"):
-                break
-
-        cv2.destroyAllWindows()
-
+            
         board = self.state_machine.detector.stable_board
         board.update()
         if board.done:
@@ -326,7 +390,6 @@ class OverState(State):
         board = self.state_machine.detector.stable_board
         if board.winner == 1:
             self.state_machine.winner = "RED"
-
         else:
             self.state_machine.winner = "YELLOW"
         logger.info(f"Winner is {self.state_machine.winner}")

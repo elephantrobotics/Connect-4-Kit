@@ -23,15 +23,6 @@ class ChessBoardDetector:
         "yellow": (np.array([15, 100, 150]), np.array([26, 255, 255])),
     }
 
-    # default_hough_params = {
-    #     "method": cv2.HOUGH_GRADIENT_ALT,
-    #     "dp": 1.5,
-    #     "minDist": 20,
-    #     "param2": 0.6,
-    #     "minRadius": 15,
-    #     "maxRadius": 40,
-    # }
-
     def __init__(self, mtx, dist):
         # Image grid
         self.bgr_data_grid = [[None for j in range(6)] for i in range(7)]
@@ -52,6 +43,7 @@ class ChessBoardDetector:
         # Whether the stable grid is updated
         # Producer-consumer model variable
         self.__stable_grid_changed_flag = False
+        self.change_diff = None
 
         # Grid stability time threshold
         self.stable_thresh = 1
@@ -226,6 +218,7 @@ class ChessBoardDetector:
         height_interval = int(height / 6)
         width_interval = int(width / 7)
 
+        # cut frame into cells
         for i in range(7):
             for j in range(6):
                 w1, w2 = (width_interval * i, width_interval * (i + 1))
@@ -251,8 +244,10 @@ class ChessBoardDetector:
         if time.time() - self.grid_change_timestamp > self.stable_thresh:
             # Is the watch grid flag true?
             if self.__watch_grid_changed_flag:
+                res = Board.grid_diff(self.stable_grid, self.watch_grid)
                 self.update_stable_grid()
                 self.__stable_grid_changed_flag = True
+                self.change_diff = res
 
             # Already in a stable state
             self.__watch_grid_changed_flag = False
