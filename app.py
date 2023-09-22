@@ -24,7 +24,7 @@ class MainWindow(QMainWindow):
     Args:
         QMainWindow (_type_): _description_
     """
-
+    
     # Initializer function for the MainWindow class
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)

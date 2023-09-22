@@ -95,8 +95,9 @@ class ArmInterface:
     # Method to move to the top of the chessboard
     def hover_over_chessboard_n(self, n: int):
         if n is not None and 0 <= n <= 6:
-            logger.debug(f"Move to chess position {n}, angles {self.chess_table[n]}")
-            self.send_angles(self.chess_table[n], self.ARM_SPEED)
+            coords = self.chess_table[n]
+            logger.debug(f"Move to chess position {n}, angles {coords}")
+            self.send_angles(coords, self.ARM_SPEED)
             time.sleep(3)
         else:
             self.pump_off()

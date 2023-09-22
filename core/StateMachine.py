@@ -317,10 +317,14 @@ class WaitingPlayerState(State):
 
                 if detector.stable_board.last_drop_pos is not None:
                     x, y = detector.stable_board.last_drop_pos
-                    detector.stable_board.reset_last_state()
-                    detector.watch_board.reset_last_state()
                     virtual_entry = detector.stable_board.last_drop_color
                     actual_entry = detector.stable_board.grid[x][y]
+                    logger.info(f"virtual entry: {virtual_entry}")
+                    logger.info(f"actual entry:{actual_entry}")
+                    
+                    detector.stable_board.reset_last_state()
+                    detector.watch_board.reset_last_state()
+
                     if actual_entry == virtual_entry:
                         logger.info("check position success")
                         break
@@ -359,9 +363,10 @@ class WaitingPlayerState(State):
                         else:
                             logger.error("无法补救，终止对弈")
                             self.state_machine.commu.stop_game.emit()
+                            self.state_machine.commu.info_msgbox.emit("对局出现错误，正在停止")
 
                 break
-            
+
         board = self.state_machine.detector.stable_board
         board.update()
         if board.done:
