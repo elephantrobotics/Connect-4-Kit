@@ -306,12 +306,14 @@ class WaitingPlayerState(State):
                 rectified_frame
             )
 
+            # 检测棋盘
+            self.state_machine.detector.detect(frame)
+
             if not detector.stable_board.check_board_state_valid():
                 logger.error("Board state invalid.")
                 self.state_machine.commu.stop_game.emit()
+                self.state_machine.commu.info_msgbox.emit("棋盘状态不合法")
 
-            # 检测棋盘
-            self.state_machine.detector.detect(frame)
             if detector.is_grid_changed():
                 logger.info("INFO: Grid changed.")
 
@@ -321,7 +323,7 @@ class WaitingPlayerState(State):
                     actual_entry = detector.stable_board.grid[x][y]
                     logger.info(f"virtual entry: {virtual_entry}")
                     logger.info(f"actual entry:{actual_entry}")
-                    
+
                     detector.stable_board.reset_last_state()
                     detector.watch_board.reset_last_state()
 

@@ -262,15 +262,6 @@ class Board:
                 elif entry == Board.P_YELLOW:
                     count_yellow += 1
 
-        # red_should_have, yellow_should_have = Board.should_have_pieces(round)
-        # if red_should_have != count_red or yellow_should_have != count_yellow:
-        #     self.logger.error(
-        #         f"In round {round}, the board should have {red_should_have} red pieces,{yellow_should_have} yellow pieces,but only got {count_red} red pieces, {count_yellow} yellow pieces"
-        #     )
-        #     return False
-        # else:
-        #     return True
-
         if abs(count_red - count_yellow) >= 2:
             return False
         else:
