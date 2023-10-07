@@ -137,7 +137,7 @@ class StartingState(State):
             logger.info("INFO: Machine move first.")
         else:
             self.state_machine.data[DK_ROBOT_PLAY_SIDE] = Board.P_YELLOW
-            self.state_machine.data[DK_ROBOT_PLAY_SIDE] = Board.P_RED
+            self.state_machine.data[DK_HUMAN_PLAY_SIDE] = Board.P_RED
             self.next_state_cmd = WaitingPlayerState.DEFAULT_CMD
             logger.info("INFO: Player move first.")
 
