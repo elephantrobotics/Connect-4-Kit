@@ -10,6 +10,7 @@ import cv2
 import numpy as np
 from core.Board import Board
 from configs.config import *
+from libs.ArucoDetector import ArucoDetector
 
 
 class ChessBoardDetector:
@@ -52,6 +53,8 @@ class ChessBoardDetector:
         self.mtx = mtx
         self.dist = dist
 
+        self.aruco_detector = ArucoDetector(self.mtx, self.dist, 20)
+
     def is_grid_changed(self):
         """
         Interface exposed to the outside, set the update flag to False after consuming
@@ -74,11 +77,8 @@ class ChessBoardDetector:
         detector = cv2.aruco.ArucoDetector(dictionary, parameters)
 
         corners, ids, rejectedCandidates = detector.detectMarkers(bgr_data)
-        rvec, tvec, _ = cv2.aruco.estimatePoseSingleMarkers(
-            corners, 0.05, self.mtx, self.dist
-        )
 
-        if rvec is None or len(corners) != 4:
+        if ids is None or len(ids) != 4:
             return None
 
         # Sort the recognized QR code corners as top left, top right, bottom left, bottom right
