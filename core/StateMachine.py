@@ -63,6 +63,7 @@ class StateMachine:
         self.context: AppSharedMem = context
         self.commu: Communicator = communicator
         self.winner = None
+        self.draw = False
         self.robot_first = self.context.robot_first
 
     # Method to move to the next state
@@ -395,6 +396,11 @@ class OverState(State):
     def operation(self):
         self.state_machine.arm.recovery()
         board = self.state_machine.detector.stable_board
+        if board.draw:
+            self.state_machine.draw = True
+            logger.info(f"Draw.")
+            return
+
         if board.winner == 1:
             self.state_machine.winner = "RED"
         else:

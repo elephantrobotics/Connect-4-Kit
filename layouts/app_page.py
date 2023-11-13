@@ -172,9 +172,15 @@ class GameThread(threading.Thread):
             print(sys.exc_info())
 
         # exit by game over
+        # There is a winner
         if self.fsm.winner is not None:
             self.commu.stop_game.emit()
             self.commu.info_msgbox.emit(f"Winner is {self.fsm.winner}")
+        # Draw
+        elif self.fsm.draw:
+            self.commu.stop_game.emit()
+            self.commu.info_msgbox.emit("Draw")
+        # Over in other situation
         else:
             self.context.arm.recovery()
 

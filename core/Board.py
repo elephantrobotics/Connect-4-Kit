@@ -34,6 +34,7 @@ class Board:
         # Initialize game status
         self.done = False
         self.winner = None
+        self.draw = False
         self.valid = True
         self.last_drop_pos: Tuple[int, int] = None
         self.last_drop_color = None
@@ -82,6 +83,13 @@ class Board:
                 elif self.grid_yellow[x][y] == Board.P_YELLOW:
                     self.grid_yellow[x][y] = Board.P_RED
 
+    def check_draw(self):
+        for row in self.grid:
+            for entry in row:
+                if entry == Board.P_EMPTY:
+                    return False
+        return True
+
     def update_win_status(self):
         """
         Check if either player has won and update the game status accordingly
@@ -92,6 +100,10 @@ class Board:
         elif self.check_player_x_win(self.P_YELLOW):
             self.done = True
             self.winner = self.P_YELLOW
+        elif self.check_draw():
+            self.done = True
+            self.winner = None
+            self.draw = True
 
     def update(self):
         """
@@ -277,3 +289,39 @@ class Board:
             return round // 2, round // 2 - 1
         else:
             return round // 2, round // 2
+
+
+if __name__ == "__main__":
+
+    def test_draw():
+        def drop_layer0():
+            board.drop_piece(0, Board.P_RED)
+            board.drop_piece(1, Board.P_RED)
+            board.drop_piece(2, Board.P_RED)
+            board.drop_piece(3, Board.P_YELLOW)
+            board.drop_piece(4, Board.P_RED)
+            board.drop_piece(5, Board.P_RED)
+            board.drop_piece(6, Board.P_RED)
+
+        def drop_layer1():
+            board.drop_piece(0, Board.P_YELLOW)
+            board.drop_piece(1, Board.P_YELLOW)
+            board.drop_piece(2, Board.P_YELLOW)
+            board.drop_piece(3, Board.P_RED)
+            board.drop_piece(4, Board.P_YELLOW)
+            board.drop_piece(5, Board.P_YELLOW)
+            board.drop_piece(6, Board.P_YELLOW)
+
+        board = Board()
+        for row in range(6):
+            [drop_layer0, drop_layer1][row % 2]()
+
+        # board.display()
+
+        board.update()
+
+        assert board.draw == True
+
+        print("Draw test passed.")
+
+    test_draw()
