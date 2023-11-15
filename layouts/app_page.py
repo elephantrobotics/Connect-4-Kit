@@ -26,7 +26,7 @@ from libs.NormalCamera import NormalCamera
 from libs.ArucoDetector import ArucoDetector
 from libs.Utils import numpy_to_pixmap
 
-from core.ArmInterface import ArmInterface
+from core.ArmInterface import ArmInterface, _MyArm, _MyCobot
 from core.Detection import ChessBoardDetector
 from core.Agent import Agent
 from core.StateMachine import StateMachine
@@ -350,7 +350,7 @@ class AppPage:
                 raise Exception("Platform {system_name} not supported")
 
             if com_port.startswith("COM") or com_port.startswith("/dev/ttyAMA"):
-                self.shared_memory.arm = ArmInterface(com_port, baud)
+                self.shared_memory.arm = _MyCobot(com_port, baud)
                 QMessageBox.information(None, QObject.tr("成功"), QObject.tr("机械臂连接成功"))
                 logger.debug(f"Serial port {com_port} connected.")
 

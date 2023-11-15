@@ -8,12 +8,12 @@ logger = get_logger(__name__, filepath="logs/robot.log")
 
 
 class ArmInterface:
-    def __init__(self, port: str, baudrate: int, model : str):
+    def __init__(self, port: str, baudrate: int):
         # Define arm speeds
         self.ARM_SPEED = 60
         self.ARM_SPEED_PRECISE = 10
         self.port = port
-        
+
         self.init_angle_constants()
 
         # Define chess table for different positions
@@ -29,12 +29,9 @@ class ArmInterface:
         # Define retry count
         self.retry = 5
 
-        # Initialize MyCobot instance
-        if model == "MyCobot":
-            self.mc = _MyCobot(port, baudrate)
-        elif model == "MyArm":
-            self.mc = _MyArm(port, baudrate)
+        self.set_robot_log()
 
+    def set_robot_log(self):
         # counter mycobot module contaminating the root logger
         # logging.getLogger().setLevel(logging.CRITICAL)
         self.mc.log.setLevel(logging.DEBUG)
@@ -103,18 +100,20 @@ class ArmInterface:
 
     def init_angle_constants():
         raise NotImplementedError()
-    
+
+
 class _MyCobot(ArmInterface):
     def __init__(self, port: str, baudrate: int):
-        super(port, baudrate)
+        self.mc = MyCobot(port, baudrate)
+        super().__init__(port, baudrate)
 
-    def init_angle_constants():
+    def init_angle_constants(self):
         # Define angle tables for different positions
         self.angle_table = {
             "recovery": [0, 0, 0, 0, 0, 45],
             "observe": [-53.78, 116.98, -117.86, -29.35, 52.38, 20.03],
         }
-        
+
         # Define chess table for different positions
         self.chess_table = [None for _ in range(7)]
         self.chess_table[6] = [-23.11, -49.92, -58.35, 96.85, 29.0, 45.08]
@@ -125,17 +124,19 @@ class _MyCobot(ArmInterface):
         self.chess_table[1] = [33.57, -23.9, -103.88, 116.63, -29.09, 56.86]
         self.chess_table[0] = [45.96, -26.45, -98.87, 111.79, -45.08, 59.76]
 
+
 class _MyArm(ArmInterface):
-    def __init__(self, port : str, baudrate : int):
-        super(port, baud)
-    
-    def init_angle_constants():
+    def __init__(self, port: str, baudrate: int):
+        self.mc = MyArm(port, baudrate)
+        super().__init__(port, baudrate)
+
+    def init_angle_constants(self):
         # Define angle tables for different positions
         self.angle_table = {
             "recovery": [0, 0, 0, 0, 0, 45],
             "observe": [-53.78, 116.98, -117.86, -29.35, 52.38, 20.03],
         }
-        
+
         # Define chess table for different positions
         self.chess_table = [None for _ in range(7)]
         self.chess_table[6] = [-23.11, -49.92, -58.35, 96.85, 29.0, 45.08]
