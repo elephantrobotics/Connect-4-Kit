@@ -20,6 +20,9 @@ Fasten the screws on the chess piece rack.
 
 ## Robotic Arm Installation
 
+Screw hole position map
+![Image](attachment/2023-11-17-11-56-37.png)
+
 Secure the robotic arm to the base using screws.
 ![Image](attachment/2023-09-13-15-41-05.png)
 
