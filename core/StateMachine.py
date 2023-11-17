@@ -9,7 +9,7 @@ from typing import *
 
 # Checking for type checking
 if TYPE_CHECKING:
-    from layouts.app_page import AppSharedMem, Communicator
+    from layouts.app_page import Context, Communicator
 
 # Importing necessary modules
 import time
@@ -45,7 +45,7 @@ class StateMachine:
         detector: ChessBoardDetector,
         camera: DummyCamera,
         agent: Agent,
-        context: AppSharedMem = None,
+        context: Context = None,
         communicator: Communicator = None,
     ):
         # Initializing class variables
@@ -60,7 +60,7 @@ class StateMachine:
         self.camera = camera
         self.detector = detector
         self.agent = agent
-        self.context: AppSharedMem = context
+        self.context: Context = context
         self.commu: Communicator = communicator
         self.winner = None
         self.draw = False

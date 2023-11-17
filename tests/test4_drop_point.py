@@ -19,11 +19,11 @@ if robot_model == MyCobot:
 elif robot_model == MyArm:
     robot = _MyArm(serial_port)
 
-robot.mc.send_angles([0, 0, 0, 0, 0, 45], 50)
+robot.mc.send_angles(robot.angle_table["recovery"], 50)
 time.sleep(3)
 
 for pos in robot.chess_table:
     robot.mc.send_angles(pos, robot.ARM_SPEED)
     time.sleep(5)
-    robot.mc.move_round()
-    time.sleep(1)
+    # robot.mc.move_round()
+    # time.sleep(1)

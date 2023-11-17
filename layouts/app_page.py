@@ -54,7 +54,7 @@ class Communicator(QObject):
 
 
 # Class for shared memory across the application
-class AppSharedMem:
+class Context:
     def __init__(self):
         self.ui_page: AppPage = None
 
@@ -73,24 +73,24 @@ class AppSharedMem:
         # game fsm configs
         self.game_running = False
         self.robot_first = False
-        self.aruco_detect_frame: np.ndarray | None = None
-        self.color_detect_frame: np.ndarray | None = None
-        self.wait: int | None = None
+        self.aruco_detect_frame: Union[np.ndarray, None] = None
+        self.color_detect_frame: Union[np.ndarray, None] = None
+        self.wait: Union[int , None] = None
 
         # arm
-        self.arm: ArmInterface | None = None
+        self.arm: Union[ArmInterface , None] = None
 
 
 # Class for handling camera operations in a separate thread
 class CameraThread(threading.Thread):
-    def __init__(self, cam_index: int, shared_memory: AppSharedMem, cam_signal: Signal):
+    def __init__(self, cam_index: int, shared_memory: Context, cam_signal: Signal):
         super().__init__()
 
         self.running_flag: bool = True
         self.cam_index: int = cam_index
-        self.cam: NormalCamera | None = None
+        self.cam: Union[NormalCamera , None] = None
         self.cam_signal: Signal = cam_signal
-        self.mem: AppSharedMem = shared_memory
+        self.mem: Context = shared_memory
         self.fps = 10
         self.tick = 1 / self.fps
 
@@ -114,9 +114,9 @@ class CameraThread(threading.Thread):
 
 # Class for handling game operations in a separate thread
 class GameThread(threading.Thread):
-    def __init__(self, context: AppSharedMem, communicator: Communicator) -> None:
+    def __init__(self, context: Context, communicator: Communicator) -> None:
         super().__init__()
-        self.context: AppSharedMem = context
+        self.context: Context = context
         self.commu: Communicator = communicator
 
         # Setting up the game state
@@ -208,7 +208,7 @@ class AppPage:
     def __init__(self):
         self._widget = QWidget()
         self.signals = Communicator(self._widget)
-        self.shared_memory = AppSharedMem()
+        self.shared_memory = Context()
         self.aruco_detector: Union[ArucoDetector, None] = None
         self.init_aruco_detector()
 

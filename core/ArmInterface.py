@@ -16,16 +16,6 @@ class ArmInterface:
 
         self.init_angle_constants()
 
-        # Define chess table for different positions
-        self.chess_table = [None for _ in range(7)]
-        self.chess_table[6] = [-23.11, -49.92, -58.35, 96.85, 29.0, 45.08]
-        self.chess_table[5] = [-13.97, -39.37, -77.6, 105.82, 19.86, 46.05]
-        self.chess_table[4] = [-2.46, -32.25, -91.31, 115.4, 2.81, 48.33]
-        self.chess_table[3] = [12.3, -29, -104.41, 126.65, -12.91, 49.21]
-        self.chess_table[2] = [20.74, -29.79, -100.63, 127.35, -17.31, 50.44]
-        self.chess_table[1] = [33.57, -23.9, -103.88, 116.63, -29.09, 56.86]
-        self.chess_table[0] = [45.96, -26.45, -98.87, 111.79, -45.08, 59.76]
-
         # Define retry count
         self.retry = 5
 
@@ -114,6 +104,8 @@ class _MyCobot(ArmInterface):
             baud = 115200
 
         self.mc = MyCobot(port, baud)
+        if len(self.mc.get_angles()) != 6:
+            raise Exception("Robot connect failed.")
         self.set_robot_log()
 
     def init_angle_constants(self):
@@ -138,21 +130,23 @@ class _MyArm(ArmInterface):
     def __init__(self, port: str):
         super().__init__()
         self.mc = MyArm(port, 115200)
+        if len(self.mc.get_angles()) != 7:
+            raise Exception("Robot connect failed.")
         self.set_robot_log()
 
     def init_angle_constants(self):
         # Define angle tables for different positions
         self.angle_table = {
-            "recovery": [0, 0, 0, 0, 0, 45],
-            "observe": [-53.78, 116.98, -117.86, -29.35, 52.38, 20.03],
+            "recovery": [0, 0, 0, 0, 0, 0, 0],
+            "observe": [7, -77, 30, -86, 0, -109, 30],
         }
 
         # Define chess table for different positions
         self.chess_table = [None for _ in range(7)]
-        self.chess_table[6] = [-23.11, -49.92, -58.35, 96.85, 29.0, 45.08]
-        self.chess_table[5] = [-13.97, -39.37, -77.6, 105.82, 19.86, 46.05]
-        self.chess_table[4] = [-2.46, -32.25, -91.31, 115.4, 2.81, 48.33]
-        self.chess_table[3] = [12.3, -29, -104.41, 126.65, -12.91, 49.21]
-        self.chess_table[2] = [20.74, -29.79, -100.63, 127.35, -17.31, 50.44]
-        self.chess_table[1] = [33.57, -23.9, -103.88, 116.63, -29.09, 56.86]
-        self.chess_table[0] = [45.96, -26.45, -98.87, 111.79, -45.08, 59.76]
+        self.chess_table[6] = [-47.28, 23.2, -0.52, -79.8, -79.8, 48.16, 73.91]
+        self.chess_table[5] = [-39.46, 13.09, -0.52, -92.72, -73.47, 41.39, 67.76]
+        self.chess_table[4] = [-29.35, 4.74, -0.43, -102.12, -64.86, 32.51, 60.11]
+        self.chess_table[3] = [-14.32, -1.4, -0.35, -108.8, -44.29, 20.39, 41.66]
+        self.chess_table[2] = [-2.1, -3.42, -0.52, -110.83, -8.96, 14.76, 8.61]
+        self.chess_table[1] = [9.75, -2.54, -0.61, -109.95, 32.6, 17.49, -31.11]
+        self.chess_table[0] = [25.57, 2.54, -0.35, -104.58, 60.82, 29.26, -57.04]

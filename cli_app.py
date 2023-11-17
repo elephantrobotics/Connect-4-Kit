@@ -1,8 +1,10 @@
 # Importing required modules
 from core.StateMachine import *
-from core.ArmInterface import ArmInterface
+from pymycobot import MyCobot, MyArm
+from core.ArmInterface import ArmInterface, _MyArm, _MyCobot
 from core.ArmCamera import ArmCamera
 from serial.tools import list_ports
+import numpy as np
 import platform
 
 # Setting the initial state of the game
@@ -60,31 +62,64 @@ def select_serial() -> str:
 
         print("Wrong number, try again.\n")
 
+def select_robot_model():
+    print("Select a robot model (Enter the number):")
+
+    while True:
+        print(f"(0) - MyCobot")
+        print(f"(1) - MyArm")
+
+        reply = input("Enter number of your select :")
+        if reply == "0":
+            return MyCobot
+        elif reply == "1":
+            return MyArm
+        else:
+            print("Wrong number, try again.\n")
+
+# Class for shared memory across the application
+class Context:
+    def __init__(self):
+        # camera section
+        self.camera_on_flag: bool = False
+        self.curr_cam_index: Union[None, int] = None
+        self.curr_frame: Union[None, np.ndarray] = None
+        self.camera_params = np.load("configs/normal_cam_params.npz").values()
+
+        # game fsm configs
+        self.game_running = False
+        self.robot_first = False
+        self.aruco_detect_frame: Union[np.ndarray, None] = None
+        self.color_detect_frame: Union[np.ndarray, None] = None
+        self.wait: Union[int , None] = None
+
+        # arm
+        self.arm: Union[ArmInterface , None] = None
+
 
 # Main function
 if __name__ == "__main__":
-    os_name = platform.system().lower()
-
-    if os_name == "windows":
-        baud = 115200
-    elif os_name == "linux":
-        baud = 1000000
-    else:
-        raise Exception(f"Platform {os_name} is not supported.")
-
+    robot_model = select_robot_model()
     serial_port = select_serial()
+    cam_index = input("Please input camera index:")
 
     # Initializing the arm interface
-    arm = ArmInterface(serial_port, baud)
+    arm = None
+    if robot_model == MyCobot:
+        arm = _MyCobot(serial_port)
+    elif robot_model == MyArm:
+        arm = _MyArm(serial_port)
+    
     # Initializing the camera
-    camera = ArmCamera(1)
+    camera = ArmCamera(int(cam_index))
     # Initializing the chess board detector
     detector = ChessBoardDetector(camera.mtx, camera.dist)
     # Initializing the agent
     agent = Agent(ROBOT_SIDE)
+    # Initializing context
+    context = Context()
     # Initializing the state machine
-    fsm = StateMachine(arm, camera, detector, agent)
-
+    fsm = StateMachine(arm,detector, camera, agent, context)
     # Setting the current state to the starting state
     starting_state = init_states()
     fsm.current_state = starting_state

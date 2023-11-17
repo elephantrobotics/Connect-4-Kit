@@ -17,9 +17,6 @@ if (
 
 robot = robot_model(com, baud)
 
-robot.send_angles([0, 0, 0, 0, 0, 45], 50)
-time.sleep(5)
-
 for i in range(5):
     robot.move_round()
     time.sleep(1)

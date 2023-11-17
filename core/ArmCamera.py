@@ -7,14 +7,14 @@ from __future__ import annotations
 from typing import *
 
 if TYPE_CHECKING:
-    from layouts.app_page import AppSharedMem
+    from layouts.app_page import Context
 
 from configs.config import *
 from core.mouse_callbacks import *
 
 
 class DummyCamera:
-    def __init__(self, context: AppSharedMem) -> None:
+    def __init__(self, context: Context) -> None:
         # Initialize the DummyCamera with a context of type AppSharedMem
         self.context = context
 
@@ -38,6 +38,8 @@ class ArmCamera:
     def __init__(self, cam_index: int, flip_h=False, flip_v=False):
         # Initialize the ArmCamera with a camera index and optional horizontal and vertical flip parameters
         self.cap = cv2.VideoCapture(cam_index)
+        self.cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
+        self.cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
         self.width = None
         self.height = None
         self.flip_h = flip_h
