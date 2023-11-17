@@ -1,21 +1,25 @@
-# @author  : Zhu ZhenDong
-# @time    : 2023-07-06 10-45-08
-# @function:
-# @version :
-
 import sys
 import os
+from tkinter import NO
 
 sys.path.append(os.getcwd())
 
 import time
-from core.ArmInterface import ArmInterface
-from interaction import select_com
+from interaction import select_com, select_robot_model
+import platform
+from pymycobot import MyCobot, MyArm
+from core.ArmInterface import _MyCobot, _MyArm
 
-com = select_com()
+robot_model = select_robot_model()
+serial_port = select_com()
 
-robot = ArmInterface(com, 115200)
-robot.send_angles([0, 0, 0, 0, 0, 45], 50)
+robot = None
+if robot_model == MyCobot:
+    robot = _MyCobot(serial_port)
+elif robot_model == MyArm:
+    robot = _MyArm(serial_port)
+
+robot.mc.send_angles([0, 0, 0, 0, 0, 45], 50)
 time.sleep(3)
 
 for pos in robot.chess_table:

@@ -4,6 +4,7 @@
 # @version :
 
 from serial.tools import list_ports
+from pymycobot import MyCobot, MyArm
 
 
 def get_available_serial_port():
@@ -26,5 +27,26 @@ def select_com() -> str:
         print("Wrong number, try again.\n")
 
 
+def select_robot_model():
+    print("Select a robot model (Enter the number):")
+
+    while True:
+        print(f"(0) - MyCobot")
+        print(f"(1) - MyArm")
+
+        reply = input("Enter number of your select :")
+        if reply == "0":
+            return MyCobot
+        elif reply == "1":
+            return MyArm
+        else:
+            print("Wrong number, try again.\n")
+
+
 if __name__ == "__main__":
-    print(select_com())
+    robot_model = select_robot_model()
+    com_port = select_com()
+    print()
+
+    print(robot_model)
+    print(com_port)

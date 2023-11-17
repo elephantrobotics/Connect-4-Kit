@@ -37,7 +37,7 @@ Observe if the camera image is clear. If the image is blurry, consider cleaning 
 The chess trigger is a special structure fixed to the end of the robotic arm. To test this project, make sure the chess trigger is installed properly and can function correctly.
 **Note: Before running the test, make sure the chess trigger is loaded with enough chess pieces (>5).**
 
-<ReactPlayer playing controls url="/docs/connect-4/videos/test3.mp4" />
+        <ReactPlayer playing controls url="/docs/connect-4/videos/test3.mp4" />
 
 Open the terminal in root directory. Enter `python .\tests\test3_tigger.py` in the terminal.
 
@@ -76,11 +76,11 @@ Note: The contents of `chess_table` are angle values, not coordinate values.
 ## Image Capture Point Testing
 
 In this test, the robotic arm will automatically move to the observation position. If the QR codes and the relative position of the robotic arm are correct, you will see another window with only the chessboard.
-![](attachment/2023-08-31-11-29-19.png)
+![](attachment/2023-11-16-14-42-13.png)
 ![](attachment/2023-09-13-15-21-18.png)
 
-Navigate to the `tests` directory and open the terminal here. Enter `python .\tests\test5_img.py` in the terminal.
+Navigate to the `tests` directory and open the terminal here. Enter `python .\tests\test5_detect.py` in the terminal.
 
-If the camera has no image, you can try modifying the `cam_index` in `test5_img.py`. You can attempt numbers like `0, 1, 2, 3`, etc.
+If the camera has no image, you can try modifying the `cam_index` in `test5_detect.py`. You can attempt numbers like `0, 1, 2, 3`, etc.
 
 This test will also output the "valid rate" in the command line, which represents the recognition rate. The closer this number is to 1, the better. A value of 1 indicates that all four Aruco codes are recognized in every frame. Generally, to ensure the program is running properly, a recognition rate of at least 0.8 or above is required.

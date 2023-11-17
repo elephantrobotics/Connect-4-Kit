@@ -1,18 +1,28 @@
 import sys
 import os
 import time
+from tkinter import NO
 
 sys.path.append(os.getcwd())
 
 from core.ArmCamera import ArmCamera
 from core.Detection import ChessBoardDetector
 from core.mouse_callbacks import *
-from core.ArmInterface import ArmInterface
-from tests.interaction import select_com
+from core.ArmInterface import _MyArm, _MyCobot
+from tests.interaction import select_com, select_robot_model
 from libs.ArucoDetector import ArucoDetector
+from pymycobot import MyCobot
 
-com_port = select_com()
-arm = ArmInterface(com_port, 115200)
+robot_model = select_robot_model()
+com = select_com()
+
+
+arm = None
+if robot_model == MyCobot:
+    arm = _MyCobot(com)
+else:
+    arm = _MyArm(com)
+
 arm.mc.send_angles(arm.angle_table["observe"], arm.ARM_SPEED)
 camera_params = np.load("libs/normal_cam_params.npz")
 mtx, dist = camera_params["mtx"], camera_params["dist"]

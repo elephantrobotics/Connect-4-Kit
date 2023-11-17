@@ -1,12 +1,21 @@
 from pymycobot import MyCobot
-from interaction import select_com
+from interaction import select_com, select_robot_model
 import time
+import platform
 
+robot_model = select_robot_model()
 com = select_com()
 
-robot_name = "myCobot 280 - M5"
-robot_model_name = "myCobot 280"
-robot = MyCobot(com, 115200)
+system_info = platform.uname()
+baud = 115200
+if (
+    robot_model == MyCobot
+    and system_info.system == "Linux"
+    and "arm" in system_info.machine
+):
+    baud = 1000000
+
+robot = robot_model(com, baud)
 
 # Test rotation range
 twist = 30

@@ -3,16 +3,16 @@ from pymycobot import MyCobot, MyArm
 from typing import *
 import logging
 from core.logger import get_logger
+import platform
 
 logger = get_logger(__name__, filepath="logs/robot.log")
 
 
 class ArmInterface:
-    def __init__(self, port: str, baudrate: int):
+    def __init__(self):
         # Define arm speeds
         self.ARM_SPEED = 60
         self.ARM_SPEED_PRECISE = 10
-        self.port = port
 
         self.init_angle_constants()
 
@@ -28,8 +28,6 @@ class ArmInterface:
 
         # Define retry count
         self.retry = 5
-
-        self.set_robot_log()
 
     def set_robot_log(self):
         # counter mycobot module contaminating the root logger
@@ -98,14 +96,25 @@ class ArmInterface:
         self.mc.move_round()
         time.sleep(3)
 
-    def init_angle_constants():
+    def init_angle_constants(self):
         raise NotImplementedError()
 
 
 class _MyCobot(ArmInterface):
-    def __init__(self, port: str, baudrate: int):
-        self.mc = MyCobot(port, baudrate)
-        super().__init__(port, baudrate)
+    def __init__(self, port: str):
+        super().__init__()
+
+        system_info = platform.uname()
+        baud = None
+
+        # raspberry pi
+        if system_info.system == "Linux" and "arm" in system_info.machine:
+            baud = 1000000
+        else:
+            baud = 115200
+
+        self.mc = MyCobot(port, baud)
+        self.set_robot_log()
 
     def init_angle_constants(self):
         # Define angle tables for different positions
@@ -126,9 +135,10 @@ class _MyCobot(ArmInterface):
 
 
 class _MyArm(ArmInterface):
-    def __init__(self, port: str, baudrate: int):
-        self.mc = MyArm(port, baudrate)
-        super().__init__(port, baudrate)
+    def __init__(self, port: str):
+        super().__init__()
+        self.mc = MyArm(port, 115200)
+        self.set_robot_log()
 
     def init_angle_constants(self):
         # Define angle tables for different positions

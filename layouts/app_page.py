@@ -1,6 +1,7 @@
 # Importing necessary libraries and modules
 import time
 import sys
+from tkinter import NO
 from typing import Any
 import cv2
 import numpy as np
@@ -20,6 +21,7 @@ from PySide6.QtWidgets import (
     QDialog,
     QBoxLayout,
 )
+from sympy import false
 from layouts.app_page_ui import Ui_AppPage
 
 from libs.NormalCamera import NormalCamera
@@ -336,23 +338,47 @@ class AppPage:
                 logger.info("Arm already connected. connect arm signal ignored.")
                 return
 
+            robot_model: Any = None
+
+            robot_model_text = self.ui.combo_model_select.currentText()
+            if robot_model_text == "MyCobot":
+                robot_model = _MyCobot
+
+            elif robot_model_text == "MyArm":
+                robot_model = _MyArm
+            else:
+                return
+
             com_port = self.ui.combo_com_selection.currentText()
             if com_port is None:
                 return
 
-            system_name = platform.system().lower()
-            if system_name == "windows":
-                baud = 115200
-            elif system_name == "linux":
-                baud = 1000000
-            else:
-                logger.error(f"Platform {system_name} not supported")
-                raise Exception("Platform {system_name} not supported")
-
             if com_port.startswith("COM") or com_port.startswith("/dev/ttyAMA"):
-                self.shared_memory.arm = _MyCobot(com_port, baud)
-                QMessageBox.information(None, QObject.tr("成功"), QObject.tr("机械臂连接成功"))
-                logger.debug(f"Serial port {com_port} connected.")
+                self.shared_memory.arm = robot_model(com_port)
+                success = False
+
+                # This is a simple check, if number of angles match the dof, then it's correct.
+                if (
+                    robot_model_text == "MyCobot"
+                    and len(self.shared_memory.arm.mc.get_angles()) == 6
+                ):
+                    success = True
+                elif (
+                    robot_model_text == "MyArm"
+                    and len(self.shared_memory.arm.mc.get_angles()) == 7
+                ):
+                    success = True
+
+                if success:
+                    QMessageBox.information(
+                        None, QObject.tr("成功"), QObject.tr("机械臂连接成功")
+                    )
+                    logger.debug(f"Serial port {com_port} connected.")
+                else:
+                    QMessageBox.information(
+                        None, QObject.tr("失败"), QObject.tr("机械臂连接失败, 请检查机型和串口是否匹配")
+                    )
+                    logger.debug(f"Serial port {com_port} connected.")
 
         self.ui.btn_connect_com.clicked.connect(connect_arm)
 

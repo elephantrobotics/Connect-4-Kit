@@ -36,7 +36,7 @@ import ReactPlayer from "react-player"
 下棋装置是一个固定在机械臂末端的特殊结构，测试这个项目需要先安装好下棋装置是否能够正常运行
 **注意：运行前下棋装置的需要装入足量的棋子（>5 个）**
 
-<ReactPlayer playing controls url="/docs/connect-4/videos/test3.mp4" />
+        <ReactPlayer playing controls url="/docs/connect-4/videos/test3.mp4" />
 
 进入根目录，在此处打开终端并输入`python .\tests\test3_trigger.py`
 
@@ -74,10 +74,10 @@ import ReactPlayer from "react-player"
 ## 图像采集点测试
 
 在这个测试中，机械臂会自动移动到观察姿态，如果二维码和机械臂的相对位置正确，你会看到另一个仅有棋盘的窗口
-![](attachment/2023-08-31-11-29-19.png)
+![](attachment/2023-11-16-14-42-13.png)
 ![](attachment/2023-09-13-15-21-18.png)
-进入根目录，在此处打开终端并输入`python .\tests\test5_img.py`
+进入根目录，在此处打开终端并输入`python .\tests\test5_detect.py`
 
-如果相机没有图像，可以尝试修改`test5_img.py`中的 cam_index, 可以尝试`0,1,2,3`等数字
+如果相机没有图像，可以尝试修改`test5_detect.py`中的 cam_index, 可以尝试`0,1,2,3`等数字
 
 这个测试还会在命令行输出`valid rate`, 这表示识别率。这个数字越接近 1 越好, 1 代表每一帧都能识别到 4 个二维码, 一般来说要保证程序运行正常, 至少需要 0.8 以上的识别率
