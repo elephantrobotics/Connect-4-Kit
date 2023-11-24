@@ -137,7 +137,7 @@ class _MyArm(ArmInterface):
     def init_angle_constants(self):
         # Define angle tables for different positions
         self.angle_table = {
-            "recovery": [0, 0, 0, 0, 0, 0, -90],
+            "recovery": [0, 0, 0, 0, 0, -90, 0],
             "observe": [7, -77, 30, -86, 0, -109, 30],
         }
 
