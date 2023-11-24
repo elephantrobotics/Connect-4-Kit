@@ -25,5 +25,8 @@ time.sleep(3)
 for pos in robot.chess_table:
     robot.mc.send_angles(pos, robot.ARM_SPEED)
     time.sleep(5)
-    # robot.mc.move_round()
-    # time.sleep(1)
+    robot.mc.move_round()
+    time.sleep(1)
+
+robot.mc.send_angles(robot.angle_table["recovery"], 50)
+time.sleep(3)

@@ -374,6 +374,7 @@ class AppPage:
                         None, QObject.tr("成功"), QObject.tr("机械臂连接成功")
                     )
                     logger.debug(f"Serial port {com_port} connected.")
+                    self.shared_memory.arm.mc.send_angles(self.shared_memory.arm.angle_table["recovery"], 50)
                 else:
                     QMessageBox.information(
                         None, QObject.tr("失败"), QObject.tr("机械臂连接失败, 请检查机型和串口是否匹配")

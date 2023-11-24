@@ -1,4 +1,4 @@
-from pymycobot import MyCobot
+from pymycobot import MyCobot, MyArm
 from interaction import select_com, select_robot_model
 import time
 import platform
@@ -21,10 +21,14 @@ robot = robot_model(com, baud)
 twist = 30
 # Arm move speed
 speed = 50
-# Arm joint number
-joint_n = 6
 
-zero_pos = [0, 0, 0, 0, 0, 0]
+if robot_model == MyCobot:
+    zero_pos = [0, 0, 0, 0, 0, 0]
+    joint_n = 6
+elif robot_model == MyArm:
+    zero_pos = [0] * 7
+    joint_n = 7
+    
 robot.send_angles(zero_pos, speed)
 time.sleep(5)
 
