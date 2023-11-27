@@ -10,6 +10,12 @@ sidebar_position: 1
 
 - Manipulation Capability: Using the MyCobot 280 robotic arm, the module can accurately locate the target position of chess pieces and place them in the specified positions through precise movement operations.
 
+## Currently supported models
+
+- MyCobot M5, Pi
+- MyArm
+
+
 ## Planned Features
 
 :grey_question: Customizable wait time for gameplay.

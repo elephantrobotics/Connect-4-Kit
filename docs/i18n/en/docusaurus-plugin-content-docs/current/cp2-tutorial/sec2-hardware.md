@@ -66,4 +66,4 @@ Ensure that "Atom: OK" is displayed on the robotic arm's screen.
 
 ### Pi Version
 
-For the Pi version of the robotic arm, there is no need to connect it to itself. The camera module needs to be connected to the USB port on the robotic arm.
+The installation process for the Pi version of the robotic arm is similar to that of the 280 version, with the only difference being that there is no need to connect to the host computer via a Type-C cable. Additionally, the camera module needs to be connected to the USB port on the robotic arm.

@@ -66,5 +66,6 @@ pip install -r requirements.txt
 
 ## Check robot firmware version
 
-The firmware version of ATOM should be `6.3`.
-If it's not, please use Mystudio to update the firmware to this version.
+MyCobot 280 robot arm's firmware version of ATOM should above `6.3`.
+MyArm robot arm's firmware version of ATOM should above `3.9`
+If it's not, please use Mystudio to update the firmware to the latest version.
