@@ -56,11 +56,13 @@ if __name__ == "__main__":
     path = "./assets/locales/"
     translator = QTranslator(app)
 
+    print(QLocale.system().name())
+    
     if translator.load(path + QLocale.system().name()):
         logger.debug(QLocale.system().name() + " translation loaded.")
 
         # debug use : change to en temporarily
-        translator.load(path + "en")
+        # translator.load(path + "en")
         app.installTranslator(translator)
 
     # Creating an instance of MainWindow
