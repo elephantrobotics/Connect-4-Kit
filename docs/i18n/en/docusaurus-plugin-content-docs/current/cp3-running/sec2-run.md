@@ -36,5 +36,5 @@ python app.py
 Open any terminal program in the project directory and enter the following command:
 
 ```bash
-python3.11 app.py
+python app.py
 ```

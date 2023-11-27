@@ -6,15 +6,21 @@ import ReactPlayer from "react-player"
 
 # 单元测试
 
+请确保所有单元测试均通过的情况下再开始运行程序, 可以提前排除问题
+
 **注意： 所有的测试都必须从项目根目录，通过`python tests/testX.py`启动**
 
 ## 机器人运动测试
 
 进入根目录，在此处打开终端并输入`python .\tests\test1_robot.py`
 
-![](attachment/2023-09-13-14-55-40.png)
+![](attachment/unitest0.png)
+
+先选择机械臂的型号，通过数字输入
 
 根据提示输入连接机器人的串口(输入序号即可，例如上面的输入 0, 请根据实际情况选择串口)
+
+以下的测试均需要选择机械臂型号和串口, 根据实际情况选择即可
 
 观察机器人的运动，如果 6 个轴都有正负角度变化，说明机械臂的通信正常；如果机器人没有动作，则说明可能通信或者固件存在问题。
 
@@ -50,12 +56,17 @@ import ReactPlayer from "react-player"
 
 ### 如何根据结果调整点位
 
-下棋的点位在机械臂系统中是固定的，由于机械原因，每台机械臂可能都会存在一些误差，因此需要手动校准。下面我来演示一下如何修改校准点位。
+下棋的点位在机械臂系统中是固定的角度值，由于机械精度原因，每台机械臂可能都会存在一些误差，因此需要手动校准。下面我来演示一下如何修改校准点位。
 首先打开[myBlockly](https://www.elephantrobotics.com/download/)软件
 ![](attachment/2023-09-13-15-04-37.png)
 
-然后打开您的代码编辑器，找到`core\ArmInterface.py`中的`self.chees_table`
-![](attachment/2023-09-13-15-06-03.png)
+然后打开您的代码编辑器，找到`core\ArmInterface.py`
+如果您使用的是MyCobot系列机械臂, 请定位到`_MyCobot`类, 如果是MyArm系列, 则定位到`_MyArm`类
+棋盘角度的定义在`self.chess_table`
+
+**需要注意的是: MyCobot是6轴机械臂, MyArm是7轴机械臂; 因此MyCobot的每个棋盘点位有6个数值, 而MyArm有7个**
+
+![](attachment/unitest4-adjust0.png)
 
 假设您要修改第一个下棋点，也就是`self.chess_table[0]`,先使用 myBlocky 将机械臂运动到这个位置
 ![](attachment/2023-09-13-15-10-29.png)

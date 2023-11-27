@@ -70,3 +70,10 @@ sidebar_position: 2
 ### MyCobot 280 Pi版本
 
 Pi版本机械臂的安装流程和280类似，只是不需要通过Type-C线连接上位机了，且相机模块需要连接到机械臂上的USB端口
+
+### MyArm
+
+MyArm的安装方式与280类似，需要注意的是相机-下棋装置与机械臂的连接位置略有变化，
+![](attachment/hardware-myarm0.png)
+
+同样的，相机需要插在机械臂本体后方的USB插孔上

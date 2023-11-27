@@ -67,3 +67,10 @@ Ensure that "Atom: OK" is displayed on the robotic arm's screen.
 ### Pi Version
 
 The installation process for the Pi version of the robotic arm is similar to that of the 280 version, with the only difference being that there is no need to connect to the host computer via a Type-C cable. Additionally, the camera module needs to be connected to the USB port on the robotic arm.
+
+### MyArm
+
+MyArm的安装方式与280类似，需要注意的是相机-下棋装置与机械臂的连接位置略有变化，
+![](attachment/hardware-myarm0.png)
+
+同样的，相机需要插在机械臂本体后方的USB插孔上

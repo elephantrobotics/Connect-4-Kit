@@ -34,5 +34,5 @@ python app.py
 在工程目录下打开任意终端程序，输入以下命令
 
 ```bash
-python3.11 app.py
+python app.py
 ```
