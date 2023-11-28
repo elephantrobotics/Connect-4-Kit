@@ -35,6 +35,7 @@ from core.StateMachine import StateMachine
 from core.ArmCamera import DummyCamera
 from core.StateMachine import *
 from core.logger import get_logger
+from core.utils import SystemIdentity
 
 # Setting up logger
 logger = get_logger(__name__)
@@ -195,9 +196,14 @@ class SerialComboBox(QComboBox):
 
     def mousePressEvent(self, QMouseEvent):
         self.clear()
-        serial_ports = serial.tools.list_ports.comports()
-        for port in serial_ports:
-            self.addItem(port.device)
+        
+        if SystemIdentity.is_jetson_nano():
+            self.ui.combo_com_selection.addItem("/dev/ttyTHS1")
+        else:
+            serial_ports = serial.tools.list_ports.comports()
+            for port in serial_ports:
+                self.addItem(port.device)
+        
         QComboBox.mousePressEvent(self, QMouseEvent)
         logger.debug("Serial port updated.")
         logger.debug(f"Now serial ports: {list(map(str,serial_ports))}")
@@ -227,7 +233,7 @@ class AppPage:
         logger.debug("Aruco detector initialized.")
 
     # Setup dynamic UI elements
-    def setup_ui_dynamics(self):
+    def setup_ui_dynamics(self):        
         self.ui.label_video_feed0.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.ui.label_video_feed1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.ui.label_video_feed2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)

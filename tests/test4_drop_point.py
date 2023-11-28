@@ -1,23 +1,26 @@
 import sys
 import os
 from tkinter import NO
+import time
 
 sys.path.append(os.getcwd())
 
-import time
-from interaction import select_com, select_robot_model
-import platform
+from core.utils import SystemIdentity
+from tests.utils import select_com, select_robot_model
 from pymycobot import MyCobot, MyArm
 from core.ArmInterface import _MyCobot, _MyArm
 
 robot_model = select_robot_model()
-serial_port = select_com()
+if SystemIdentity.is_jetson_nano():
+    com = "/dev/ttyTHS1"
+else:
+    com = select_com()
 
 robot = None
 if robot_model == MyCobot:
-    robot = _MyCobot(serial_port)
+    robot = _MyCobot(com)
 elif robot_model == MyArm:
-    robot = _MyArm(serial_port)
+    robot = _MyArm(com)
 
 robot.mc.send_angles(robot.angle_table["recovery"], 50)
 time.sleep(3)

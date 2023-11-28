@@ -4,17 +4,20 @@ import time
 from tkinter import NO
 
 sys.path.append(os.getcwd())
-
+from core.utils import SystemIdentity
 from core.ArmCamera import ArmCamera
 from core.Detection import ChessBoardDetector
 from core.mouse_callbacks import *
 from core.ArmInterface import _MyArm, _MyCobot
-from tests.interaction import select_com, select_robot_model
+from tests.utils import select_com, select_robot_model
 from libs.ArucoDetector import ArucoDetector
 from pymycobot import MyCobot
 
 robot_model = select_robot_model()
-com = select_com()
+if SystemIdentity.is_jetson_nano():
+    com = "/dev/ttyTHS1"
+else:
+    com = select_com()
 
 
 arm = None

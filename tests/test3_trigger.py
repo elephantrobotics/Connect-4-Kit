@@ -1,17 +1,23 @@
 from pymycobot.mycobot import MyCobot
-from interaction import select_com, select_robot_model
+from tests.utils import select_com, select_robot_model
 import time
-import platform
+import os
+import sys
+sys.path.append(os.getcwd())
+from core.utils import SystemIdentity
+
 
 robot_model = select_robot_model()
-com = select_com()
+if SystemIdentity.is_jetson_nano():
+    com = "/dev/ttyTHS1"
+else:
+    com = select_com()
 
-system_info = platform.uname()
 baud = 115200
+# for raspi and jetson nano
 if (
     robot_model == MyCobot
-    and system_info.system == "Linux"
-    and "arm" in system_info.machine
+    and (SystemIdentity.is_jetson_nano() or SystemIdentity.is_raspi())
 ):
     baud = 1000000
 

@@ -1,8 +1,7 @@
 from pymycobot import MyCobot, MyArm
-from interaction import select_com, select_robot_model
+from tests.utils import select_com, select_robot_model
 import time
 import platform
-
 import os
 import sys
 sys.path.append(os.getcwd())
@@ -16,7 +15,6 @@ if SystemIdentity.is_jetson_nano():
 else:
     com = select_com()
 
-system_info = platform.uname()
 baud = 115200
 
 # for raspi and jetson nano

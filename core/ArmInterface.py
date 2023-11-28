@@ -94,12 +94,11 @@ class ArmInterface:
 class _MyCobot(ArmInterface):
     def __init__(self, port: str):
         super().__init__()
-
-        system_info = platform.uname()
+        
         baud = None
                 
-        # raspberry pi and jetson nano
-        if system_info.system == "Linux" and "arm" in system_info.machine:
+        # for raspi and jetson nano
+        if SystemIdentity.is_jetson_nano() or SystemIdentity.is_raspi():
             baud = 1000000
         else:
             baud = 115200
