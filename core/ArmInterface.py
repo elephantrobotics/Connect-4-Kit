@@ -4,6 +4,7 @@ from typing import *
 import logging
 from core.logger import get_logger
 import platform
+from core.utils import SystemIdentity, Platform
 
 logger = get_logger(__name__, filepath="logs/robot.log")
 
@@ -96,8 +97,8 @@ class _MyCobot(ArmInterface):
 
         system_info = platform.uname()
         baud = None
-
-        # raspberry pi
+                
+        # raspberry pi and jetson nano
         if system_info.system == "Linux" and "arm" in system_info.machine:
             baud = 1000000
         else:
@@ -109,6 +110,10 @@ class _MyCobot(ArmInterface):
         self.set_robot_log()
 
     def init_angle_constants(self):
+        
+        if SystemIdentity.curr_board_model() == Platform.JETSON_NANO:
+            logger.info("Using Mycobot 280 - Jetson nano presets.")
+        
         # Define angle tables for different positions
         self.angle_table = {
             "recovery": [0, 0, 0, 0, 0, 45],

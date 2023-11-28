@@ -3,15 +3,26 @@ from interaction import select_com, select_robot_model
 import time
 import platform
 
+import os
+import sys
+sys.path.append(os.getcwd())
+
+from core.utils import SystemIdentity
+
 robot_model = select_robot_model()
-com = select_com()
+
+if SystemIdentity.is_jetson_nano():
+    com = "/dev/ttyTHS1"
+else:
+    com = select_com()
 
 system_info = platform.uname()
 baud = 115200
+
+# for raspi and jetson nano
 if (
     robot_model == MyCobot
-    and system_info.system == "Linux"
-    and "arm" in system_info.machine
+    and (SystemIdentity.is_jetson_nano() or SystemIdentity.is_raspi())
 ):
     baud = 1000000
 
@@ -39,3 +50,5 @@ for i in range(1, joint_n + 1):
     time.sleep(3)
     robot.send_angle(i, 0, speed)
     time.sleep(3)
+
+robot.send_angles(zero_pos, speed)
