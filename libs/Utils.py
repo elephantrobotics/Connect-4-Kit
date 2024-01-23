@@ -2,8 +2,9 @@
 from typing import *
 import logging
 import numpy as np
-from PySide6.QtGui import QPixmap, QImage
+from PyQt5.QtGui import QPixmap, QImage
 from typing import *
+
 
 # Function to convert numpy array to QPixmap
 def numpy_to_pixmap(arr: np.ndarray, image_format) -> QPixmap:
@@ -18,6 +19,7 @@ def numpy_to_pixmap(arr: np.ndarray, image_format) -> QPixmap:
     # Convert QImage to QPixmap
     pixmap = QPixmap.fromImage(image)
     return pixmap
+
 
 # Function to crop frame by aruco
 def crop_frame_by_aruco(frame, aruco_detector) -> Tuple[bool, np.ndarray]:
@@ -42,6 +44,7 @@ def crop_frame_by_aruco(frame, aruco_detector) -> Tuple[bool, np.ndarray]:
     croped_frame = crop_frame(frame, p1, p2)
     croped_frame = np.ascontiguousarray(croped_frame)
     return True, croped_frame
+
 
 # Function to crop frame
 def crop_frame(frame: np.ndarray, p1, p2) -> np.ndarray:

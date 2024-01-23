@@ -3,12 +3,12 @@ import sys
 import logging
 from core.logger import get_logger
 
-from PySide6.QtCore import (
+from PyQt5.QtCore import (
     QTranslator,
     QLocale,
 )
-from PySide6.QtWidgets import QApplication, QMainWindow, QWidget
-from PySide6.QtGui import QIcon
+from PyQt5.QtWidgets import QApplication, QMainWindow, QWidget
+from PyQt5.QtGui import QIcon
 
 # Importing the layout of the application
 from layouts.app_page import AppPage
@@ -24,7 +24,7 @@ class MainWindow(QMainWindow):
     Args:
         QMainWindow (_type_): _description_
     """
-    
+
     # Initializer function for the MainWindow class
     def __init__(self, parent: QWidget | None = None) -> None:
         super().__init__(parent)
@@ -57,7 +57,7 @@ if __name__ == "__main__":
     translator = QTranslator(app)
 
     print(QLocale.system().name())
-    
+
     if translator.load(path + QLocale.system().name()):
         logger.debug(QLocale.system().name() + " translation loaded.")
 

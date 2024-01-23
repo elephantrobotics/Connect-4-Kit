@@ -15,6 +15,14 @@ cd connect4-app
 
 3. Installing 3rd party libraries via `requirements.txt`
 
+If you're using Arm based system, like Pi or Jetson series. Please install pyside6 first
+
+```shell
+cd deps
+chmod 777 install_pyside6.sh
+./install_pyside6.sh
+```
+
 ```shell
 pip install -r requirements.txt
 ```

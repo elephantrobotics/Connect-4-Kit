@@ -1,7 +1,6 @@
 # Importing necessary libraries and modules
 import time
 import sys
-from tkinter import NO
 from typing import Any
 import cv2
 import numpy as np
@@ -10,10 +9,10 @@ from typing import *
 import serial
 import platform
 
-from PySide6 import QtCore
-from PySide6.QtCore import Signal, QObject, Slot, Qt
-from PySide6.QtGui import QPixmap, QImage
-from PySide6.QtWidgets import (
+from PyQt5 import QtCore
+from PyQt5.QtCore import pyqtSignal, QObject, pyqtSlot, Qt
+from PyQt5.QtGui import QPixmap, QImage
+from PyQt5.QtWidgets import (
     QWidget,
     QLabel,
     QComboBox,
@@ -21,7 +20,6 @@ from PySide6.QtWidgets import (
     QDialog,
     QBoxLayout,
 )
-from sympy import false
 from layouts.app_page_ui import Ui_AppPage
 
 from libs.NormalCamera import NormalCamera
@@ -43,12 +41,12 @@ logger = get_logger(__name__)
 
 # Class for handling communication between different parts of the application
 class Communicator(QObject):
-    destroy = Signal()
-    load_ui = Signal(str)
-    curr_cam_index = Signal(int)
-    cam_frame_update = Signal()
-    info_msgbox = Signal(str)
-    stop_game = Signal()
+    destroy = pyqtSignal()
+    load_ui = pyqtSignal(str)
+    curr_cam_index = pyqtSignal(int)
+    cam_frame_update = pyqtSignal()
+    info_msgbox = pyqtSignal(str)
+    stop_game = pyqtSignal()
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -76,21 +74,21 @@ class Context:
         self.robot_first = False
         self.aruco_detect_frame: Union[np.ndarray, None] = None
         self.color_detect_frame: Union[np.ndarray, None] = None
-        self.wait: Union[int , None] = None
+        self.wait: Union[int, None] = None
 
         # arm
-        self.arm: Union[ArmInterface , None] = None
+        self.arm: Union[ArmInterface, None] = None
 
 
 # Class for handling camera operations in a separate thread
 class CameraThread(threading.Thread):
-    def __init__(self, cam_index: int, shared_memory: Context, cam_signal: Signal):
+    def __init__(self, cam_index: int, shared_memory: Context, cam_signal: pyqtSignal):
         super().__init__()
 
         self.running_flag: bool = True
         self.cam_index: int = cam_index
-        self.cam: Union[NormalCamera , None] = None
-        self.cam_signal: Signal = cam_signal
+        self.cam: Union[NormalCamera, None] = None
+        self.cam_signal: pyqtSignal = cam_signal
         self.mem: Context = shared_memory
         self.fps = 10
         self.tick = 1 / self.fps
@@ -189,21 +187,21 @@ class GameThread(threading.Thread):
 
 
 class SerialComboBox(QComboBox):
-    # _res = Signal(dict)
+    # _res = pyqtSignal(dict)
 
     def __init__(self, parent):
         super(SerialComboBox, self).__init__(parent)
 
     def mousePressEvent(self, QMouseEvent):
         self.clear()
-        
+
         if SystemIdentity.is_jetson_nano():
             self.ui.combo_com_selection.addItem("/dev/ttyTHS1")
         else:
             serial_ports = serial.tools.list_ports.comports()
             for port in serial_ports:
                 self.addItem(port.device)
-        
+
         QComboBox.mousePressEvent(self, QMouseEvent)
         logger.debug("Serial port updated.")
         logger.debug(f"Now serial ports: {list(map(str,serial_ports))}")
@@ -233,7 +231,7 @@ class AppPage:
         logger.debug("Aruco detector initialized.")
 
     # Setup dynamic UI elements
-    def setup_ui_dynamics(self):        
+    def setup_ui_dynamics(self):
         self.ui.label_video_feed0.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.ui.label_video_feed1.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
         self.ui.label_video_feed2.setAlignment(QtCore.Qt.AlignmentFlag.AlignCenter)
@@ -305,7 +303,6 @@ class AppPage:
         self.ui.switch_video3_on.stateChanged.connect(switch_video3)
 
         # Function to start game
-        @Slot()
         def start_game():
             logger.debug("Start game button pressed.")
             if self.shared_memory.arm is None:
@@ -336,7 +333,6 @@ class AppPage:
         self.ui.combo_com_selection = SerialComboBox(self.ui.frame_interact_panel)
         self.ui.horizontalLayout_18.addWidget(self.ui.combo_com_selection)
 
-        @Slot()
         def connect_arm():
             logger.debug("Connect arm button pressed.")
 
@@ -380,7 +376,9 @@ class AppPage:
                         None, QObject.tr("成功"), QObject.tr("机械臂连接成功")
                     )
                     logger.debug(f"Serial port {com_port} connected.")
-                    self.shared_memory.arm.mc.send_angles(self.shared_memory.arm.angle_table["recovery"], 50)
+                    self.shared_memory.arm.mc.send_angles(
+                        self.shared_memory.arm.angle_table["recovery"], 50
+                    )
                 else:
                     QMessageBox.information(
                         None, QObject.tr("失败"), QObject.tr("机械臂连接失败, 请检查机型和串口是否匹配")
@@ -390,7 +388,7 @@ class AppPage:
         self.ui.btn_connect_com.clicked.connect(connect_arm)
 
         # btn release arm
-        @Slot()
+
         def release_arm():
             logger.debug("Release arm button pressed.")
 
@@ -406,7 +404,7 @@ class AppPage:
         self.ui.btn_stop_com.clicked.connect(release_arm)
 
         # btn gservo
-        @Slot()
+
         def btn_gservo():
             logger.debug("Drop piece button pressed.")
 
@@ -429,7 +427,6 @@ class AppPage:
         return self._widget
 
     # Function to open camera
-    @Slot()
     def open_camera(self):
         # open before specify cam index
         if self.shared_memory.curr_cam_index is None:
@@ -457,7 +454,7 @@ class AppPage:
         self.ui.combo_camera_selection.setEnabled(False)
 
     # Function to stop camera
-    @Slot()
+
     def stop_camera(self):
         # stop before start
         if self.cam_thread is None:
@@ -473,7 +470,7 @@ class AppPage:
         self._widget.update()
 
     # Function to stop game
-    @Slot()
+
     def stop_game(self):
         logger.info("Stop game button pressed.")
         if self.game_thread is None:
@@ -507,7 +504,7 @@ class AppPage:
         logger.debug("Game stopped.")
 
     # Function to update image
-    @Slot()
+
     def update_image(self):
         """
         Note that the frame given here is the original frame from the camera, not scaled.
@@ -561,7 +558,6 @@ class AppPage:
     def terminate_ui(self) -> None:
         return
 
-    @Slot()
     def info_messagebox(self, text):
         QMessageBox.information(self._widget, "Info", text)
 
