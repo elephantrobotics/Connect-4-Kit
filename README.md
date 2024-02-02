@@ -25,6 +25,10 @@ pip install -r requirements.txt
 python3 app.py
 ```
 
+## Documentation
+
+For more detailed documentaion, please refer to [doc site](https://docs.elephantrobotics.com/docs/connect-4/en/).
+
 ## Contributing
 
 If you would like to contribute code or report issues, please follow these steps:
