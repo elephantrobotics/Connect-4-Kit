@@ -61,7 +61,17 @@ Execute the following commands in order.
 ```bash
 git clone https://github.com/elephantrobotics/Connect-4-Kit.git
 cd Connect-4-Kit
-pip install -r requirements.txt
+```
+
+Based on the platform, install the corresponding requirements list.
+
+If it's the Windows platform, please run:
+```powershell
+pip install -r .\requirements_windows.txt
+```
+If it's the Linux platform, please run:
+```shell
+pip install -r .\requirements_linux.txt
 ```
 
 ## Check robot firmware version

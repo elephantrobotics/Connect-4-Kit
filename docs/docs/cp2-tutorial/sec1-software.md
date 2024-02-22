@@ -61,7 +61,17 @@ Git的下载安装请参考[官方教程](https://git-scm.com/book/zh/v2/%E8%B5%
 ```bash
 git clone https://github.com/elephantrobotics/Connect-4-Kit.git
 cd Connect-4-Kit
-pip install -r requirements.txt
+```
+
+根据平台安装使用对应的`requirements list`
+如果是Windows平台请运行:
+```powershell
+pip install -r .\requirements_windows.txt
+```
+
+如果是Linux平台请运行：
+```shell
+pip install -r .\requirements_linux.txt
 ```
 
 ## 检查机械臂的固件版本
