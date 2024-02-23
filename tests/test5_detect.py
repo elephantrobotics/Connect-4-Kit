@@ -4,6 +4,7 @@ import time
 from tkinter import NO
 
 sys.path.append(os.getcwd())
+
 from core.utils import SystemIdentity
 from core.ArmCamera import ArmCamera
 from core.Detection import ChessBoardDetector

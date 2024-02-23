@@ -1,11 +1,10 @@
 from pymycobot.mycobot import MyCobot
-from tests.utils import select_com, select_robot_model
 import time
 import os
 import sys
 sys.path.append(os.getcwd())
 from core.utils import SystemIdentity
-
+from tests.utils import select_com, select_robot_model
 
 robot_model = select_robot_model()
 if SystemIdentity.is_jetson_nano():

@@ -1,10 +1,11 @@
 from pymycobot import MyCobot, MyArm
-from tests.utils import select_com, select_robot_model
 import time
 import platform
 import os
 import sys
 sys.path.append(os.getcwd())
+
+from tests.utils import select_com, select_robot_model
 
 from core.utils import SystemIdentity
 
