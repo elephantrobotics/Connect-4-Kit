@@ -77,6 +77,6 @@ pip install -r .\requirements_linux.txt
 ## 检查机械臂的固件版本
 
 MyCobot 280机械臂的固件版本需大于6.3
-MyArm机械臂的固件版本需大于3.9
+MyArm机械臂的固件版本至少为1.0
 
 如果不满足，请使用mystudio更新到最新版。
