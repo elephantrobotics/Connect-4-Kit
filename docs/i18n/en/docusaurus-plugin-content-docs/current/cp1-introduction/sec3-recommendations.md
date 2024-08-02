@@ -8,4 +8,6 @@ sidebar_position: 3
 
 [OpenCV Official Tutorial](https://docs.opencv.org/3.4/d6/d00/tutorial_py_root.html)
 
-[Elephant Robotics Doc](https://docs.elephantrobotics.com/docs/gitbook/)
+[Elephant Robotics Doc CN](https://www.elephantrobotics.com/support/)
+
+[Elephant Robotics Doc EN](https://www.elephantrobotics.com/en/support-en/)
