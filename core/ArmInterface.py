@@ -62,6 +62,7 @@ class ArmInterface:
         if n is not None and 0 <= n <= 6:
             coords = self.chess_table[n]
             logger.debug(f"Move to chess position {n}, angles {coords}")
+            time.sleep(2)
             self.send_angles(coords, self.ARM_SPEED)
             time.sleep(3)
         else:
@@ -73,6 +74,7 @@ class ArmInterface:
     # Method to move to the observation posture
     def observe_posture(self):
         logger.debug(f"Move to observe position {self.angle_table['observe']}")
+        time.sleep(2)
         self.send_angles(self.angle_table["observe"], self.ARM_SPEED)
         time.sleep(2)
 
